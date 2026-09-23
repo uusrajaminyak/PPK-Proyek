@@ -30,3 +30,5 @@ Route::get('/officers', [\App\Http\Controllers\Admin\OfficerController::class, '
 
 Route::get('/officers/create', [\App\Http\Controllers\Admin\OfficerController::class, 'create'])->name('admin.officers.create');
 Route::post('/officers', [\App\Http\Controllers\Admin\OfficerController::class, 'store'])->name('admin.officers.store');
+
+Route::get('/reservations', [\App\Http\Controllers\Admin\ReservationController::class, 'index'])->name('admin.reservations.index');

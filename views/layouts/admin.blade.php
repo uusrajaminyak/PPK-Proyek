@@ -53,7 +53,7 @@
                 <span class="ml-3 text-sm font-medium">Kelola Fasilitas</span>
             </a>
 
-            <a href="#" class="flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+            <a href="{{ route('admin.reservations.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.reservations.*') ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5' }} rounded-lg transition-colors">
                 <i class="far fa-calendar-alt w-6 text-center text-sm"></i>
                 <span class="ml-3 text-sm font-medium">Reservasi</span>
             </a>
