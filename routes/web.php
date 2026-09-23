@@ -25,3 +25,8 @@ Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.fac
 
 Route::get('/facilities/create', [FacilityController::class, 'create'])->name('admin.facilities.create');
 Route::post('/facilities', [FacilityController::class, 'store'])->name('admin.facilities.store');
+
+Route::get('/officers', [\App\Http\Controllers\Admin\OfficerController::class, 'index'])->name('admin.officers.index');
+
+Route::get('/officers/create', [\App\Http\Controllers\Admin\OfficerController::class, 'create'])->name('admin.officers.create');
+Route::post('/officers', [\App\Http\Controllers\Admin\OfficerController::class, 'store'])->name('admin.officers.store');

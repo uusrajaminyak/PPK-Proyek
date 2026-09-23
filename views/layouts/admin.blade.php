@@ -43,7 +43,7 @@
                 <span class="ml-3 text-sm font-medium">Kelola Pengguna</span>
             </a>
 
-            <a href="#" class="flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
+            <a href="{{ route('admin.officers.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.officers.*') ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5' }} rounded-lg transition-colors">
                 <i class="fas fa-user-shield w-6 text-center text-sm"></i>
                 <span class="ml-3 text-sm font-medium">Kelola Petugas</span>
             </a>

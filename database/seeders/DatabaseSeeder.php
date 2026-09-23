@@ -26,15 +26,28 @@ class DatabaseSeeder extends Seeder
             'kategori' => 'Staf', 
         ]);
 
-        $petugas = User::create([
-            'name' => 'Petugas Bambang',
-            'email' => 'petugas@undip.ac.id',
-            'password' => $password,
-            'role' => 'petugas',
-            'status_akun' => 'verified',
-            'nomor_identitas' => '19900101201501',
-            'kategori' => 'Staf',
-        ]);
+        $mockupOfficers = [
+            ['name' => 'Budi Santoso', 'id' => 'PTG-001', 'email' => 'budi.santoso@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-01-15 10:00:00'],
+            ['name' => 'Siti Aminah', 'id' => 'PTG-002', 'email' => 'siti.aminah@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-01-18 10:00:00'],
+            ['name' => 'Bambang Wijaya', 'id' => 'PTG-003', 'email' => 'bambang.w@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-01-20 10:00:00'],
+            ['name' => 'Dewi Lestari', 'id' => 'PTG-004', 'email' => 'dewi.lestari@staff.undip.ac.id', 'status' => 'suspended', 'date' => '2026-02-02 10:00:00'],
+            ['name' => 'Hendra Wijaya', 'id' => 'PTG-005', 'email' => 'hendra.w@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-02-10 10:00:00'],
+            ['name' => 'Rina Kartika', 'id' => 'PTG-006', 'email' => 'rina.k@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-02-14 10:00:00'],
+        ];
+
+        foreach ($mockupOfficers as $off) {
+            User::create([
+                'name' => $off['name'],
+                'email' => $off['email'],
+                'password' => $password,
+                'role' => 'petugas',
+                'status_akun' => $off['status'],
+                'nomor_identitas' => $off['id'],
+                'kategori' => 'Staf',
+                'created_at' => $off['date'], // Hardcoded to match mockup exactly
+                'updated_at' => $off['date'],
+            ]);
+        }
 
         $pengguna = User::create([
             'name' => 'Ahmed Fauzi (HMTI)',
