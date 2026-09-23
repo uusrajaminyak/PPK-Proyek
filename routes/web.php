@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FacilityController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,4 +19,6 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+
+Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.facilities.index');

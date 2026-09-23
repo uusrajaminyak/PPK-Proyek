@@ -46,31 +46,64 @@ class DatabaseSeeder extends Seeder
             'kategori' => 'Mahasiswa',
         ]);
 
-        $aula = Facility::create([
-            'nama_fasilitas' => 'Aula Imam Bardjo',
-            'tipe' => 'Aula',
-            'lokasi' => 'Gedung A, Lantai 1',
-            'kapasitas' => 200,
-            'deskripsi' => 'Aula utama untuk seminar dan acara besar.',
+        $kelas = Facility::create([
+            'nama_fasilitas' => 'Ruang Kelas E101',
+            'tipe' => 'Ruang Kelas',
+            'lokasi' => 'FSM - Gedung E - Lt. 1',
+            'kapasitas' => 60,
+            'deskripsi' => 'Ruang kelas standar.',
             'status_fasilitas' => 'active',
+            'foto_path' => 'https://images.unsplash.com/photo-1571260899304-425dea5cfd5b?auto=format&fit=crop&w=800&q=80',
         ]);
 
-        $lab = Facility::create([
-            'nama_fasilitas' => 'Lab Komputer FSM',
+        $aula = Facility::create([
+            'nama_fasilitas' => 'Aula Imam Bardjo',
+            'tipe' => 'Aula Serbaguna',
+            'lokasi' => 'Undip Pleburan',
+            'kapasitas' => 500,
+            'deskripsi' => 'Aula utama untuk seminar.',
+            'status_fasilitas' => 'active',
+            'foto_path' => 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80',
+        ]);
+
+        $labKomputer = Facility::create([
+            'nama_fasilitas' => 'Lab Komputer Terpadu',
             'tipe' => 'Laboratorium',
-            'lokasi' => 'Gedung C, Lantai 2',
+            'lokasi' => 'FSM - Gedung Lab - Lt. 3',
             'kapasitas' => 40,
             'deskripsi' => 'Lab komputer dengan spesifikasi tinggi.',
             'status_fasilitas' => 'in_repair',
+            'foto_path' => 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80',
         ]);
 
         $lapangan = Facility::create([
-            'nama_fasilitas' => 'Lapangan Basket',
-            'tipe' => 'Lapangan',
-            'lokasi' => 'Area Olahraga Timur',
-            'kapasitas' => 50,
-            'deskripsi' => 'Lapangan basket outdoor.',
+            'nama_fasilitas' => 'Lapangan Basket FSM',
+            'tipe' => 'Lapangan Olahraga',
+            'lokasi' => 'FSM - Area Outdoor',
+            'kapasitas' => 0, 
+            'deskripsi' => 'Lapangan basket outdoor utama.',
             'status_fasilitas' => 'active',
+            'foto_path' => 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80',
+        ]);
+
+        $ruangRapat = Facility::create([
+            'nama_fasilitas' => 'Ruang Sidang Utama',
+            'tipe' => 'Ruang Rapat',
+            'lokasi' => 'Rektorat - Gedung Widya Puraya',
+            'kapasitas' => 30,
+            'deskripsi' => 'Ruang rapat eksklusif rektorat.',
+            'status_fasilitas' => 'inactive',
+            'foto_path' => 'https://images.unsplash.com/photo-1577415124269-311451f28b3a?auto=format&fit=crop&w=800&q=80',
+        ]);
+
+        $labKimia = Facility::create([
+            'nama_fasilitas' => 'Lab Kimia Analitik',
+            'tipe' => 'Laboratorium',
+            'lokasi' => 'FSM - Gedung Lab - Lt. 1',
+            'kapasitas' => 25,
+            'deskripsi' => 'Laboratorium kimia untuk praktikum.',
+            'status_fasilitas' => 'active',
+            'foto_path' => 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=800&q=80',
         ]);
 
         $today = Carbon::today();
@@ -107,7 +140,7 @@ class DatabaseSeeder extends Seeder
             if ($i % 2 == 0) {
                 Reservation::create([
                     'user_id' => $pengguna->id,
-                    'facility_id' => $lab->id,
+                    'facility_id' => $labKomputer->id,
                     'tujuan_penggunaan' => 'Praktikum Susulan',
                     'start_time' => $today->copy()->subDays($i)->setTime(13, 0),
                     'end_time' => $today->copy()->subDays($i)->setTime(15, 0),
@@ -119,7 +152,7 @@ class DatabaseSeeder extends Seeder
 
         Report::create([
             'reporter_id' => $pengguna->id,
-            'facility_id' => $lab->id,
+            'facility_id' => $labKomputer->id, 
             'kategori_laporan' => 'Hardware',
             'deskripsi' => 'AC di ruang lab bocor dan menetes ke komputer.',
             'foto_paths' => ['reports/ac-bocor1.jpg', 'reports/ac-bocor2.jpg'],

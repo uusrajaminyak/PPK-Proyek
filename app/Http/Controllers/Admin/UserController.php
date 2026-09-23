@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
+                $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
                   ->orWhere('nomor_identitas', 'like', "%{$search}%");
             });
@@ -72,7 +73,6 @@ class UserController extends Controller
             'no_telepon' => ['required', 'string', 'max:20'],
             'fakultas' => ['nullable', 'string'],
             'program_studi' => ['nullable', 'string'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $role = 'pengguna';
@@ -80,7 +80,9 @@ class UserController extends Controller
             $role = strtolower($validated['kategori']);
         }
 
-        User::create([
+        $generatedPassword = Str::random(10);
+
+        $user = User::create([
             'name' => $validated['nama'], 
             'nomor_identitas' => $validated['nomor_identitas'],
             'kategori' => $validated['kategori'],
@@ -88,11 +90,12 @@ class UserController extends Controller
             'no_telepon' => $validated['no_telepon'],
             'fakultas' => $validated['fakultas'],
             'program_studi' => $validated['program_studi'],
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make($generatedPassword), // Hash before saving
             'status_akun' => $request->has('status_aktif') ? 'verified' : 'pending',
             'role' => $role,
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'Pengguna baru berhasil ditambahkan.');
+        // TODO: Send email with the generated password
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna baru berhasil ditambahkan. Password telah dikirim ke email pengguna.');
     }
 }

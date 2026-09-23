@@ -85,17 +85,16 @@
                     </div>
                 </div>
 
-                <!-- Password & Confirm Password -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-100 pt-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Password *</label>
-                        <input type="password" name="password" placeholder="Minimal 8 karakter" required
-                            class="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Konfirmasi Password *</label>
-                        <input type="password" name="password_confirmation" placeholder="Ketik ulang password" required
-                            class="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400">
+                <!-- Auto Password & Confirm Password banner -->
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mt-2">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-3"></i>
+                        <div>
+                            <h4 class="text-sm font-semibold text-blue-800">Informasi Kata Sandi</h4>
+                            <p class="text-xs text-blue-600 mt-1">
+                                Sandi akan di-generate secara otomatis oleh sistem dan dikirimkan langsung ke email universitas yang didaftarkan.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
