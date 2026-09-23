@@ -19,7 +19,7 @@
                     <button class="text-gray-500 hover:text-gray-800 text-xs font-semibold px-4 py-1.5 rounded-md transition-colors">Table View</button>
                 </div>
                 <!-- Add Button -->
-                <a href="#" class="bg-[#0a192f] hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-sm transition-colors">
+                <a href="{{ route('admin.facilities.create') }}" class="bg-[#0a192f] hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-sm transition-colors">
                     <i class="fas fa-plus mr-2 text-xs"></i> Tambah Fasilitas
                 </a>
             </div>

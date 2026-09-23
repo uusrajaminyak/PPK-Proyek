@@ -22,3 +22,6 @@ Route::get('/users/create', [UserController::class, 'create'])->name('admin.user
 Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
 
 Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.facilities.index');
+
+Route::get('/facilities/create', [FacilityController::class, 'create'])->name('admin.facilities.create');
+Route::post('/facilities', [FacilityController::class, 'store'])->name('admin.facilities.store');
