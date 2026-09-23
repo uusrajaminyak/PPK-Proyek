@@ -24,7 +24,7 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Brand / Logo -->
                 <div class="flex items-center gap-3">
-                    <a href="{{ url('/') }}" class="flex items-center gap-2">
+                    <a href="{{ route('reports.index') }}" class="flex items-center gap-2">
                         <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
                             SF
                         </div>
@@ -37,14 +37,22 @@
 
                 <!-- Nav Links -->
                 <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <a href="{{ url('/') }}" class="text-slate-600 hover:text-indigo-600 transition-colors">
-                        Beranda
+                    <a href="{{ route('reports.index') }}" 
+                        class="{{ request()->routeIs('reports.index') ? 'text-indigo-600 font-semibold' : 'text-slate-600 hover:text-indigo-600' }} flex items-center gap-1.5 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                        </svg>
+                        Riwayat Laporan
+                        <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">FR-07</span>
                     </a>
-                    <a href="{{ route('reports.create') }}" class="text-indigo-600 font-semibold flex items-center gap-1.5">
+
+                    <a href="{{ route('reports.create') }}" 
+                        class="{{ request()->routeIs('reports.create') ? 'text-indigo-600 font-semibold' : 'text-slate-600 hover:text-indigo-600' }} flex items-center gap-1.5 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                         </svg>
                         Lapor Kerusakan
+                        <span class="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-bold">FR-06</span>
                     </a>
                 </nav>
 
@@ -116,4 +124,3 @@
     @stack('scripts')
 </body>
 </html>
-

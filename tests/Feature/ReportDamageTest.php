@@ -96,7 +96,7 @@ class ReportDamageTest extends TestCase
             'fotos' => [$photo1, $photo2],
         ]);
 
-        $response->assertRedirect(route('reports.create'));
+        $response->assertRedirect(route('reports.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('reports', [
