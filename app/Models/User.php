@@ -29,4 +29,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',             
+        'email',
+        'password',
+        'nomor_identitas',  
+        'kategori',         
+        'no_telepon',       
+        'fakultas',         
+        'program_studi',   
+        'role',             
+        'status_akun',      
+    ];
 }

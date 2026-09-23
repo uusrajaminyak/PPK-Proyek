@@ -6,10 +6,11 @@
 <!-- Header Filter & Action Bar -->
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-        <h3 class="text-lg font-bold text-gray-800">Daftar Pengguna FasilitasUNDIP</h3>
-        <button class="bg-[#0A1E55] hover:bg-slate-800 text-white px-4 py-2.5 rounded-lg text-sm font-medium flex items-center shadow-sm">
-            <i class="fas fa-user-plus mr-2"></i> + Tambah Pengguna
-        </button>
+        <h3 class="text-lg font-bold text-gray-800">Daftar Pengguna Fasilitas UNDIP</h3>
+        <a href="{{ route('admin.users.create') }}" class="bg-[#0A1E55] hover:bg-slate-800 text-white px-4 py-2.5 rounded-lg text-sm font-medium flex items-center space-x-2 shadow-sm transition-colors">
+            <i class="fas fa-plus text-sm"></i>
+            <span>Tambah Pengguna</span>
+        </a>
     </div>
 
     <!-- Search & Dropdown Filters Form -->
