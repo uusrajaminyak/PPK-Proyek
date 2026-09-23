@@ -30,6 +30,11 @@ class UpdateReportStatusRequest extends FormRequest
                 'min:5',
                 'max:1000',
             ],
+            'update_facility_status' => [
+                'nullable',
+                'string',
+                'in:active,in_repair,keep',
+            ],
         ];
     }
 
@@ -43,6 +48,7 @@ class UpdateReportStatusRequest extends FormRequest
         return [
             'status_laporan' => 'status laporan',
             'catatan_resolusi' => 'catatan resolusi',
+            'update_facility_status' => 'status operasional fasilitas',
         ];
     }
 
@@ -59,7 +65,7 @@ class UpdateReportStatusRequest extends FormRequest
             'catatan_resolusi.required_if' => 'Catatan resolusi wajib diisi saat laporan diselesaikan atau ditolak.',
             'catatan_resolusi.min' => 'Catatan resolusi minimal 5 karakter.',
             'catatan_resolusi.max' => 'Catatan resolusi maksimal 1000 karakter.',
+            'update_facility_status.in' => 'Pilihan status operasional fasilitas tidak valid.',
         ];
     }
 }
-

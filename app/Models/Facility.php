@@ -29,6 +29,14 @@ class Facility extends Model
     }
 
     /**
+     * Active unresolved reports associated with this facility.
+     */
+    public function activeReports(): HasMany
+    {
+        return $this->hasMany(Report::class)->whereIn('status_laporan', ['baru', 'diproses']);
+    }
+
+    /**
      * Reservations associated with this facility.
      */
     public function reservations(): HasMany
@@ -51,5 +59,20 @@ class Facility extends Model
     {
         return $this->status_fasilitas === 'in_repair';
     }
-}
 
+    /**
+     * Mark facility status as in repair (FR-12).
+     */
+    public function markInRepair(): bool
+    {
+        return $this->update(['status_fasilitas' => 'in_repair']);
+    }
+
+    /**
+     * Restore facility status to active (FR-12).
+     */
+    public function markActive(): bool
+    {
+        return $this->update(['status_fasilitas' => 'active']);
+    }
+}

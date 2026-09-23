@@ -39,7 +39,8 @@ class ReportController extends Controller
     }
 
     /**
-     * Update the status and resolution note of a damage report (FR-11).
+     * Update the status and resolution note of a damage report (FR-11),
+     * and optionally update facility status (FR-12).
      */
     public function update(UpdateReportStatusRequest $request, Report $report): RedirectResponse
     {
@@ -50,6 +51,18 @@ class ReportController extends Controller
             'catatan_resolusi' => $validated['catatan_resolusi'] ?? $report->catatan_resolusi,
         ]);
 
+        // FR-12: Tandai status fasilitas terkait jika dipilih oleh petugas
+        $facilityMessage = '';
+        if (!empty($validated['update_facility_status'])) {
+            if ($validated['update_facility_status'] === 'in_repair') {
+                $report->facility->markInRepair();
+                $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" ditandai Dalam Perbaikan";
+            } elseif ($validated['update_facility_status'] === 'active') {
+                $report->facility->markActive();
+                $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" dikembalikan ke status Aktif";
+            }
+        }
+
         $statusLabel = [
             'baru' => 'Baru',
             'diproses' => 'Sedang Diproses',
@@ -57,7 +70,6 @@ class ReportController extends Controller
             'ditolak' => 'Ditolak',
         ][$validated['status_laporan']] ?? $validated['status_laporan'];
 
-        return redirect()->back()->with('success', "Status laporan #{$report->id} berhasil diperbarui menjadi \"{$statusLabel}\".");
+        return redirect()->back()->with('success', "Status laporan #{$report->id} berhasil diperbarui menjadi \"{$statusLabel}\"{$facilityMessage}.");
     }
 }
-

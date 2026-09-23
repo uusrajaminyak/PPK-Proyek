@@ -131,6 +131,19 @@
                                 <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-medium">
                                     {{ $report->facility->tipe ?? '-' }} ({{ $report->facility->lokasi ?? '-' }})
                                 </span>
+                                @if($report->facility)
+                                    @if($report->facility->status_fasilitas === 'in_repair')
+                                        <span class="inline-flex items-center gap-1 text-[11px] bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded-full border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                            Fasilitas: Dalam Perbaikan
+                                        </span>
+                                    @elseif($report->facility->status_fasilitas === 'active')
+                                        <span class="inline-flex items-center gap-1 text-[11px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                            Fasilitas: Aktif
+                                        </span>
+                                    @endif
+                                @endif
                             </div>
                             <div class="text-xs text-slate-500 mt-1 flex items-center gap-2 flex-wrap">
                                 <span class="font-medium text-slate-700">Pelapor: {{ $report->reporter->name ?? 'Anonim' }} ({{ $report->reporter->email ?? '-' }})</span>
@@ -278,6 +291,25 @@
                                 <textarea name="catatan_resolusi" id="catatan_resolusi_{{ $report->id }}" rows="2"
                                     placeholder="Contoh: Teknisi telah mengganti spare part dan fasilitas telah berfungsi kembali normal..."
                                     class="w-full rounded-xl border border-slate-300 p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 bg-white">{{ old('catatan_resolusi', $report->catatan_resolusi) }}</textarea>
+                            </div>
+
+                            <!-- FR-12: Sinkronisasi Status Fasilitas Terkait -->
+                            <div class="pt-2.5 pb-1 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <label for="update_facility_status_{{ $report->id }}" class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                    </svg>
+                                    <span>Sinkronkan Status Fasilitas (FR-12):</span>
+                                    <span class="text-[11px] text-slate-400 font-normal">
+                                        (Saat ini: <strong>{{ $report->facility?->status_fasilitas === 'in_repair' ? 'Dalam Perbaikan' : ($report->facility?->status_fasilitas === 'active' ? 'Aktif' : 'Nonaktif') }}</strong>)
+                                    </span>
+                                </label>
+                                <select name="update_facility_status" id="update_facility_status_{{ $report->id }}" 
+                                    class="rounded-lg border border-slate-300 text-xs px-3 py-1.5 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                                    <option value="keep">-- Biarkan Status Fasilitas Tetap --</option>
+                                    <option value="in_repair">Tandai Fasilitas: Dalam Perbaikan (in_repair)</option>
+                                    <option value="active">Kembalikan Fasilitas: Aktif (active)</option>
+                                </select>
                             </div>
 
                             <div class="flex justify-end pt-1">
