@@ -89,8 +89,8 @@
         <!-- Top Navbar -->
         <header class="h-20 bg-white border-b flex items-center justify-between px-8">
             <div>
-                <p class="text-sm text-gray-500">Admin / Beranda</p>
-                <h2 class="text-2xl font-bold text-gray-800">Dashboard Utama</h2>
+                <p class="text-sm text-gray-500">@yield('breadcrumb', 'Admin / Panel')</p>
+                <h2 class="text-2xl font-bold text-gray-800">@yield('title', 'Admin Panel')</h2>
             </div>
             <div class="flex items-center space-x-6">
                 <div class="relative">

@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'role' => 'admin',
             'status_akun' => 'verified',
+            'nomor_identitas' => '19850912201012',
+            'kategori' => 'Staf', 
         ]);
 
         $petugas = User::create([
@@ -30,6 +32,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'role' => 'petugas',
             'status_akun' => 'verified',
+            'nomor_identitas' => '19900101201501',
+            'kategori' => 'Staf',
         ]);
 
         $pengguna = User::create([
@@ -38,6 +42,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'role' => 'pengguna',
             'status_akun' => 'verified',
+            'nomor_identitas' => '21120122140089',
+            'kategori' => 'Mahasiswa',
         ]);
 
         $aula = Facility::create([

@@ -1,4 +1,6 @@
 @extends('layouts.admin')
+@section('title', 'Kelola Pengguna')
+@section('breadcrumb', 'Admin / Kelola Pengguna')
 
 @section('content')
 <!-- Header Filter & Action Bar -->
