@@ -10,40 +10,40 @@
     @fonts('plus-jakarta-sans')
 </head>
 <body>
+    <header class="site-header">
+        <div class="navbar">
+            <a class="brand" href="{{ route('home') }}" aria-label="Fasilita UNDIP, beranda">
+                <img class="brand-mark" src="{{ asset('images/undip-logo.png') }}" alt="">
+                <span class="brand-name">Fasilita <span>UNDIP</span></span>
+            </a>
+            <nav class="desktop-nav" aria-label="Navigasi utama">
+                <a class="nav-link is-active" href="{{ route('home') }}" aria-current="page">Beranda</a>
+                <a class="nav-link" href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
+                <a class="nav-link" href="{{ url('/login') }}">Reservasi Saya</a>
+                <a class="nav-link" href="{{ url('/login') }}">Lapor Fasilitas</a>
+            </nav>
+            <a class="login-link" href="{{ url('/login') }}">
+                <img src="{{ asset('images/landing/icon-logout.svg') }}" alt="" aria-hidden="true">
+                <span>Login</span>
+            </a>
+            <details class="mobile-nav">
+                <summary aria-label="Buka menu navigasi"><span></span><span></span><span></span></summary>
+                <nav class="mobile-nav-panel" aria-label="Navigasi utama">
+                    <a href="{{ route('home') }}" aria-current="page">Beranda</a>
+                    <a href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
+                    <a href="{{ url('/login') }}">Reservasi Saya</a>
+                    <a href="{{ url('/login') }}">Lapor Fasilitas</a>
+                    <a href="{{ url('/login') }}">Login</a>
+                </nav>
+            </details>
+        </div>
+    </header>
     <main>
         <section class="landing-hero" id="beranda" aria-labelledby="landing-title">
             <img class="hero-background" src="{{ asset('images/landing/landing-hero.webp') }}" alt="" aria-hidden="true">
             <div class="hero-watermark" aria-hidden="true">
                 <img src="{{ asset('images/landing/undip-watermark.png') }}" alt="">
             </div>
-            <header class="site-header">
-                <div class="navbar">
-                    <a class="brand" href="{{ route('home') }}" aria-label="Fasilita UNDIP, beranda">
-                        <img class="brand-mark" src="{{ asset('images/undip-logo.png') }}" alt="">
-                        <span class="brand-name">Fasilita <span>UNDIP</span></span>
-                    </a>
-                    <nav class="desktop-nav" aria-label="Navigasi utama">
-                        <a class="nav-link is-active" href="{{ route('home') }}" aria-current="page">Beranda</a>
-                        <a class="nav-link" href="#cara-kerja">Jelajah Fasilitas</a>
-                        <a class="nav-link" href="{{ url('/login') }}">Reservasi Saya</a>
-                        <a class="nav-link" href="{{ url('/login') }}">Lapor Fasilitas</a>
-                    </nav>
-                    <a class="login-link" href="{{ url('/login') }}">
-                        <img src="{{ asset('images/landing/icon-logout.svg') }}" alt="" aria-hidden="true">
-                        <span>Login</span>
-                    </a>
-                    <details class="mobile-nav">
-                        <summary aria-label="Buka menu navigasi"><span></span><span></span><span></span></summary>
-                        <nav class="mobile-nav-panel" aria-label="Navigasi utama">
-                            <a href="{{ route('home') }}" aria-current="page">Beranda</a>
-                            <a href="#cara-kerja">Jelajah Fasilitas</a>
-                            <a href="{{ url('/login') }}">Reservasi Saya</a>
-                            <a href="{{ url('/login') }}">Lapor Fasilitas</a>
-                            <a href="{{ url('/login') }}">Login</a>
-                        </nav>
-                    </details>
-                </div>
-            </header>
             <div class="hero-copy">
                 <h1 id="landing-title">Reservasi Fasilitas Kampus<br>Jadi Lebih Mudah</h1>
                 <p>Fasilita UNDIP membantu civitas akademika UNDIP mengecek ketersediaan, memesan, dan melaporkan kondisi fasilitas kampus, semua dalam satu platform.</p>
