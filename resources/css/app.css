@@ -48,7 +48,7 @@ a { color: inherit; }
 }
 .hero-watermark img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .site-header {
-    position: absolute;
+    position: fixed;
     z-index: 2;
     top: 40px;
     left: 50%;
@@ -94,7 +94,7 @@ a { color: inherit; }
     transition: background-color .18s ease, color .18s ease;
 }
 .nav-link:hover, .nav-link:focus-visible { background: #edf0f7; outline: none; }
-.nav-link.is-active { min-width: 140px; min-height: 50px; background: var(--navy); color: #fff; }
+.nav-link.is-active { min-height: 50px; background: var(--navy); color: #fff; }
 .nav-link.is-active:hover, .nav-link.is-active:focus-visible { background: #10285d; }
 .login-link {
     display: inline-flex;
@@ -132,7 +132,6 @@ a { color: inherit; }
     .navbar { grid-template-columns: 185px minmax(0, 1fr) 78px; padding-right: 22px; padding-left: 22px; }
     .desktop-nav { gap: 2px; }
     .nav-link { padding: 0 10px; font-size: 10px; }
-    .nav-link.is-active { min-width: 110px; }
 }
 @media (max-width: 900px) {
     .landing-hero { min-height: 740px; }
@@ -170,4 +169,73 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: .01ms !important; }
+}
+
+/* Jelajah Fasilitas */
+.facilities-page { position: relative; min-height: 100vh; overflow: hidden; isolation: isolate; background: var(--page-gray); }
+.facilities-watermark { position: absolute; z-index: -1; top: 0; left: 0; width: min(620px, 100vw); aspect-ratio: 3267 / 4500; opacity: .05; pointer-events: none; }
+.facilities-watermark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.facilities-content { position: relative; padding: 200px 24px 42px; }
+.facilities-intro { width: min(1100px, 100%); margin: 0 auto; text-align: center; }
+.facilities-intro h1 { margin: 0; font-size: clamp(42px, 4.7vw, 60px); font-weight: 700; letter-spacing: -.06em; line-height: 1.2; }
+.facilities-intro p { width: min(1100px, 100%); margin: 20px auto 0; font-size: 23px; font-weight: 500; letter-spacing: -.025em; line-height: 1.42; }
+.facility-search { display: flex; width: min(812px, 100%); min-height: 60px; align-items: center; justify-content: space-between; margin: 35px auto 0; padding: 0 23px 0 29px; border: 1px solid #c7c7cc; border-radius: 39px; background: #fff; color: #8e8e93; font-size: 20px; letter-spacing: -.02em; }
+.facility-search img { display: block; width: 24px; height: 24px; filter: brightness(0) saturate(100%) invert(7%) sepia(39%) saturate(6976%) hue-rotate(221deg) brightness(76%) contrast(115%); }
+.facility-filters { display: flex; width: max-content; max-width: 100%; align-items: center; justify-content: center; gap: 10px; margin: 30px auto 0; }
+.facility-filter { display: flex; height: 40px; flex: 0 0 auto; align-items: center; gap: 10px; padding: 0 12px; overflow: hidden; border: 1px solid #c7c7cc; border-radius: 6px; background: #fff; color: #8e8e93; font-size: 15px; letter-spacing: -.02em; white-space: nowrap; }
+.facility-filter img, .filter-arrow { display: block; width: 24px; height: 24px; flex: 0 0 24px; filter: brightness(0) saturate(100%) invert(7%) sepia(39%) saturate(6976%) hue-rotate(221deg) brightness(76%) contrast(115%); }
+.facility-filter-type { width: 167px; justify-content: center; }
+.facility-filter-type img { width: 18px; height: 18px; flex-basis: 18px; margin-left: auto; }
+.facility-filter-location { width: 148px; }
+.facility-filter-location .filter-chevron { width: 16px; height: 16px; flex-basis: 16px; margin-left: auto; }
+.facility-filter-date { width: 156px; }
+.facility-filter-time { width: 110px; }
+.filter-arrow { width: 24px; height: 24px; }
+.filter-submit { display: grid; width: 40px; height: 40px; flex: 0 0 40px; place-items: center; border-radius: 6px; background: var(--navy); }
+.filter-submit img { display: block; width: 24px; height: 24px; filter: brightness(0) invert(1); }
+.facility-grid { display: grid; width: min(1162px, 100%); grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 20px; margin: 30px auto 0; }
+.facility-card { position: relative; min-width: 0; height: 400px; overflow: hidden; border: 1px solid var(--navy); border-radius: 20px; background: #fff; }
+.facility-card-image { height: 220px; background: linear-gradient(135deg, #e2e4e8 0%, #cdd1d8 48%, #e7e9ec 100%); }
+.facility-status { position: absolute; top: 13px; right: 13px; display: grid; min-width: 56px; height: 16px; place-items: center; border-radius: 8px; background: #fff; color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: -.02em; }
+.facility-card-content { padding: 25px 25px 0; }
+.facility-card-content h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.04em; line-height: 1.4; }
+.facility-detail-row { display: flex; align-items: center; gap: 6px; margin: 5px 0 0; font-size: 12.36px; letter-spacing: -.02em; line-height: 1.4; }
+.facility-detail-row + .facility-detail-row { margin-top: 4px; }
+.facility-detail-row img { display: block; width: 18px; height: 18px; flex: 0 0 18px; filter: brightness(0) saturate(100%) invert(7%) sepia(39%) saturate(6976%) hue-rotate(221deg) brightness(76%) contrast(115%); }
+.facility-card-button { position: absolute; right: 13px; bottom: 13px; display: grid; width: 70px; height: 36px; place-items: center; border-radius: 6px; background: var(--navy); color: #fff; font-size: 15px; font-weight: 500; letter-spacing: -.04em; }
+.facility-pagination { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 48px auto 0; }
+.pagination-page, .pagination-arrow { display: grid; width: 50px; height: 50px; place-items: center; border: 1px solid var(--navy); border-radius: 9px; background: #fff; color: var(--navy); font-size: 15px; }
+.pagination-page.is-current { background: var(--navy); color: #fff; }
+.pagination-arrow-icon { display: block; width: 24px; height: 24px; filter: brightness(0) saturate(100%) invert(7%) sepia(39%) saturate(6976%) hue-rotate(221deg) brightness(76%) contrast(115%); }
+.pagination-arrow-icon.is-left { transform: rotate(90deg); }
+.pagination-arrow-icon.is-right { transform: rotate(-90deg); }
+.pagination-arrow.is-disabled .pagination-arrow-icon { opacity: .45; }
+.pagination-arrow.is-disabled { border-color: #c7c7cc; color: #8e8e93; }
+@media (max-width: 1100px) {
+    .facility-filters { width: min(812px, 100%); flex-wrap: wrap; }
+    .facility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+    .facilities-content { padding-top: 150px; }
+    .facilities-intro h1 { font-size: clamp(42px, 7vw, 54px); }
+    .facilities-intro p { max-width: 650px; margin-top: 22px; font-size: 16px; }
+    .facility-search { margin-top: 28px; }
+    .facility-filters { gap: 8px; margin-top: 22px; }
+    .facility-grid { margin-top: 26px; }
+    .facility-pagination { margin-top: 34px; }
+}
+@media (max-width: 600px) {
+    .facilities-content { padding: 130px 18px 34px; }
+    .facilities-intro h1 { font-size: 38px; }
+    .facilities-intro p { margin-top: 20px; font-size: 14px; }
+    .facility-search { min-height: 52px; margin-top: 24px; padding-right: 18px; padding-left: 20px; font-size: 16px; }
+    .facility-filters { justify-content: flex-start; }
+    .facility-filter-type, .facility-filter-location { width: calc(50% - 4px); }
+    .facility-filter-date { width: calc(54% - 4px); }
+    .facility-filter-time { width: calc(34% - 4px); }
+    .facility-grid { grid-template-columns: minmax(0, 400px); justify-content: center; }
+    .facility-card { height: 370px; }
+    .facility-card-image { height: 205px; }
+    .facility-pagination { gap: 7px; margin-top: 30px; }
+    .pagination-page, .pagination-arrow { width: 42px; height: 42px; }
 }
