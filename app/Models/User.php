@@ -10,23 +10,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role', 'status_akun'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => 'string',
+            'status_akun' => 'string',
         ];
     }
 
@@ -47,4 +44,21 @@ class User extends Authenticatable
         'role',             
         'status_akun',      
     ];
+}
+    // Helper untuk cek verified
+    public function isVerified(): bool
+    {
+        return $this->status_akun === 'verified';
+    }
+
+    // Helper untuk role
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

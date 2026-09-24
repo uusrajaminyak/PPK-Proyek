@@ -190,5 +190,39 @@ class DatabaseSeeder extends Seeder
             'foto_paths' => [],
             'status_laporan' => 'baru',
         ]);
+        // 3 User Dummy
+        $users = [
+            [
+                'name' => 'Admin Kampus',
+                'email' => 'admin@test.com',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'status_akun' => 'verified',
+            ],
+            [
+                'name' => 'Petugas Fasilitas',
+                'email' => 'petugas@test.com',
+                'password' => Hash::make('password'),
+                'role' => 'petugas',
+                'status_akun' => 'verified',
+            ],
+            [
+                'name' => 'Mahasiswa User',
+                'email' => 'user@test.com',
+                'password' => Hash::make('password'),
+                'role' => 'pengguna',
+                'status_akun' => 'verified',
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            User::updateOrCreate(
+                ['email' => $userData['email']],
+                $userData
+            );
+        }
+
+        // Panggil FacilitySeeder
+        $this->call(FacilitySeeder::class);
     }
 }
