@@ -40,32 +40,15 @@ class DatabaseSeeder extends Seeder
             'status_akun' => 'verified',
         ]);
 
-        $aula = Facility::create([
-            'nama_fasilitas' => 'Aula Imam Bardjo',
-            'tipe' => 'Aula',
-            'lokasi' => 'Gedung A, Lantai 1',
-            'kapasitas' => 200,
-            'deskripsi' => 'Aula utama untuk seminar dan acara besar.',
-            'status_fasilitas' => 'active',
-        ]);
+        // Panggil FacilitySeeder (6 fasilitas terstandar)
+        $this->call(FacilitySeeder::class);
 
-        $lab = Facility::create([
-            'nama_fasilitas' => 'Lab Komputer FSM',
-            'tipe' => 'Laboratorium',
-            'lokasi' => 'Gedung C, Lantai 2',
-            'kapasitas' => 40,
-            'deskripsi' => 'Lab komputer dengan spesifikasi tinggi.',
-            'status_fasilitas' => 'in_repair',
-        ]);
-
-        $lapangan = Facility::create([
-            'nama_fasilitas' => 'Lapangan Basket',
-            'tipe' => 'Lapangan',
-            'lokasi' => 'Area Olahraga Timur',
-            'kapasitas' => 50,
-            'deskripsi' => 'Lapangan basket outdoor.',
-            'status_fasilitas' => 'active',
-        ]);
+        $aula = Facility::where('nama_fasilitas', 'Aula Utama Kampus')->first();
+        $kelas101 = Facility::where('nama_fasilitas', 'Ruang Kelas 101')->first();
+        $lab = Facility::where('nama_fasilitas', 'Laboratorium Komputer 1')->first();
+        $ruangRapat = Facility::where('nama_fasilitas', 'Ruang Rapat Dekan')->first();
+        $lapangan = Facility::where('nama_fasilitas', 'Lapangan Olahraga')->first();
+        $kelas205 = Facility::where('nama_fasilitas', 'Ruang Kelas 205 (Renovasi)')->first();
 
         $today = Carbon::today();
 
@@ -81,7 +64,7 @@ class DatabaseSeeder extends Seeder
         Reservation::create([
             'user_id' => $pengguna->id,
             'facility_id' => $lapangan->id,
-            'tujuan_penggunaan' => 'Latihan Rutin UKM Basket',
+            'tujuan_penggunaan' => 'Latihan Rutin UKM Olahraga',
             'start_time' => $today->copy()->addDay()->setTime(15, 0),
             'end_time' => $today->copy()->addDay()->setTime(17, 0),
             'status_reservasi' => 'pending',
@@ -102,7 +85,7 @@ class DatabaseSeeder extends Seeder
                 Reservation::create([
                     'user_id' => $pengguna->id,
                     'facility_id' => $lab->id,
-                    'tujuan_penggunaan' => 'Praktikum Susulan',
+                    'tujuan_penggunaan' => 'Praktikum Pemrograman',
                     'start_time' => $today->copy()->subDays($i)->setTime(13, 0),
                     'end_time' => $today->copy()->subDays($i)->setTime(15, 0),
                     'status_reservasi' => 'approved',
@@ -113,10 +96,10 @@ class DatabaseSeeder extends Seeder
 
         Report::create([
             'reporter_id' => $pengguna->id,
-            'facility_id' => $lab->id,
+            'facility_id' => $kelas205->id, 
             'kategori_laporan' => 'Hardware',
-            'deskripsi' => 'AC di ruang lab bocor dan menetes ke komputer.',
-            'foto_paths' => ['reports/ac-bocor1.jpg', 'reports/ac-bocor2.jpg'],
+            'deskripsi' => 'AC tidak dingin dan proyektor berkedip.',
+            'foto_paths' => ['reports/ac-bocor1.jpg'],
             'status_laporan' => 'diproses',
         ]);
 
@@ -134,9 +117,41 @@ class DatabaseSeeder extends Seeder
             'reporter_id' => $pengguna->id,
             'facility_id' => $lapangan->id,
             'kategori_laporan' => 'Fasilitas Umum',
-            'deskripsi' => 'Ring basket bengkok.',
+            'deskripsi' => 'Ring basket bengkok dan jaring terlepas.',
             'foto_paths' => [],
             'status_laporan' => 'baru',
         ]);
+
+        // Akun test serbaguna
+        $testUsers = [
+            [
+                'name' => 'Admin Kampus',
+                'email' => 'admin@test.com',
+                'password' => $password,
+                'role' => 'admin',
+                'status_akun' => 'verified',
+            ],
+            [
+                'name' => 'Petugas Fasilitas',
+                'email' => 'petugas@test.com',
+                'password' => $password,
+                'role' => 'petugas',
+                'status_akun' => 'verified',
+            ],
+            [
+                'name' => 'Mahasiswa User',
+                'email' => 'user@test.com',
+                'password' => $password,
+                'role' => 'pengguna',
+                'status_akun' => 'verified',
+            ],
+        ];
+
+        foreach ($testUsers as $userData) {
+            User::firstOrCreate(
+                ['email' => $userData['email']],
+                $userData
+            );
+        }
     }
 }
