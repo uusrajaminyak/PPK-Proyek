@@ -48,15 +48,15 @@
                 <p>Temukan berbagai fasilitas yang tersedia di lingkungan UNDIP, mulai dari ruang kelas, aula, laboratorium, hingga lapangan olahraga. Setiap fasilitas dilengkapi informasi lokasi, kapasitas, dan status ketersediaan secara real-time, sehingga kamu bisa merencanakan kegiatan dengan lebih mudah tanpa perlu bertanya langsung ke petugas. Gunakan fitur pencarian dan filter untuk menemukan fasilitas yang sesuai dengan kebutuhanmu, baik berdasarkan tipe, lokasi, maupun ketersediaan.</p>
             </div>
             <div class="facility-search" role="group" aria-label="Pencarian fasilitas">
-                <span>Cari fasilitas...</span><img src="{{ asset('images/facilities/icon-search.svg') }}" alt="" aria-hidden="true">
+                <input type="text" aria-label="Cari fasilitas" placeholder="Cari fasilitas..." autocomplete="off"><img src="{{ asset('images/facilities/icon-search.svg') }}" alt="" aria-hidden="true">
             </div>
             <div class="facility-filters" role="group" aria-label="Filter fasilitas">
                 <div class="facility-filter facility-filter-type"><span>Tipe</span><img src="{{ asset('images/facilities/icon-arrow1 down.svg') }}" alt="" aria-hidden="true"></div>
                 <div class="facility-filter facility-filter-location"><img src="{{ asset('images/facilities/icon-location.svg') }}" alt="" aria-hidden="true"><span>Lokasi...</span><img class="filter-chevron" src="{{ asset('images/facilities/icon-arrow1 down.svg') }}" alt="" aria-hidden="true"></div>
-                <div class="facility-filter facility-filter-date"><img src="{{ asset('images/facilities/icon-calendar.svg') }}" alt="" aria-hidden="true"><span>DD/BB/TTTT</span></div>
-                <div class="facility-filter facility-filter-time"><img src="{{ asset('images/facilities/icon-time.svg') }}" alt="" aria-hidden="true"><span>07:00</span></div>
+                <label class="facility-filter facility-filter-date"><img src="{{ asset('images/facilities/icon-calendar.svg') }}" alt="" aria-hidden="true"><input type="date" aria-label="Tanggal" value="{{ now('Asia/Jakarta')->format('Y-m-d') }}" onclick="this.showPicker()"></label>
+                <label class="facility-filter facility-filter-time"><img src="{{ asset('images/facilities/icon-time.svg') }}" alt="" aria-hidden="true"><select aria-label="Waktu mulai"><option value="" selected>Semua</option>@for ($minutesInDay = 420; $minutesInDay <= 1170; $minutesInDay += 30)@php($timeValue = sprintf('%02d:%02d', intdiv($minutesInDay, 60), $minutesInDay % 60))<option value="{{ $timeValue }}">{{ $timeValue }}</option>@endfor</select></label>
                 <img class="filter-arrow" src="{{ asset('images/facilities/icon-arrow2 right.svg') }}" alt="" aria-hidden="true">
-                <div class="facility-filter facility-filter-time"><img src="{{ asset('images/facilities/icon-time.svg') }}" alt="" aria-hidden="true"><span>07:30</span></div>
+                <label class="facility-filter facility-filter-time"><img src="{{ asset('images/facilities/icon-time.svg') }}" alt="" aria-hidden="true"><select aria-label="Waktu akhir"><option value="" selected>Semua</option>@for ($minutesInDay = 450; $minutesInDay <= 1200; $minutesInDay += 30)@php($timeValue = sprintf('%02d:%02d', intdiv($minutesInDay, 60), $minutesInDay % 60))<option value="{{ $timeValue }}">{{ $timeValue }}</option>@endfor</select></label>
                 <span class="filter-submit" aria-hidden="true"><img src="{{ asset('images/facilities/icon-arrow2 right.svg') }}" alt=""></span>
             </div>
             <div class="facility-grid" aria-label="Daftar fasilitas">
