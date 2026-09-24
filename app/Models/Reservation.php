@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     protected $guarded = [];
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Reservation extends Model
+{
     use HasFactory;
 
     protected $fillable = [
@@ -26,6 +30,21 @@ class Reservation extends Model
     ];
 
     public function user()
+    /**
+     * Get attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            'start_time' => 'datetime',
+            'end_time' => 'datetime',
+        ];
+    }
+
+    /**
+     * The user who made the reservation.
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -66,3 +85,12 @@ class Reservation extends Model
         return now()->diffInHours($this->start_time, false) >= 2;
     }
 }
+    /**
+     * The reserved facility.
+     */
+    public function facility(): BelongsTo
+    {
+        return $this->belongsTo(Facility::class);
+    }
+}
+
