@@ -39,6 +39,8 @@ Route::prefix('officer')->name('officer.')->group(function () {
         Route::patch('/{facility}/status', [OfficerFacilityController::class, 'updateStatus'])->name('update-status');
     });
 });
+Route::view('/', 'landing')->name('home');
+Route::view('/fasilitas', 'facilities')->name('facilities.index');
 
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
