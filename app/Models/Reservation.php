@@ -4,10 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class Reservation extends Model
-{
-    protected $guarded = [];
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Reservation extends Model
@@ -24,15 +20,6 @@ class Reservation extends Model
         'alasan_pembatalan',
     ];
 
-    protected $casts = [
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
-    ];
-
-    public function user()
-    /**
-     * Get attributes that should be cast.
-     */
     protected function casts(): array
     {
         return [
@@ -41,19 +28,9 @@ class Reservation extends Model
         ];
     }
 
-    /**
-     * The user who made the reservation.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function facility()
-    {
-        return $this->belongsTo(Facility::class);
-    }
-
+    // ==========================================
+    // UI Helpers
+    // ==========================================
     public function getStatusBadgeClass(): string
     {
         return match ($this->status_reservasi) {
@@ -76,21 +53,29 @@ class Reservation extends Model
         };
     }
 
+    // ==========================================
+    // Business Logic Helpers
+    // ==========================================
     public function canBeCancelled(): bool
     {
         if ($this->status_reservasi !== 'pending') {
             return false;
         }
 
+        // FR-04: Allow cancellation up to 24 hours (or 2 hours based on your team's updated logic) before start_time
         return now()->diffInHours($this->start_time, false) >= 2;
     }
-}
-    /**
-     * The reserved facility.
-     */
+
+    // ==========================================
+    // Relationships
+    // ==========================================
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function facility(): BelongsTo
     {
         return $this->belongsTo(Facility::class);
     }
 }
-

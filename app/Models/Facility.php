@@ -9,24 +9,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Facility extends Model
 {
-    use SoftDeletes; 
-
-    protected $guarded = [];
     use HasFactory, SoftDeletes;
 
     protected $table = 'facilities';
-    
+
     protected $fillable = [
-        'nama_fasilitas', 'tipe', 'lokasi', 
-        'kapasitas', 'deskripsi', 'status_fasilitas'
+        'nama_fasilitas',
+        'tipe',
+        'lokasi',
+        'kapasitas',
+        'deskripsi',
+        'status_fasilitas'
     ];
 
-    protected $casts = [
-        'kapasitas' => 'integer',
-        'status_fasilitas' => 'string',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'kapasitas' => 'integer',
+            'status_fasilitas' => 'string',
+        ];
+    }
 
-    // Scope untuk filter di home page
+    // ==========================================
+    // Scopes
+    // ==========================================
     public function scopeSearch($query, $params)
     {
         if (!empty($params['nama'])) {
@@ -44,10 +50,12 @@ class Facility extends Model
         return $query;
     }
 
-    // Helper untuk badge status
+    // ==========================================
+    // UI Helpers
+    // ==========================================
     public function getStatusBadgeClass(): string
     {
-        return match($this->status_fasilitas) {
+        return match ($this->status_fasilitas) {
             'active' => 'bg-green-100 text-green-800',
             'in_repair' => 'bg-red-100 text-red-800',
             'inactive' => 'bg-gray-100 text-gray-800',
@@ -57,7 +65,7 @@ class Facility extends Model
 
     public function getStatusLabel(): string
     {
-        return match($this->status_fasilitas) {
+        return match ($this->status_fasilitas) {
             'active' => 'Tersedia',
             'in_repair' => 'Dalam Perbaikan',
             'inactive' => 'Tidak Aktif',
@@ -65,75 +73,44 @@ class Facility extends Model
         };
     }
 
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-}
-    use HasFactory, SoftDeletes;
-
-    protected $fillable = [
-        'nama_fasilitas',
-        'tipe',
-        'lokasi',
-        'kapasitas',
-        'deskripsi',
-        'status_fasilitas',
-    ];
-
-    /**
-     * Reports associated with this facility.
-     */
-    public function reports(): HasMany
-    {
-        return $this->hasMany(Report::class);
-    }
-
-    /**
-     * Active unresolved reports associated with this facility.
-     */
-    public function activeReports(): HasMany
-    {
-        return $this->hasMany(Report::class)->whereIn('status_laporan', ['baru', 'diproses']);
-    }
-
-    /**
-     * Reservations associated with this facility.
-     */
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
-    /**
-     * Check if facility is active.
-     */
+    // ==========================================
+    // Business Logic Helpers
+    // ==========================================
     public function isActive(): bool
     {
         return $this->status_fasilitas === 'active';
     }
 
-    /**
-     * Check if facility is under repair.
-     */
     public function isInRepair(): bool
     {
         return $this->status_fasilitas === 'in_repair';
     }
 
-    /**
-     * Mark facility status as in repair (FR-12).
-     */
     public function markInRepair(): bool
     {
         return $this->update(['status_fasilitas' => 'in_repair']);
     }
 
-    /**
-     * Restore facility status to active (FR-12).
-     */
     public function markActive(): bool
     {
         return $this->update(['status_fasilitas' => 'active']);
+    }
+
+    // ==========================================
+    // Relationships
+    // ==========================================
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    public function activeReports(): HasMany
+    {
+        return $this->hasMany(Report::class)->whereIn('status_laporan', ['baru', 'diproses']);
+    }
+
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

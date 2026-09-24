@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\FacilityController; 
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\Officer\FacilityController as OfficerFacilityController;
 use App\Http\Controllers\Officer\ReportController as OfficerReportController;
@@ -9,7 +9,7 @@ use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FacilityController;
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController; 
 
 Route::get('/', function () {
     return redirect()->route('reports.index');

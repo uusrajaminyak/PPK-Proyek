@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'status_akun'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -25,6 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nomor_identitas',
+        'kategori',
+        'no_telepon',
+        'fakultas',
+        'program_studi',
         'role',
         'status_akun',
     ];
@@ -54,25 +56,7 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',             
-        'email',
-        'password',
-        'nomor_identitas',  
-        'kategori',         
-        'no_telepon',       
-        'fakultas',         
-        'program_studi',   
-        'role',             
-        'status_akun',      
-    ];
-}
-    // Helper untuk cek verified
+    /** 
      * Reports submitted by this user.
      */
     public function reports(): HasMany
@@ -87,6 +71,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reservation::class);
     }
+
+    // ==========================================
+    // Role & Status Helpers
+    // ==========================================
 
     public function isAdmin(): bool
     {
@@ -108,14 +96,11 @@ class User extends Authenticatable
         return $this->status_akun === 'verified';
     }
 
-    // Helper untuk role
+    /**
+     * Generic helper for role checking.
+     */
     public function hasRole(string $role): bool
     {
         return $this->role === $role;
-    }
-
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
     }
 }
