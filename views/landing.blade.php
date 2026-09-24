@@ -17,23 +17,53 @@
                 <span class="brand-name">Fasilita <span>UNDIP</span></span>
             </a>
             <nav class="desktop-nav" aria-label="Navigasi utama">
-                <a class="nav-link is-active" href="{{ route('home') }}" aria-current="page">Beranda</a>
-                <a class="nav-link" href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
-                <a class="nav-link" href="{{ url('/login') }}">Reservasi Saya</a>
-                <a class="nav-link" href="{{ url('/login') }}">Lapor Fasilitas</a>
+                <a class="nav-link {{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">Beranda</a>
+                <a class="nav-link {{ request()->routeIs('facilities.*') ? 'is-active' : '' }}" href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
+                @auth
+                    <a class="nav-link {{ request()->routeIs('reservations.*') ? 'is-active' : '' }}" href="{{ route('reservations.index') }}">Reservasi Saya</a>
+                    <a class="nav-link {{ request()->routeIs('reports.*') ? 'is-active' : '' }}" href="{{ route('reports.create') }}">Lapor Kerusakan</a>
+                @else
+                    <a class="nav-link" href="{{ route('login') }}">Reservasi Saya</a>
+                    <a class="nav-link" href="{{ route('login') }}">Lapor Kerusakan</a>
+                @endauth
             </nav>
-            <a class="login-link" href="{{ url('/login') }}">
-                <img src="{{ asset('images/landing/icon-logout.svg') }}" alt="" aria-hidden="true">
-                <span>Login</span>
-            </a>
+            @guest
+                <a class="login-link" href="{{ route('login') }}">
+                    <img src="{{ asset('images/landing/icon-logout.svg') }}" alt="" aria-hidden="true">
+                    <span>Login</span>
+                </a>
+            @else
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="login-link" style="background:transparent; border:none; cursor:pointer;">
+                            <span>Logout</span>
+                        </button>
+                    </form>
+                </div>
+            @endguest
             <details class="mobile-nav">
                 <summary aria-label="Buka menu navigasi"><span></span><span></span><span></span></summary>
                 <nav class="mobile-nav-panel" aria-label="Navigasi utama">
-                    <a href="{{ route('home') }}" aria-current="page">Beranda</a>
-                    <a href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
-                    <a href="{{ url('/login') }}">Reservasi Saya</a>
-                    <a href="{{ url('/login') }}">Lapor Fasilitas</a>
-                    <a href="{{ url('/login') }}">Login</a>
+                    <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'aria-current="page"' : '' }}>Beranda</a>
+                    <a href="{{ route('facilities.index') }}" {{ request()->routeIs('facilities.*') ? 'aria-current="page"' : '' }}>Jelajah Fasilitas</a>
+                    @auth
+                        <a href="{{ route('reservations.index') }}">Reservasi Saya</a>
+                        <a href="{{ route('reports.create') }}">Lapor Kerusakan</a>
+                    @else
+                        <a href="{{ route('login') }}">Reservasi Saya</a>
+                        <a href="{{ route('login') }}">Lapor Kerusakan</a>
+                    @endauth
+                    @guest
+                        <a href="{{ route('login') }}">Login</a>
+                    @else
+                        <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" style="background:transparent; border:none; cursor:pointer;">Logout</button>
+                        </form>
+                    @endguest
                 </nav>
             </details>
         </div>

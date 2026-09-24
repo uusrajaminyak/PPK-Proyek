@@ -11,10 +11,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController; 
 
-Route::get('/', function () {
-    return redirect()->route('reports.index');
-});
-
 // Modul Pelaporan Kerusakan Fasilitas (Aktor: Pengguna)
 Route::prefix('reports')->name('reports.')->group(function () {
     // FR-07: Lihat status & riwayat laporan kerusakan
@@ -39,8 +35,11 @@ Route::prefix('officer')->name('officer.')->group(function () {
         Route::patch('/{facility}/status', [OfficerFacilityController::class, 'updateStatus'])->name('update-status');
     });
 });
+// Beranda / Landing Page
 Route::view('/', 'landing')->name('home');
-Route::view('/fasilitas', 'facilities')->name('facilities.index');
+
+// Halaman Jelajah Fasilitas (terhubung ke FacilityController)
+Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities.index');
 
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -65,8 +64,6 @@ Route::get('/officers/create', [\App\Http\Controllers\Admin\OfficerController::c
 Route::post('/officers', [\App\Http\Controllers\Admin\OfficerController::class, 'store'])->name('admin.officers.store');
 
 Route::get('/reservations', [\App\Http\Controllers\Admin\ReservationController::class, 'index'])->name('admin.reservations.index');
-// Public: Halaman utama (daftar fasilitas)
-Route::get('/', [FacilityController::class, 'index'])->name('home');
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

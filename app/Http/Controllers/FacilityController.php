@@ -23,6 +23,6 @@ class FacilityController extends Controller
         $tipeList = Facility::distinct()->pluck('tipe')->filter()->sort()->values();
         $lokasiList = Facility::distinct()->pluck('lokasi')->filter()->sort()->values();
 
-        return view('home', compact('facilities', 'filters', 'tipeList', 'lokasiList'));
+        return view('facilities', compact('facilities', 'filters', 'tipeList', 'lokasiList'));
     }
 }

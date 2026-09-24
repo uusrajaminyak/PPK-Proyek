@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.staff')
 
 @section('title', 'Riwayat & Status Laporan Kerusakan - Sewa Fasilitas')
 

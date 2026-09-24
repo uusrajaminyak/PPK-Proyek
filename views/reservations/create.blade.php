@@ -5,8 +5,8 @@
 @section('content')
 <div class="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
     <div class="mb-6">
-        <a href="{{ route('home') }}" class="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 mb-2">
-            &larr; Kembali ke Daftar Fasilitas
+        <a href="{{ route('facilities.index') }}" class="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 mb-2">
+            &larr; Kembali ke Jelajah Fasilitas
         </a>
         <h1 class="text-3xl font-bold text-gray-900">Ajukan Reservasi Fasilitas</h1>
     </div>

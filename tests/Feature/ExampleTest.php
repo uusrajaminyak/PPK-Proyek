@@ -13,6 +13,7 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertRedirect(route('reports.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Fasilita UNDIP');
     }
 }
