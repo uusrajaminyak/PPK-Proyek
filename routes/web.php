@@ -54,10 +54,10 @@ Route::prefix('admin')->group(function () {
 Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
 Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
 
-Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.facilities.index');
+Route::get('/admin/facilities', [AdminFacilityController::class, 'index'])->name('admin.facilities.index');
 
-Route::get('/facilities/create', [FacilityController::class, 'create'])->name('admin.facilities.create');
-Route::post('/facilities', [FacilityController::class, 'store'])->name('admin.facilities.store');
+Route::get('/admin/facilities/create', [AdminFacilityController::class, 'create'])->name('admin.facilities.create');
+Route::post('/admin/facilities', [AdminFacilityController::class, 'store'])->name('admin.facilities.store');
 
 Route::get('/officers', [\App\Http\Controllers\Admin\OfficerController::class, 'index'])->name('admin.officers.index');
 
