@@ -13,11 +13,8 @@
         </nav>
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2.5">
-                    <span>Laporkan Kerusakan Fasilitas</span>
-                    <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-full border border-amber-200">
-                        FR-06
-                    </span>
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">
+                    Laporkan Kerusakan Fasilitas
                 </h1>
                 <p class="text-sm text-slate-500 mt-1">
                     Bantu kami menjaga kenyamanan fasilitas kampus dengan melaporkan kendala atau kerusakan yang Anda temukan.
@@ -159,7 +156,7 @@
         </svg>
         <div>
             <span class="font-semibold">Alur Penanganan Laporan:</span>
-            Laporan Anda akan otomatis berstatus <span class="font-bold underline">Baru</span> dan masuk ke dashboard antrean petugas (**FR-08**). Petugas dapat memperbarui status laporan menjadi diproses atau selesai (**FR-11**), serta menandai fasilitas dalam perbaikan (**FR-12**).
+            Laporan Anda akan otomatis berstatus <span class="font-bold underline">Baru</span> dan masuk ke dashboard antrean petugas. Petugas dapat memperbarui status laporan menjadi diproses atau selesai, serta menandai fasilitas dalam perbaikan jika diperlukan.
         </div>
     </div>
 </div>

@@ -6,12 +6,8 @@
 <div class="space-y-6">
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <div class="flex items-center gap-2 mb-1">
+            <div class="mb-1">
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Riwayat & Status Laporan</h1>
-                <span class="text-xs bg-indigo-100 text-indigo-800 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-200">
-                    FR-07
-                </span>
             </div>
             <p class="text-sm text-slate-500">
                 Pantau perkembangan penanganan kerusakan fasilitas yang telah Anda laporkan.
