@@ -33,15 +33,14 @@
                     <span>Login</span>
                 </a>
             @else
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="login-link" style="background:transparent; border:none; cursor:pointer;">
-                            <span>Logout</span>
-                        </button>
-                    </form>
-                </div>
+                <form action="{{ route('logout') }}" method="POST" class="login-link">
+                    @csrf
+                    <button type="submit" aria-label="Logout"
+                        style="display:inline-flex;align-items:center;gap:inherit;background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;">
+                        <img src="{{ asset('images/landing/icon-logout.svg') }}" alt="" aria-hidden="true">
+                        <span>Logout</span>
+                    </button>
+                </form>
             @endguest
             <details class="mobile-nav">
                 <summary aria-label="Buka menu navigasi"><span></span><span></span><span></span></summary>
@@ -58,11 +57,13 @@
                     @guest
                         <a href="{{ route('login') }}">Login</a>
                     @else
-                        <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                        <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display:none;">
                             @csrf
-                            <button type="submit" style="background:transparent; border:none; cursor:pointer;">Logout</button>
                         </form>
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
+                            Logout
+                        </a>
                     @endguest
                 </nav>
             </details>
