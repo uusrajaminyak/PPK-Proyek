@@ -10,7 +10,7 @@
             <div class="flex items-center gap-2 mb-1">
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Antrean Laporan Kerusakan</h1>
                 <span class="text-xs bg-purple-100 text-purple-800 font-semibold px-2.5 py-0.5 rounded-full border border-purple-200">
-                    FR-11 &bull; Portal Petugas
+                    Portal Petugas
                 </span>
             </div>
             <p class="text-sm text-slate-500">
@@ -230,7 +230,7 @@
                         </div>
                     @endif
 
-                    <!-- Action Box: Ubah Status & Catatan Resolusi (FR-11) -->
+                    <!-- Action Box: Ubah Status & Catatan Resolusi -->
                     <div class="pt-4 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 p-6 rounded-b-2xl">
                         <form action="{{ route('officer.reports.update', $report->id) }}" method="POST" class="space-y-3">
                             @csrf
@@ -241,7 +241,7 @@
                                     <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                     </svg>
-                                    Ubah Status Penanganan Laporan (FR-11)
+                                    Ubah Status Penanganan Laporan
                                 </label>
 
                                 <div class="flex items-center gap-2 flex-wrap">
@@ -293,13 +293,13 @@
                                     class="w-full rounded-xl border border-slate-300 p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 bg-white">{{ old('catatan_resolusi', $report->catatan_resolusi) }}</textarea>
                             </div>
 
-                            <!-- FR-12: Sinkronisasi Status Fasilitas Terkait -->
+                            <!-- Sinkronisasi Status Fasilitas Terkait -->
                             <div class="pt-2.5 pb-1 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <label for="update_facility_status_{{ $report->id }}" class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
                                     <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                     </svg>
-                                    <span>Sinkronkan Status Fasilitas (FR-12):</span>
+                                    <span>Sinkronkan Status Fasilitas:</span>
                                     <span class="text-[11px] text-slate-400 font-normal">
                                         (Saat ini: <strong>{{ $report->facility?->status_fasilitas === 'in_repair' ? 'Dalam Perbaikan' : ($report->facility?->status_fasilitas === 'active' ? 'Aktif' : 'Nonaktif') }}</strong>)
                                     </span>

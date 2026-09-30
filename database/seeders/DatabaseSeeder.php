@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'status_akun' => 'verified',
             'nomor_identitas' => '19850912201012',
-            'kategori' => 'Staf', 
+            'kategori' => 'Staf',
         ]);
 
         $mockupOfficers = [
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
                 'status_akun' => $off['status'],
                 'nomor_identitas' => $off['id'],
                 'kategori' => 'Staf',
-                'created_at' => $off['date'], // Hardcoded to match mockup exactly
+                'created_at' => $off['date'],
                 'updated_at' => $off['date'],
             ]);
         }
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
             'nama_fasilitas' => 'Lapangan Basket FSM',
             'tipe' => 'Lapangan Olahraga',
             'lokasi' => 'FSM - Area Outdoor',
-            'kapasitas' => 0, 
+            'kapasitas' => 0,
             'deskripsi' => 'Lapangan basket outdoor utama.',
             'status_fasilitas' => 'active',
             'foto_path' => 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80',
@@ -119,6 +119,16 @@ class DatabaseSeeder extends Seeder
             'foto_path' => 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=800&q=80',
         ]);
 
+        // Panggil FacilitySeeder (6 fasilitas terstandar)
+        $this->call(FacilitySeeder::class);
+
+        $aula = Facility::where('nama_fasilitas', 'Aula Utama Kampus')->first();
+        $kelas101 = Facility::where('nama_fasilitas', 'Ruang Kelas 101')->first();
+        $lab = Facility::where('nama_fasilitas', 'Laboratorium Komputer 1')->first();
+        $ruangRapat = Facility::where('nama_fasilitas', 'Ruang Rapat Dekan')->first();
+        $lapangan = Facility::where('nama_fasilitas', 'Lapangan Olahraga')->first();
+        $kelas205 = Facility::where('nama_fasilitas', 'Ruang Kelas 205 (Renovasi)')->first();
+
         $today = Carbon::today();
 
         Reservation::create([
@@ -133,7 +143,7 @@ class DatabaseSeeder extends Seeder
         Reservation::create([
             'user_id' => $pengguna->id,
             'facility_id' => $lapangan->id,
-            'tujuan_penggunaan' => 'Latihan Rutin UKM Basket',
+            'tujuan_penggunaan' => 'Latihan Rutin UKM Olahraga',
             'start_time' => $today->copy()->addDay()->setTime(15, 0),
             'end_time' => $today->copy()->addDay()->setTime(17, 0),
             'status_reservasi' => 'pending',
@@ -153,8 +163,8 @@ class DatabaseSeeder extends Seeder
             if ($i % 2 == 0) {
                 Reservation::create([
                     'user_id' => $pengguna->id,
-                    'facility_id' => $labKomputer->id,
-                    'tujuan_penggunaan' => 'Praktikum Susulan',
+                    'facility_id' => $lab->id,
+                    'tujuan_penggunaan' => 'Praktikum Pemrograman',
                     'start_time' => $today->copy()->subDays($i)->setTime(13, 0),
                     'end_time' => $today->copy()->subDays($i)->setTime(15, 0),
                     'status_reservasi' => 'approved',
@@ -165,10 +175,10 @@ class DatabaseSeeder extends Seeder
 
         Report::create([
             'reporter_id' => $pengguna->id,
-            'facility_id' => $labKomputer->id, 
+            'facility_id' => $kelas205->id,
             'kategori_laporan' => 'Hardware',
-            'deskripsi' => 'AC di ruang lab bocor dan menetes ke komputer.',
-            'foto_paths' => ['reports/ac-bocor1.jpg', 'reports/ac-bocor2.jpg'],
+            'deskripsi' => 'AC tidak dingin dan proyektor berkedip.',
+            'foto_paths' => ['reports/ac-bocor1.jpg'],
             'status_laporan' => 'diproses',
         ]);
 
@@ -186,43 +196,41 @@ class DatabaseSeeder extends Seeder
             'reporter_id' => $pengguna->id,
             'facility_id' => $lapangan->id,
             'kategori_laporan' => 'Fasilitas Umum',
-            'deskripsi' => 'Ring basket bengkok.',
+            'deskripsi' => 'Ring basket bengkok dan jaring terlepas.',
             'foto_paths' => [],
             'status_laporan' => 'baru',
         ]);
-        // 3 User Dummy
-        $users = [
+
+        // Akun test serbaguna
+        $testUsers = [
             [
                 'name' => 'Admin Kampus',
                 'email' => 'admin@test.com',
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'role' => 'admin',
                 'status_akun' => 'verified',
             ],
             [
                 'name' => 'Petugas Fasilitas',
                 'email' => 'petugas@test.com',
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'role' => 'petugas',
                 'status_akun' => 'verified',
             ],
             [
                 'name' => 'Mahasiswa User',
                 'email' => 'user@test.com',
-                'password' => Hash::make('password'),
+                'password' => $password,
                 'role' => 'pengguna',
                 'status_akun' => 'verified',
             ],
         ];
 
-        foreach ($users as $userData) {
-            User::updateOrCreate(
+        foreach ($testUsers as $userData) {
+            User::firstOrCreate(
                 ['email' => $userData['email']],
                 $userData
             );
         }
-
-        // Panggil FacilitySeeder
-        $this->call(FacilitySeeder::class);
     }
 }

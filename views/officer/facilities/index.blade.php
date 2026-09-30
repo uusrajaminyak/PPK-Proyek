@@ -10,7 +10,7 @@
             <div class="flex items-center gap-2 mb-1">
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Status Operasional Fasilitas</h1>
                 <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200">
-                    FR-12 &bull; Portal Petugas
+                    Portal Petugas
                 </span>
             </div>
             <p class="text-sm text-slate-500">
@@ -23,7 +23,7 @@
             <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
             </svg>
-            Buka Antrean Laporan (FR-11)
+            Buka Antrean Laporan
         </a>
     </div>
 
@@ -67,7 +67,7 @@
             <div class="mt-2 text-2xl font-black text-amber-600">
                 {{ $counts['in_repair'] }}
             </div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Sedang dalam proses reparasi (FR-12)</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Sedang dalam proses reparasi</div>
         </a>
     </div>
 
@@ -160,7 +160,7 @@
                         </div>
                     </div>
 
-                    <!-- Action Toggle Button (FR-12) -->
+                    <!-- Action Toggle Button -->
                     <div class="pt-3 border-t border-slate-100">
                         @if($facility->status_fasilitas === 'active')
                             <form action="{{ route('officer.facilities.update-status', $facility->id) }}" method="POST">
