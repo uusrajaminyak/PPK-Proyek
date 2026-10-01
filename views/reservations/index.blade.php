@@ -1,87 +1,164 @@
-@extends('layouts.app')
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f5f5">
+    <title>Reservasi Saya — Fasilita UNDIP</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @fonts('plus-jakarta-sans')
+</head>
+<body class="reservation-page">
 
-@section('title', ' - Riwayat Reservasi Saya')
+    {{-- Watermark Siluet Kiri --}}
+    <img class="page-watermark" src="{{ asset('images/landing/undip-watermark.png') }}" alt="" aria-hidden="true">
 
-@section('content')
-<div class="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">Riwayat Reservasi Saya</h1>
-            <p class="text-sm text-gray-500 mt-1">Daftar semua permohonan reservasi fasilitas yang pernah Anda ajukan.</p>
-        </div>
-        <a href="{{ route('home') }}" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-            + Reservasi Baru
-        </a>
-    </div>
+    {{-- Navbar Utama --}}
+    @include('partials.navbar')
 
-    @if($reservations->isEmpty())
-        <div class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-            <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            <h3 class="text-lg font-medium text-gray-900">Belum Ada Reservasi</h3>
-            <p class="text-sm text-gray-500 mt-1">Anda belum pernah mengajukan reservasi fasilitas kampus.</p>
-            <a href="{{ route('home') }}" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                Cari Fasilitas Sekarang
-            </a>
-        </div>
-    @else
-        <div class="space-y-4">
-            @foreach($reservations as $res)
-                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="text-lg font-semibold text-gray-900">{{ $res->facility->nama_fasilitas }}</h3>
-                                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $res->getStatusBadgeClass() }}">
-                                    {{ $res->getStatusLabel() }}
+    {{-- Main Container --}}
+    <main class="reservation-main">
+        <h1 class="page-title">Reservasi Saya</h1>
+
+        <div class="table-container-wrapper">
+            {{-- Filter Bar --}}
+            <div class="filter-bar">
+                <button type="button" class="btn-filter" onclick="alert('Filter fitur segera hadir!')">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                    </svg>
+                    <span>Filter</span>
+                </button>
+            </div>
+
+            {{-- Box Tabel --}}
+            <div class="reservation-box">
+                <div class="table-header-grid">
+                    <span></span>
+                    <span>ID Reservasi</span>
+                    <span>Fasilitas</span>
+                    <span>Tanggal &amp; Waktu</span>
+                    <span>Status</span>
+                    <span></span>
+                </div>
+
+                <div class="reservation-list">
+                    @forelse($reservations as $res)
+                        <div class="reservation-card-row">
+                            {{-- Thumbnail Foto Generic Ruang/Gedung --}}
+                            <img class="res-thumb" src="{{ asset('images/landing/landing-hero.webp') }}" alt="Foto Fasilitas">
+
+                            {{-- ID Reservasi --}}
+                            <div class="col-id">
+                                RSV-{{ $res->start_time->format('Ymd') }}-{{ str_pad($res->id, 4, '0', STR_PAD_LEFT) }}
+                            </div>
+
+                            {{-- Fasilitas --}}
+                            <div class="col-facility">
+                                <strong>{{ $res->facility->nama_fasilitas }}</strong>
+                                <small>{{ $res->facility->lokasi }}</small>
+                            </div>
+
+                            {{-- Tanggal & Waktu --}}
+                            <div class="col-time">
+                                <div>{{ $res->start_time->format('d F Y') }}</div>
+                                <small>{{ $res->start_time->format('H:i') }} - {{ $res->end_time->format('H:i') }}</small>
+                            </div>
+
+                            {{-- Status Badge --}}
+                            <div class="col-status">
+                                <span class="badge-status badge-{{ $res->status_reservasi }}">
+                                    {{ $res->status_reservasi === 'pending' ? 'Waiting' : $res->getStatusLabel() }}
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">
-                                📍 {{ $res->facility->lokasi }} | Tipe: {{ $res->facility->tipe }}
-                            </p>
-                        </div>
 
-                        <!-- Info Waktu & Aksi -->
-                        <div class="flex items-center gap-4">
-                            <div class="text-left sm:text-right">
-                                <p class="text-sm font-medium text-gray-900">
-                                    {{ $res->start_time->format('d M Y') }}
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    {{ $res->start_time->format('H:i') }} - {{ $res->end_time->format('H:i') }} WIB
-                                </p>
+                            {{-- Aksi --}}
+                            <div class="col-actions">
+                                @if($res->canBeCancelled())
+                                    <form action="{{ route('reservations.cancel', $res->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">
+                                        @csrf
+                                        <button type="submit" class="btn-cancel">Batal</button>
+                                    </form>
+                                @endif
+                                <button type="button" class="btn-detail"
+                                    onclick="showDetailModal(
+                                        'RSV-{{ $res->start_time->format('Ymd') }}-{{ str_pad($res->id, 4, '0', STR_PAD_LEFT) }}',
+                                        '{{ addslashes($res->facility->nama_fasilitas) }}',
+                                        '{{ addslashes($res->facility->lokasi) }}',
+                                        '{{ $res->start_time->format('d F Y') }} ({{ $res->start_time->format('H:i') }} - {{ $res->end_time->format('H:i') }})',
+                                        '{{ $res->status_reservasi === 'pending' ? 'Waiting' : $res->getStatusLabel() }}',
+                                        '{{ addslashes($res->tujuan_penggunaan) }}'
+                                    )">
+                                    Detail
+                                </button>
                             </div>
-
-                            @if($res->canBeCancelled())
-                                <form action="{{ route('reservations.cancel', $res->id) }}" method="POST"
-                                      onsubmit="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini? (Pembatalan hanya bisa dilakukan H-1)')">
-                                    @csrf
-                                    <button type="submit" class="px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 text-xs font-medium rounded-lg hover:bg-red-100 transition">
-                                        Batalkan
-                                    </button>
-                                </form>
-                            @endif
                         </div>
-                    </div>
-
-                    <div class="mt-4 pt-3 border-t border-gray-100 text-sm">
-                        <span class="text-gray-500">Tujuan:</span>
-                        <span class="text-gray-800 ml-1">{{ $res->tujuan_penggunaan }}</span>
-
-                        @if($res->alasan_pembatalan)
-                            <div class="mt-1 text-xs text-red-600">
-                                <strong>Alasan Pembatalan:</strong> {{ $res->alasan_pembatalan }}
-                            </div>
-                        @endif
-                    </div>
+                    @empty
+                        <div class="empty-reservations">
+                            <p>Belum ada riwayat reservasi fasilitas.</p>
+                            <a href="{{ route('facilities.index') }}" class="btn-create-first">Jelajah Fasilitas Sekarang</a>
+                        </div>
+                    @endforelse
                 </div>
-            @endforeach
-        </div>
 
-        <div class="mt-6">
-            {{ $reservations->links() }}
+                @if($reservations->hasPages())
+                    <div class="reservation-pagination">
+                        {{ $reservations->links() }}
+                    </div>
+                @endif
+            </div>
         </div>
-    @endif
-</div>
-@endsection
+    </main>
+
+    {{-- Detail Modal --}}
+    <div class="modal-backdrop" id="detailModal">
+        <div class="modal-card">
+            <h3>Detail Reservasi</h3>
+            <div class="modal-field">
+                <label>ID Reservasi</label>
+                <div id="modalId">-</div>
+            </div>
+            <div class="modal-field">
+                <label>Fasilitas</label>
+                <div id="modalFacility">-</div>
+            </div>
+            <div class="modal-field">
+                <label>Lokasi</label>
+                <div id="modalLocation">-</div>
+            </div>
+            <div class="modal-field">
+                <label>Jadwal</label>
+                <div id="modalTime">-</div>
+            </div>
+            <div class="modal-field">
+                <label>Status</label>
+                <div id="modalStatus">-</div>
+            </div>
+            <div class="modal-field">
+                <label>Tujuan Penggunaan</label>
+                <div id="modalPurpose">-</div>
+            </div>
+            <button type="button" class="modal-close-btn" onclick="closeDetailModal()">Tutup</button>
+        </div>
+    </div>
+
+    {{-- Footer --}}
+    @include('partials.footer')
+
+    <script>
+        function showDetailModal(id, facility, loc, time, status, purpose) {
+            document.getElementById('modalId').innerText = id;
+            document.getElementById('modalFacility').innerText = facility;
+            document.getElementById('modalLocation').innerText = loc;
+            document.getElementById('modalTime').innerText = time;
+            document.getElementById('modalStatus').innerText = status;
+            document.getElementById('modalPurpose').innerText = purpose;
+            document.getElementById('detailModal').classList.add('show');
+        }
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('show');
+        }
+    </script>
+
+</body>
+</html>

@@ -1,106 +1,139 @@
-@extends('layouts.app')
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f5f5">
+    <meta name="description" content="Masuk ke akun Fasilita UNDIP untuk reservasi dan pelaporan fasilitas kampus.">
+    <title>Masuk — Fasilita UNDIP</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @fonts('plus-jakarta-sans')
+</head>
+<body class="login-page">
 
-@section('title', ' - Masuk')
+    {{-- ── BACK LINK: fixed top-left, outside card ───────────── --}}
+    <a class="login-back-link" href="{{ route('home') }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Kembali ke Beranda
+    </a>
 
-@section('content')
-<div class="min-h-[calc(100vh-64px)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div class="text-center">
-            <h2 class="text-3xl font-bold text-gray-900">Masuk ke Akun Anda</h2>
-            <p class="mt-2 text-gray-600">Sistem Reservasi & Pelaporan Fasilitas Kampus</p>
+    {{-- ── WATERMARK: left side ───────────────────────────────── --}}
+    <img
+        class="login-watermark"
+        src="{{ asset('images/landing/undip-watermark.png') }}"
+        alt=""
+        aria-hidden="true"
+    >
+
+    {{-- ── MAIN ────────────────────────────────────────────────── --}}
+    <main class="login-main">
+
+        {{-- Brand header above card: single horizontal image --}}
+        <div class="login-brand-header">
+            <img src="{{ asset('images/fasilita-header.png') }}" alt="Fasilita UNDIP - Sistem Reservasi & Pelaporan Fasilitas Kampus">
         </div>
 
-        <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
-            @csrf
+        {{-- Login card --}}
+        <div class="login-card">
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="sr-only">Email</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
+            {{-- Validation errors --}}
+            @if ($errors->any())
+                <div class="login-alert">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+
+                {{-- Email --}}
+                <div class="login-field">
+                    <label for="email">Email</label>
+                    <div class="login-input-wrap">
+                        <span class="field-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </span>
+                        <input
+                            id="email" name="email" type="email"
+                            autocomplete="email" required
+                            value="{{ old('email') }}"
+                            placeholder="Masukkan Email"
+                            class="{{ $errors->has('email') ? 'has-error' : '' }}"
+                        >
                     </div>
-                    <input 
-                        id="email" 
-                        name="email" 
-                        type="email" 
-                        autocomplete="email" 
-                        required
-                        value="{{ old('email') }}"
-                        class="appearance-none relative block w-full px-10 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                        placeholder="Masukkan email"
-                    >
+                    @error('email')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
-                @error('email')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
 
-            <!-- Password -->
-            <div>
-                <label for="password" class="sr-only">Password</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
+                {{-- Password --}}
+                <div class="login-field">
+                    <label for="password">Password</label>
+                    <div class="login-input-wrap">
+                        <span class="field-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </span>
+                        <input
+                            id="password" name="password" type="password"
+                            autocomplete="current-password" required
+                            placeholder="Masukkan Password"
+                            class="{{ $errors->has('password') ? 'has-error' : '' }}"
+                        >
+                        <button type="button" class="toggle-password" aria-label="Tampilkan/sembunyikan password" onclick="togglePassword()">
+                            <svg id="eye-show" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg id="eye-hide" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </button>
                     </div>
-                    <input 
-                        id="password" 
-                        name="password" 
-                        type="password" 
-                        autocomplete="current-password" 
-                        required
-                        class="appearance-none relative block w-full px-10 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                        placeholder="Masukkan password"
-                    >
+                    @error('password')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
-                @error('password')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
 
-            <!-- Remember & Forgot -->
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input 
-                        id="remember" 
-                        name="remember" 
-                        type="checkbox" 
-                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    >
-                    <label for="remember" class="ml-2 block text-sm text-gray-600">Ingat saya</label>
-                </div>
-                <div class="text-sm">
-                    <a href="#" class="text-blue-600 hover:text-blue-500">Lupa password?</a>
-                </div>
-            </div>
+                {{-- Ingat Saya --}}
+                <label class="login-remember-row">
+                    <input type="checkbox" name="remember" id="remember">
+                    Ingat Saya
+                </label>
 
-            <!-- Submit -->
-            <div>
-                <button 
-                    type="submit" 
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
-                >
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-                        </svg>
-                    </span>
-                    Masuk
-                </button>
-            </div>
-        </form>
+                {{-- Submit --}}
+                <button type="submit" class="login-btn">Masuk</button>
+            </form>
 
-        <!-- Demo Accounts Info -->
-        <div class="bg-gray-50 rounded-lg p-4 text-sm">
-            <p class="font-medium text-gray-900 mb-2">Akun Demo (password: <code class="bg-gray-200 px-1 rounded">password</code>)</p>
-            <ul class="space-y-1 text-gray-600">
-                <li><strong>user@test.com</strong> - Pengguna/Mahasiswa</li>
-            </ul>
+            <p class="login-register">
+                Belum punya akun? <a href="#">Daftar Akun</a>
+            </p>
+
         </div>
-    </div>
-</div>
-@endsection
+    </main>
+
+    {{-- ── FOOTER ──────────────────────────────────────────────── --}}
+    <footer class="login-footer">
+        Fasilita UNDIP &mdash; Sistem Reservasi &amp; Pelaporan Fasilitas Kampus Universitas Diponegoro &copy; 2026
+    </footer>
+
+    <script>
+        function togglePassword() {
+            const input   = document.getElementById('password');
+            const eyeShow = document.getElementById('eye-show');
+            const eyeHide = document.getElementById('eye-hide');
+            const isHidden = input.type === 'password';
+            input.type            = isHidden ? 'text'  : 'password';
+            eyeShow.style.display = isHidden ? 'none'  : '';
+            eyeHide.style.display = isHidden ? ''      : 'none';
+        }
+    </script>
+
+</body>
+</html>

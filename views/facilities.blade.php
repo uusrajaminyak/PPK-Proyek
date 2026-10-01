@@ -10,64 +10,7 @@
     @fonts('plus-jakarta-sans')
 </head>
 <body>
-    <header class="site-header">
-        <div class="navbar">
-            <a class="brand" href="{{ route('home') }}" aria-label="Fasilita UNDIP, beranda">
-                <img class="brand-mark" src="{{ asset('images/undip-logo.png') }}" alt="">
-                <span class="brand-name">Fasilita <span>UNDIP</span></span>
-            </a>
-            <nav class="desktop-nav" aria-label="Navigasi utama">
-                <a class="nav-link {{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">Beranda</a>
-                <a class="nav-link {{ request()->routeIs('facilities.*') ? 'is-active' : '' }}" href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
-                @auth
-                    <a class="nav-link {{ request()->routeIs('reservations.*') ? 'is-active' : '' }}" href="{{ route('reservations.index') }}">Reservasi Saya</a>
-                    <a class="nav-link {{ request()->routeIs('reports.*') ? 'is-active' : '' }}" href="{{ route('reports.create') }}">Lapor Kerusakan</a>
-                @else
-                    <a class="nav-link" href="{{ route('login') }}">Reservasi Saya</a>
-                    <a class="nav-link" href="{{ route('login') }}">Lapor Kerusakan</a>
-                @endauth
-            </nav>
-            @guest
-                <a class="login-link" href="{{ route('login') }}">
-                    <img src="{{ asset('images/landing/icon-logout.svg') }}" alt="" aria-hidden="true">
-                    <span>Login</span>
-                </a>
-            @else
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="login-link" style="background:transparent; border:none; cursor:pointer;">
-                            <span>Logout</span>
-                        </button>
-                    </form>
-                </div>
-            @endguest
-            <details class="mobile-nav">
-                <summary aria-label="Buka menu navigasi"><span></span><span></span><span></span></summary>
-                <nav class="mobile-nav-panel" aria-label="Navigasi utama">
-                    <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'aria-current="page"' : '' }}>Beranda</a>
-                    <a href="{{ route('facilities.index') }}" {{ request()->routeIs('facilities.*') ? 'aria-current="page"' : '' }}>Jelajah Fasilitas</a>
-                    @auth
-                        <a href="{{ route('reservations.index') }}">Reservasi Saya</a>
-                        <a href="{{ route('reports.create') }}">Lapor Kerusakan</a>
-                    @else
-                        <a href="{{ route('login') }}">Reservasi Saya</a>
-                        <a href="{{ route('login') }}">Lapor Kerusakan</a>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login') }}">Login</a>
-                    @else
-                        <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" style="background:transparent; border:none; cursor:pointer;">Logout</button>
-                        </form>
-                    @endguest
-                </nav>
-            </details>
-        </div>
-    </header>
+    @include('partials.navbar')
     <main class="facilities-page">
         <div class="facilities-watermark" aria-hidden="true">
             <img src="{{ asset('images/landing/undip-blue-watermark.png') }}" alt="">
@@ -135,7 +78,7 @@
                                 Reservasi
                             </a>
                         @else
-                            <span class="facility-card-button" style="background:#d97706; cursor:not-allowed;">
+                            <span class="facility-card-button is-repair">
                                 Sedang Perbaikan
                             </span>
                         @endif
@@ -151,13 +94,8 @@
             <div class="mt-6">
                 {{ $facilities->links() }}
             </div>
-            <nav class="facility-pagination" aria-label="Navigasi halaman">
-                <span class="pagination-arrow is-disabled" aria-hidden="true"><img class="pagination-arrow-icon is-left" src="{{ asset('images/facilities/icon-arrow1 down.svg') }}" alt=""></span><span class="pagination-page is-current" aria-current="page">1</span><span class="pagination-page">2</span><span class="pagination-arrow" aria-hidden="true"><img class="pagination-arrow-icon is-right" src="{{ asset('images/facilities/icon-arrow1 down.svg') }}" alt=""></span>
-            </nav>
         </section>
     </main>
-    <footer class="site-footer">
-        <p>Fasilita UNDIP — Sistem Reservasi &amp; Pelaporan Fasilitas Kampus Universitas Diponegoro © 2026</p>
-    </footer>
+    @include('partials.footer')
 </body>
 </html>
