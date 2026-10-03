@@ -67,6 +67,7 @@ Route::get('/reservations', [\App\Http\Controllers\Admin\ReservationController::
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::view('/login/staf-admin', 'auth.staff-login')->name('login.staff');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

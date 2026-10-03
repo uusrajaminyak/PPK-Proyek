@@ -38,10 +38,20 @@
 .field-error { margin: 5px 0 0; color: #dc2626; font-size: 12px; line-height: 1.4; }
 .login-page > .site-footer { position: relative; z-index: 1; flex-shrink: 0; }
 
+/* Login staf/admin */
+.staff-login-main { padding-top: 32px; padding-bottom: 32px; }
+.staff-login-content { display: flex; width: 100%; flex-direction: column; align-items: center; transform: translateY(32px); }
+.staff-login-title { width: min(760px, 100%); margin: 0 0 10px; transform: translateY(-14px); color: var(--navy); font-size: 40px; font-weight: 700; letter-spacing: -.8px; line-height: 1.4; text-align: center; }
+.staff-login-card { width: min(450px, 100%); min-height: 380px; padding: 29px 24px; border: 1px solid var(--navy); border-radius: 20px; background: #fff; color: var(--navy); }
+.staff-login-card .login-portal-switch { margin-top: 28px; }
+
 @media (max-width: 600px) {
     .login-main { padding: 28px 18px; }
     .login-brand-header { margin-bottom: 20px; }
     .login-brand-header img { width: min(320px, calc(100vw - 48px)); }
     .login-card { padding-right: 20px; padding-left: 20px; }
     .login-watermark { top: 4vh; left: 0; width: min(90vw, 400px); max-width: 90vw; height: 82vh; }
+    .staff-login-main { padding-top: 24px; padding-bottom: 24px; }
+    .staff-login-title { margin-bottom: 16px; transform: none; font-size: clamp(26px, 7vw, 34px); line-height: 1.2; }
+    .staff-login-card { min-height: 0; padding: 29px 20px; }
 }

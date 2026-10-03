@@ -1,15 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f5f5">
-    <meta name="description" content="Masuk ke akun Fasilita FSM untuk reservasi dan pelaporan fasilitas kampus.">
-    <title>Masuk — Fasilita FSM</title>
+    <meta name="description" content="Masuk ke portal staf dan admin Fasilita FSM.">
+    <title>Portal Staf/Admin — Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
-<body class="login-page">
+<body class="login-page staff-login-page">
     <img
         class="login-watermark"
         src="{{ asset('images/landing/undip-blue-watermark.png') }}"
@@ -17,13 +17,11 @@
         aria-hidden="true"
     >
 
-    <main class="login-main">
-        <div class="login-content">
-            <div class="login-brand-header">
-                <img src="{{ asset('images/auth/fasilita-fsm-logo.png') }}" alt="Fasilita FSM — Sistem Reservasi & Pelaporan Fasilitas FSM UNDIP">
-            </div>
+    <main class="login-main staff-login-main">
+        <div class="staff-login-content">
+            <h1 class="staff-login-title">Portal Staf/Admin Fasilita FSM</h1>
 
-            <section class="login-card" aria-label="Masuk ke akun">
+            <section class="staff-login-card" aria-label="Masuk ke portal staf atau admin">
                 @if ($errors->any())
                     <div class="login-alert" role="alert">
                         @foreach ($errors->all() as $error)
@@ -36,11 +34,11 @@
                     @csrf
 
                     <div class="login-field">
-                        <label for="email">Email</label>
+                        <label for="staff-email">Email</label>
                         <div class="login-input-wrap">
                             <input
-                                id="email" name="email" type="email"
-                                autocomplete="email" required
+                                id="staff-email" name="email" type="email"
+                                autocomplete="username" required
                                 value="{{ old('email') }}"
                                 placeholder="Masukkan Email"
                                 class="{{ $errors->has('email') ? 'has-error' : '' }}"
@@ -50,10 +48,10 @@
                     </div>
 
                     <div class="login-field">
-                        <label for="password">Password</label>
+                        <label for="staff-password">Password</label>
                         <div class="login-input-wrap">
                             <input
-                                id="password" name="password" type="password"
+                                id="staff-password" name="password" type="password"
                                 autocomplete="current-password" required
                                 placeholder="Masukkan Password"
                                 class="{{ $errors->has('password') ? 'has-error' : '' }}"
@@ -67,14 +65,14 @@
                                 data-hide-icon="{{ asset('images/auth/Hide.svg') }}"
                                 style="--password-eye-icon: url('{{ asset('images/auth/Hide.svg') }}')"
                             >
-                                <span id="password-visibility-icon" class="toggle-password-icon" aria-hidden="true"></span>
+                                <span class="toggle-password-icon" aria-hidden="true"></span>
                             </button>
                         </div>
                         @error('password')<p class="field-error">{{ $message }}</p>@enderror
                     </div>
 
-                    <label class="login-remember-row" for="remember">
-                        <input type="checkbox" name="remember" id="remember">
+                    <label class="login-remember-row" for="staff-remember">
+                        <input type="checkbox" name="remember" id="staff-remember">
                         <span>Ingat Saya</span>
                     </label>
 
@@ -84,8 +82,7 @@
                     </button>
                 </form>
 
-                <p class="login-register">Belum punya akun? <a href="#">Daftar Akun</a></p>
-                <p class="login-portal-switch"><a href="{{ route('login.staff') }}">Beralih ke portal staf/admin</a></p>
+                <p class="login-portal-switch"><a href="{{ route('login') }}">Beralih ke portal mahasiswa/dosen</a></p>
             </section>
         </div>
     </main>
@@ -93,7 +90,7 @@
     @include('partials.footer')
 
     <script>
-        const passwordInput = document.getElementById('password');
+        const passwordInput = document.getElementById('staff-password');
         const passwordToggle = document.querySelector('.toggle-password');
 
         const updatePasswordToggleColor = () => {
@@ -113,8 +110,6 @@
             passwordToggle.setAttribute('aria-pressed', String(shouldShowPassword));
             passwordToggle.setAttribute('aria-label', shouldShowPassword ? 'Sembunyikan password' : 'Tampilkan password');
         });
-
     </script>
-
 </body>
 </html>
