@@ -37,7 +37,13 @@ class AuthController extends Controller
                 ]);
             }
 
-            return redirect()->intended(route('home'))->with('success', 'Selamat datang, ' . $user->name . '!');
+            $welcomeMessage = 'Selamat datang, ' . $user->name . '!';
+
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.dashboard')->with('success', $welcomeMessage);
+            }
+
+            return redirect()->intended(route('home'))->with('success', $welcomeMessage);
         }
 
         throw ValidationException::withMessages([

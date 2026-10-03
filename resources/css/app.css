@@ -5,6 +5,7 @@
 @import './partials/facilities.css';
 @import './partials/reservations.css';
 @import './partials/auth.css';
+@import './partials/admin-dashboard.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
