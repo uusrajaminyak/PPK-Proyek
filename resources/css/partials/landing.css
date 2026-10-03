@@ -13,8 +13,8 @@
 .hero-watermark {
     position: absolute;
     z-index: -1;
-    top: -173px;
-    left: max(-225px, calc((100vw - 1280px) / 2 - 225px));
+    top: -120px;
+    left: max(-225px, calc((100vw - 1280px) / 2 - 350px));
     width: 717px;
     height: 987px;
     opacity: .1;

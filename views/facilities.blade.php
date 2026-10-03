@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f5f5">
     <meta name="description" content="Jelajahi fasilitas yang tersedia di lingkungan Universitas Diponegoro.">
-    <title>Jelajah Fasilitas — Fasilita UNDIP</title>
+    <title>Jelajah Fasilitas — Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
@@ -18,7 +18,7 @@
         <section class="facilities-content" aria-labelledby="facilities-title">
             <div class="facilities-intro">
                 <h1 id="facilities-title">Jelajah Fasilitas</h1>
-                <p>Temukan berbagai fasilitas yang tersedia di lingkungan UNDIP, mulai dari ruang kelas, aula, laboratorium, hingga lapangan olahraga. Setiap fasilitas dilengkapi informasi lokasi, kapasitas, dan status ketersediaan secara real-time, sehingga kamu bisa merencanakan kegiatan dengan lebih mudah tanpa perlu bertanya langsung ke petugas. Gunakan fitur pencarian dan filter untuk menemukan fasilitas yang sesuai dengan kebutuhanmu, baik berdasarkan tipe, lokasi, maupun ketersediaan.</p>
+                <p>Temukan berbagai fasilitas yang tersedia di lingkungan FSM UNDIP, mulai dari ruang kelas, laboratorium, hingga lapangan olahraga. Setiap fasilitas dilengkapi informasi lokasi, kapasitas, dan status ketersediaan secara real-time, sehingga kamu bisa merencanakan kegiatan dengan lebih mudah tanpa perlu bertanya langsung ke petugas. Gunakan fitur pencarian dan filter untuk menemukan fasilitas yang sesuai dengan kebutuhanmu, baik berdasarkan tipe, lokasi, maupun ketersediaan.</p>
             </div>
             <form method="GET" action="{{ route('facilities.index') }}" class="facility-search-form">
                 <div class="facility-search">

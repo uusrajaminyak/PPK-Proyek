@@ -1,8 +1,8 @@
 <header class="site-header">
     <div class="navbar">
-        <a class="brand" href="{{ route('home') }}" aria-label="Fasilita UNDIP, beranda">
+        <a class="brand" href="{{ route('home') }}" aria-label="Fasilita FSM, beranda">
             <img class="brand-mark" src="{{ asset('images/undip-logo.png') }}" alt="">
-            <span class="brand-name">Fasilita <span>UNDIP</span></span>
+            <span class="brand-name">Fasilita <span>FSM</span></span>
         </a>
         <nav class="desktop-nav" aria-label="Navigasi utama">
             <a class="nav-link {{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">Beranda</a>

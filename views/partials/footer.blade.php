@@ -1,3 +1,3 @@
 <footer class="site-footer">
-        <p>Fasilita UNDIP — Sistem Reservasi &amp; Pelaporan Fasilitas Kampus Universitas Diponegoro © 2026</p>
+        <p>Fasilita FSM — Sistem Reservasi &amp; Pelaporan Fasilitas Fakultas Sains dan Matematika Universitas Diponegoro © 2026</p>
     </footer>
