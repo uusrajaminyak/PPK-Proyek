@@ -2,14 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Facility extends Model
 {
-    use SoftDeletes; 
+    use HasFactory, SoftDeletes;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'nama_fasilitas',
+        'kategori',
+        'lokasi',
+        'kapasitas',
+        'deskripsi',
+        'foto',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'kapasitas' => 'integer',
+    ];
 
     public function reservations()
     {
