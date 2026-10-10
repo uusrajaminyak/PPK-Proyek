@@ -53,12 +53,9 @@ class ReportController extends Controller
             ->get();
 
         $categories = [
-            'Hardware',
-            'Fasilitas Umum',
-            'Kelistrikan',
-            'Kebersihan',
-            'Struktur Bangunan',
-            'Lainnya',
+            'Kerusakan/Kendala Fasilitas',
+            'Kebersihan Fasilitas',
+            'Gangguan Internet',
         ];
 
         return view('reports.create', compact('facilities', 'categories'));
@@ -88,7 +85,7 @@ class ReportController extends Controller
             'facility_id' => $validated['facility_id'],
             'kategori_laporan' => $validated['kategori_laporan'],
             'deskripsi' => $validated['deskripsi'],
-            'foto_paths' => !empty($fotoPaths) ? $fotoPaths : null,
+            'foto_paths' => ! empty($fotoPaths) ? $fotoPaths : null,
             'status_laporan' => 'baru',
         ]);
 

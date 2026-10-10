@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReportRequest extends FormRequest
@@ -17,13 +18,13 @@ class StoreReportRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'facility_id' => ['required', 'exists:facilities,id'],
-            'kategori_laporan' => ['required', 'string', 'max:100'],
+            'kategori_laporan' => ['required', 'in:Kerusakan/Kendala Fasilitas,Kebersihan Fasilitas,Gangguan Internet'],
             'deskripsi' => ['required', 'string', 'min:10', 'max:2000'],
             'fotos' => ['nullable', 'array', 'max:5'],
             'fotos.*' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
@@ -66,4 +67,3 @@ class StoreReportRequest extends FormRequest
         ];
     }
 }
-

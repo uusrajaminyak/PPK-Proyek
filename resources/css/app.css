@@ -5,6 +5,11 @@
 @import './partials/facilities.css';
 @import './partials/reservations.css';
 @import './partials/auth.css';
+@import './partials/officer-dashboard.css';
+@import './partials/officer-reservations-management.css';
+@import './partials/officer-reservation-detail.css';
+@import './partials/officer-reports.css';
+@import './partials/officer-facilities.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

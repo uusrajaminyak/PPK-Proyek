@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Facility;
+use App\Models\Report;
+use App\Models\Reservation;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Facility;
-use App\Models\Reservation;
-use App\Models\Report;
 
 class DatabaseSeeder extends Seeder
 {
@@ -153,7 +153,7 @@ class DatabaseSeeder extends Seeder
             Reservation::create([
                 'user_id' => $pengguna->id,
                 'facility_id' => $aula->id,
-                'tujuan_penggunaan' => 'Kegiatan Mahasiswa Hari - ' . $i,
+                'tujuan_penggunaan' => 'Kegiatan Mahasiswa Hari - '.$i,
                 'start_time' => $today->copy()->subDays($i)->setTime(10, 0),
                 'end_time' => $today->copy()->subDays($i)->setTime(12, 0),
                 'status_reservasi' => 'approved',
@@ -176,7 +176,7 @@ class DatabaseSeeder extends Seeder
         Report::create([
             'reporter_id' => $pengguna->id,
             'facility_id' => $kelas205->id,
-            'kategori_laporan' => 'Hardware',
+            'kategori_laporan' => 'Kerusakan/Kendala Fasilitas',
             'deskripsi' => 'AC tidak dingin dan proyektor berkedip.',
             'foto_paths' => ['reports/ac-bocor1.jpg'],
             'status_laporan' => 'diproses',
@@ -185,7 +185,7 @@ class DatabaseSeeder extends Seeder
         Report::create([
             'reporter_id' => $pengguna->id,
             'facility_id' => $aula->id,
-            'kategori_laporan' => 'Fasilitas Umum',
+            'kategori_laporan' => 'Kerusakan/Kendala Fasilitas',
             'deskripsi' => 'Proyektor utama mati total.',
             'foto_paths' => ['reports/proyektor-mati.jpg'],
             'status_laporan' => 'selesai',
@@ -195,7 +195,7 @@ class DatabaseSeeder extends Seeder
         Report::create([
             'reporter_id' => $pengguna->id,
             'facility_id' => $lapangan->id,
-            'kategori_laporan' => 'Fasilitas Umum',
+            'kategori_laporan' => 'Kerusakan/Kendala Fasilitas',
             'deskripsi' => 'Ring basket bengkok dan jaring terlepas.',
             'foto_paths' => [],
             'status_laporan' => 'baru',

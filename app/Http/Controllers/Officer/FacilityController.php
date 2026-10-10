@@ -16,31 +16,50 @@ class FacilityController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Facility::withCount([
-            'reports',
-            'reports as active_reports_count' => function ($q) {
-                $q->whereIn('status_laporan', ['baru', 'diproses']);
-            }
-        ])->with(['activeReports' => function ($q) {
-            $q->latest();
-        }]);
+        abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
 
-        // Filter by status if provided
-        $status = $request->query('status');
-        if ($status && in_array($status, ['active', 'in_repair', 'inactive'])) {
-            $query->where('status_fasilitas', $status);
-        }
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:active,in_repair,inactive'],
+            'tipe' => ['nullable', 'string', 'max:100'],
+            'urut' => ['nullable', 'in:terbaru,terlama'],
+        ]);
 
-        $facilities = $query->orderBy('nama_fasilitas')->get();
+        $facilitiesQuery = Facility::query()
+            ->when($filters['search'] ?? null, function ($facilities, string $search): void {
+                $search = trim($search);
+                $facilities->where(function ($query) use ($search): void {
+                    $query->where('nama_fasilitas', 'like', "%{$search}%")
+                        ->orWhere('lokasi', 'like', "%{$search}%")
+                        ->orWhere('tipe', 'like', "%{$search}%");
+                });
+            })
+            ->when($filters['status'] ?? null, fn ($facilities, string $status) => $facilities->where('status_fasilitas', $status))
+            ->when($filters['tipe'] ?? null, fn ($facilities, string $type) => $facilities->where('tipe', $type));
 
-        $counts = [
-            'all' => Facility::count(),
-            'active' => Facility::where('status_fasilitas', 'active')->count(),
-            'in_repair' => Facility::where('status_fasilitas', 'in_repair')->count(),
-            'inactive' => Facility::where('status_fasilitas', 'inactive')->count(),
-        ];
+        $sortDirection = ($filters['urut'] ?? 'terbaru') === 'terlama' ? 'asc' : 'desc';
+        $facilities = $facilitiesQuery
+            ->orderBy('created_at', $sortDirection)
+            ->orderBy('id', $sortDirection)
+            ->paginate(6)
+            ->withQueryString();
 
-        return view('officer.facilities.index', compact('facilities', 'counts', 'status'));
+        $facilityTypes = Facility::query()
+            ->whereNotNull('tipe')
+            ->where('tipe', '!=', '')
+            ->distinct()
+            ->orderBy('tipe')
+            ->pluck('tipe');
+
+        return view('officer.facilities.index', compact('facilities', 'facilityTypes', 'filters'));
+    }
+
+    /** Display detailed facility information for officers (FR-12). */
+    public function show(Facility $facility): View
+    {
+        abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
+
+        return view('officer.facilities.show', compact('facility'));
     }
 
     /**
@@ -48,12 +67,16 @@ class FacilityController extends Controller
      */
     public function updateStatus(UpdateFacilityStatusRequest $request, Facility $facility): RedirectResponse
     {
+        abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
+
         $validated = $request->validated();
         $newStatus = $validated['status_fasilitas'];
 
-        $facility->update([
-            'status_fasilitas' => $newStatus,
-        ]);
+        if ($newStatus === 'in_repair') {
+            $facility->markInRepair();
+        } else {
+            $facility->markActive();
+        }
 
         $message = $newStatus === 'in_repair'
             ? "Fasilitas \"{$facility->nama_fasilitas}\" berhasil ditandai Dalam Perbaikan (in_repair)."
@@ -62,4 +85,3 @@ class FacilityController extends Controller
         return redirect()->back()->with('success', $message);
     }
 }
-

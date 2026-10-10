@@ -90,7 +90,7 @@
                             @elseif($status == 'menunggu' || $status == 'pending')
                             <span class="text-orange-500 bg-orange-50 px-2.5 py-1 rounded-md text-[11px] font-bold">Menunggu</span>
                             @elseif($status == 'ditolak' || $status == 'rejected')
-                            <span class="text-red-500 bg-red-50 px-2.5 py-1 rounded-md text-[11px] font-bold">Ditolak</span>
+                            <span class="text-white bg-[#FF383C] px-2.5 py-1 rounded-md text-[11px] font-bold">Ditolak</span>
                             @elseif($status == 'dibatalkan' || $status == 'cancelled')
                             <span class="text-red-500 bg-red-50 px-2.5 py-1 rounded-md text-[11px] font-bold">Dibatalkan</span>
                             @else
