@@ -95,11 +95,11 @@
                         </div>
                         <div class="flex justify-between py-0.5 border-b border-gray-50">
                             <span class="text-gray-400 font-medium text-[11px]">Fakultas</span>
-                            <span class="font-bold text-[#001248] text-right max-w-[160px] truncate text-[11px]">{{ $user->fakultas ?? 'FSM' }}</span>
+                            <span class="font-bold text-[#001248] text-right max-w-40 truncate text-[11px]">{{ $user->fakultas ?? 'FSM' }}</span>
                         </div>
                         <div class="flex justify-between py-0.5 border-b border-gray-50">
                             <span class="text-gray-400 font-medium text-[11px]">Program Studi</span>
-                            <span class="font-bold text-[#001248] text-right max-w-[160px] truncate text-[11px]">{{ $user->program_studi ?? '-' }}</span>
+                            <span class="font-bold text-[#001248] text-right max-w-40 truncate text-[11px]">{{ $user->program_studi ?? '-' }}</span>
                         </div>
                         <div class="flex justify-between py-0.5">
                             <span class="text-gray-400 font-medium text-[11px]">Terdaftar Sejak</span>
@@ -190,7 +190,7 @@
                                     <td class="py-1 px-2 text-[11px] text-gray-600">
                                         {{ $res->start_time ? Carbon\Carbon::parse($res->start_time)->format('d M Y, H:i') : '-' }}
                                     </td>
-                                    <td class="py-1 px-2 text-[11px] text-gray-500 max-w-[150px] truncate">{{ $res->tujuan_penggunaan ?? '-' }}</td>
+                                    <td class="py-1 px-2 text-[11px] text-gray-500 max-w-37.5 truncate">{{ $res->tujuan_penggunaan ?? '-' }}</td>
                                     <td class="py-1 px-2 text-right text-[11px]">
                                         @if($res->status_reservasi === 'approved')
                                         <span class="text-emerald-700 font-semibold">Disetujui</span>
@@ -233,7 +233,7 @@
                                 <tr>
                                     <td class="py-1 px-2 font-semibold text-xs">{{ $rep->facility->nama_fasilitas ?? 'Fasilitas #' . $rep->facility_id }}</td>
                                     <td class="py-1 px-2 text-[11px] text-gray-600">{{ $rep->kategori_laporan ?? 'Umum' }}</td>
-                                    <td class="py-1 px-2 text-[11px] text-gray-500 max-w-[180px] truncate">{{ $rep->deskripsi ?? '-' }}</td>
+                                    <td class="py-1 px-2 text-[11px] text-gray-500 max-w-45 truncate">{{ $rep->deskripsi ?? '-' }}</td>
                                     <td class="py-1 px-2 text-right text-[11px]">
                                         @if($rep->status_laporan === 'selesai')
                                         <span class="text-emerald-700 font-semibold">Selesai</span>

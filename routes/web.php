@@ -74,6 +74,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('facilities', AdminFacilityController::class);
 
     // Kelola Pengguna (FR-14, FR-15)
+    Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.update-status');
+    Route::post('/users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
     Route::resource('users', UserController::class);
 
     // Kelola Petugas (FR-13)
