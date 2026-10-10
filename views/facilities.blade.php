@@ -75,7 +75,7 @@
                         <!-- Tombol Aksi Reservasi -->
                         @if($facility->status_fasilitas === 'active')
                             <a href="{{ route('reservations.create', $facility->id) }}" class="facility-card-button">
-                                Reservasi
+                                Detail
                             </a>
                         @else
                             <span class="facility-card-button is-repair">

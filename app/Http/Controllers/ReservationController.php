@@ -14,7 +14,7 @@ class ReservationController extends Controller
     private string $operatingStart = '07:00';
     private string $operatingEnd = '20:00';
 
-    public function create(Facility $facility)
+    public function create(Request $request, Facility $facility)
     {
         if ($facility->status_fasilitas !== 'active') {
             return redirect()->route('home')->with('errors', collect(['Fasilitas sedang tidak aktif atau dalam perbaikan.']));
@@ -22,7 +22,122 @@ class ReservationController extends Controller
 
         $timeOptions = $this->getTimeOptions();
 
-        return view('reservations.create', compact('facility', 'timeOptions'));
+        // Offset minggu: 0 = minggu berjalan saat ini, 1 = minggu depan, dst.
+        // Tidak boleh bernilai negatif (tidak bisa melihat riwayat minggu lalu)
+        $weekOffset = max(0, (int) $request->query('week_offset', 0));
+
+        // Tentukan rentang Senin s/d Minggu berdasarkan offset
+        $startOfWeek = now()->startOfWeek()->addWeeks($weekOffset);
+        $endOfWeek   = $startOfWeek->copy()->endOfWeek();
+
+        // Susun 7 hari dalam minggu tersebut
+        $weekDays = [];
+        for ($i = 0; $i < 7; $i++) {
+            $day = $startOfWeek->copy()->addDays($i);
+            $weekDays[] = [
+                'date_ymd' => $day->format('Y-m-d'),
+                'date_dmy' => $day->format('d/m/Y'),
+                'label'    => $day->isoFormat('ddd, D MMM'),
+                'is_past'  => $day->isPast() && !$day->isToday(),
+            ];
+        }
+
+        // Ambil reservasi aktif hanya di rentang minggu yang ditampilkan
+        $bookedReservations = Reservation::where('facility_id', $facility->id)
+            ->whereIn('status_reservasi', ['pending', 'approved'])
+            ->where('start_time', '<=', $endOfWeek)
+            ->where('end_time', '>=', $startOfWeek)
+            ->get(['start_time', 'end_time']);
+
+        return view('reservations.create', compact(
+            'facility',
+            'timeOptions',
+            'bookedReservations',
+            'weekOffset',
+            'startOfWeek',
+            'weekDays'
+        ));
+    }
+
+
+    public function getScheduleData(Request $request, Facility $facility)
+    {
+        $today = now()->startOfDay();
+        $currentMonthStart = now()->startOfMonth();
+
+        if ($request->filled('start_date')) {
+            try {
+                $startDate = Carbon::parse($request->query('start_date'))->startOfDay();
+            } catch (\Exception $e) {
+                $startDate = now()->startOfWeek();
+            }
+        } else {
+            $startDate = now()->startOfWeek();
+        }
+
+        $thisWeekMonday = now()->startOfWeek();
+        if ($startDate->lt($thisWeekMonday)) {
+            $startDate = $thisWeekMonday->copy();
+        }
+
+        $endDate = $startDate->copy()->addDays(6)->endOfDay();
+
+        $weekDays = [];
+        for ($i = 0; $i < 7; $i++) {
+            $day = $startDate->copy()->addDays($i);
+            $weekDays[] = [
+                'date_ymd' => $day->format('Y-m-d'),
+                'date_dmy' => $day->format('d/m/Y'),
+                'day_name' => $day->isoFormat('dddd'),
+                'day_num'  => $day->format('d'),
+                'label'    => $day->isoFormat('ddd, D MMM'),
+                'is_past'  => $day->lt($today),
+                'is_today' => $day->isToday(),
+            ];
+        }
+
+        $bookedReservations = Reservation::where('facility_id', $facility->id)
+            ->whereIn('status_reservasi', ['pending', 'approved'])
+            ->where('start_time', '<=', $endDate)
+            ->where('end_time', '>=', $startDate)
+            ->get(['start_time', 'end_time'])
+            ->map(function ($r) {
+                return [
+                    'start' => $r->start_time->format('Y-m-d H:i'),
+                    'end'   => $r->end_time->format('Y-m-d H:i'),
+                ];
+            });
+
+        // Gunakan hari ke-4 dari rentang hari aktif untuk menentukan bulan yang sedang dilihat
+        $targetMonth = $startDate->copy()->addDays(3);
+        $monthLabel  = $targetMonth->isoFormat('MMMM Y');
+
+        // Navigasi bulan: Langsung lompat ke tanggal 1 di bulan berikutnya / sebelumnya
+        $nextMonthDate = $targetMonth->copy()->addMonth()->startOfMonth();
+        $prevMonthDate = $targetMonth->copy()->subMonth()->startOfMonth();
+
+        // Pastikan tidak melompat ke tanggal lampau dari minggu berjalan saat ini
+        if ($prevMonthDate->lt($thisWeekMonday)) {
+            $prevMonthDate = $thisWeekMonday->copy();
+        }
+
+        $canPrevDays  = $startDate->gt($thisWeekMonday);
+        $canPrevMonth = $targetMonth->copy()->startOfMonth()->gt($currentMonthStart);
+
+        return response()->json([
+            'month_label'       => $monthLabel,
+            'current_month_ym'  => $targetMonth->format('Y-m'),
+            'start_date'        => $startDate->format('Y-m-d'),
+            'prev_week_date'    => $startDate->copy()->subDays(7)->format('Y-m-d'),
+            'next_week_date'    => $startDate->copy()->addDays(7)->format('Y-m-d'),
+            'prev_month_date'   => $prevMonthDate->format('Y-m-d'),
+            'next_month_date'   => $nextMonthDate->format('Y-m-d'),
+            'can_prev_days'     => $canPrevDays,
+            'can_prev_month'    => $canPrevMonth,
+            'week_days'         => $weekDays,
+            'time_options'      => $this->getTimeOptions(),
+            'booked'            => $bookedReservations,
+        ]);
     }
 
     public function store(Request $request)

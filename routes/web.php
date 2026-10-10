@@ -73,6 +73,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Pengguna only: Reservasi
 Route::middleware(['auth'])->group(function () {
     Route::get('/facilities/{facility}/reservation', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/facilities/{facility}/schedule-data', [ReservationController::class, 'getScheduleData'])->name('reservations.schedule');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::post('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
