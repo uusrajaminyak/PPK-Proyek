@@ -92,6 +92,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Rekap & Ekspor Laporan (FR-17)
     Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
     Route::get('/recap/export', [RecapController::class, 'export'])->name('recap.export');
+    Route::get('/recap/facilities/{facility}', [RecapController::class, 'showFacility'])->name('recap.facility');
 });
 
 /*
