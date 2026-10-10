@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@undip.ac.id'],
             [
-                'name' => 'Admin Utama',
-                'password' => $password,
-                'role' => 'admin',
-                'status_akun' => 'verified',
+                'name'            => 'Admin Utama',
+                'password'        => $password,
+                'role'            => 'admin',
+                'status_akun'     => 'verified',
                 'nomor_identitas' => '19850912201012',
-                'kategori' => 'Staf',
+                'kategori'        => 'Staf',
             ]
         );
 
@@ -43,12 +43,12 @@ class DatabaseSeeder extends Seeder
             User::firstOrCreate(
                 ['email' => $off['email']],
                 [
-                    'name' => $off['name'],
-                    'password' => $password,
-                    'role' => 'petugas',
-                    'status_akun' => $off['status'],
+                    'name'            => $off['name'],
+                    'password'        => $password,
+                    'role'            => 'petugas',
+                    'status_akun'     => $off['status'],
                     'nomor_identitas' => $off['id'],
-                    'kategori' => 'Staf',
+                    'kategori'        => 'Staf',
                 ]
             );
         }
@@ -57,123 +57,60 @@ class DatabaseSeeder extends Seeder
         $pengguna = User::firstOrCreate(
             ['email' => 'ahmed@student.undip.ac.id'],
             [
-                'name' => 'Ahmed Fauzi (HMTI)',
-                'password' => $password,
-                'role' => 'pengguna',
-                'status_akun' => 'verified',
+                'name'            => 'Ahmed Fauzi (HMTI)',
+                'password'        => $password,
+                'role'            => 'pengguna',
+                'status_akun'     => 'verified',
                 'nomor_identitas' => '21120122140089',
-                'kategori' => 'Mahasiswa',
+                'kategori'        => 'Mahasiswa',
             ]
         );
 
-        // 4. Seed Facilities
-        $facilities = [
-            [
-                'nama_fasilitas' => 'Ruang Kelas E101',
-                'tipe' => 'Ruang Kelas',
-                'lokasi' => 'FSM - Gedung E - Lt. 1',
-                'kapasitas' => 60,
-                'deskripsi' => 'Ruang kelas standar perkuliahan FSM.',
-                'status_fasilitas' => 'active',
-            ],
-            [
-                'nama_fasilitas' => 'Aula Imam Bardjo',
-                'tipe' => 'Aula Serbaguna',
-                'lokasi' => 'Undip Pleburan',
-                'kapasitas' => 500,
-                'deskripsi' => 'Aula utama untuk seminar dan wisuda.',
-                'status_fasilitas' => 'active',
-            ],
-            [
-                'nama_fasilitas' => 'Lab Komputer Terpadu',
-                'tipe' => 'Laboratorium',
-                'lokasi' => 'FSM - Gedung Lab - Lt. 3',
-                'kapasitas' => 40,
-                'deskripsi' => 'Lab komputer praktikum mahasiswa.',
-                'status_fasilitas' => 'in_repair',
-            ],
-            [
-                'nama_fasilitas' => 'Lapangan Basket FSM',
-                'tipe' => 'Lapangan Olahraga',
-                'lokasi' => 'FSM - Area Outdoor',
-                'kapasitas' => 100,
-                'deskripsi' => 'Lapangan olahraga outdoor.',
-                'status_fasilitas' => 'active',
-            ],
-            [
-                'nama_fasilitas' => 'Ruang Sidang Utama',
-                'tipe' => 'Ruang Rapat',
-                'lokasi' => 'Rektorat - Gedung Widya Puraya',
-                'kapasitas' => 30,
-                'deskripsi' => 'Ruang rapat eksekutif.',
-                'status_fasilitas' => 'active',
-            ],
-            [
-                'nama_fasilitas' => 'Lab Kimia Analitik',
-                'tipe' => 'Laboratorium',
-                'lokasi' => 'FSM - Gedung Lab - Lt. 1',
-                'kapasitas' => 25,
-                'deskripsi' => 'Laboratorium sains terpadu.',
-                'status_fasilitas' => 'active',
-            ],
-        ];
+        // 4. Run FacilitySeeder to populate 12 FSM Campus Facilities
+        $this->call(FacilitySeeder::class);
 
-        $facilityModels = [];
-        foreach ($facilities as $fac) {
-            $facilityModels[] = Facility::firstOrCreate(
-                ['nama_fasilitas' => $fac['nama_fasilitas']],
-                $fac
-            );
-        }
+        $facilityModels = Facility::all();
 
-        // 5. Seed Reservations (Spanning Sept & Oct 2026)
+        // 5. Seed Reservations across all facilities (Spanning Sept & Oct 2026)
         $sept2026 = Carbon::create(2026, 9, 15, 9, 0, 0);
         $oct2026  = Carbon::create(2026, 10, 5, 10, 0, 0);
 
-        // September Reservations
-        $reservationCountsSept = [14, 10, 8, 6, 4, 2];
         foreach ($facilityModels as $index => $fac) {
-            $count = $reservationCountsSept[$index] ?? 2;
-            for ($i = 0; $i < $count; $i++) {
+            // September Reservations
+            for ($i = 0; $i < 2; $i++) {
                 Reservation::create([
-                    'user_id' => $pengguna->id,
-                    'facility_id' => $fac->id,
-                    'tujuan_penggunaan' => "Kegiatan Akademik & Ormawa #{$i}",
-                    'start_time' => $sept2026->copy()->addDays($i)->setTime(8 + ($i % 8), 0),
-                    'end_time' => $sept2026->copy()->addDays($i)->setTime(10 + ($i % 8), 0),
-                    'status_reservasi' => 'approved',
-                    'created_at' => $sept2026->copy()->subDays(2),
+                    'user_id'           => $pengguna->id,
+                    'facility_id'       => $fac->id,
+                    'tujuan_penggunaan' => "Kegiatan Akademik & Ormawa #{$i} - {$fac->nama_fasilitas}",
+                    'start_time'        => $sept2026->copy()->addDays($i)->setTime(8 + ($i % 8), 0),
+                    'end_time'          => $sept2026->copy()->addDays($i)->setTime(10 + ($i % 8), 0),
+                    'status_reservasi'  => 'approved',
+                    'created_at'        => $sept2026->copy()->subDays(2),
                 ]);
             }
-        }
 
-        // October Reservations
-        foreach ($facilityModels as $index => $fac) {
+            // October Reservations
             Reservation::create([
-                'user_id' => $pengguna->id,
-                'facility_id' => $fac->id,
+                'user_id'           => $pengguna->id,
+                'facility_id'       => $fac->id,
                 'tujuan_penggunaan' => "Sewa Oktober - " . $fac->nama_fasilitas,
-                'start_time' => $oct2026->copy()->addDays($index),
-                'end_time' => $oct2026->copy()->addDays($index)->addHours(2),
-                'status_reservasi' => 'approved',
-                'created_at' => $oct2026,
+                'start_time'        => $oct2026->copy()->addDays($index),
+                'end_time'          => $oct2026->copy()->addDays($index)->addHours(2),
+                'status_reservasi'  => 'approved',
+                'created_at'        => $oct2026,
             ]);
         }
 
-        // 6. Seed Reports (Spanning Sept & Oct 2026)
-        $reportCountsSept = [12, 9, 7, 5, 3, 1];
+        // 6. Seed Reports across facilities
         foreach ($facilityModels as $index => $fac) {
-            $count = $reportCountsSept[$index] ?? 1;
-            for ($i = 0; $i < $count; $i++) {
-                Report::create([
-                    'reporter_id' => $pengguna->id,
-                    'facility_id' => $fac->id,
-                    'kategori_laporan' => 'Fasilitas umum / Perangkat',
-                    'deskripsi' => "Laporan kendala fasilitas #{$i}",
-                    'status_laporan' => $i % 2 == 0 ? 'selesai' : 'diproses',
-                    'created_at' => $sept2026->copy()->addDays($i),
-                ]);
-            }
+            Report::create([
+                'reporter_id'      => $pengguna->id,
+                'facility_id'      => $fac->id,
+                'kategori_laporan' => 'Fasilitas umum / Perangkat',
+                'deskripsi'        => "Laporan kendala atau pemeliharaan di " . $fac->nama_fasilitas,
+                'status_laporan'   => $index % 2 == 0 ? 'selesai' : 'diproses',
+                'created_at'       => $sept2026->copy()->addDays($index),
+            ]);
         }
     }
 }
