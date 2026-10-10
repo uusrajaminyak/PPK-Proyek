@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
@@ -112,7 +112,7 @@
             </form>
 
             <p class="login-register">
-                Belum punya akun? <a href="#">Daftar Akun</a>
+                Belum punya akun? <a href="{{ route('register') }}">Daftar Akun</a>
             </p>
 
         </div>

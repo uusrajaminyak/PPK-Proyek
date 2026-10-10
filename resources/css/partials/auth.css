@@ -207,16 +207,77 @@
     z-index: 1;
 }
 
+/* Register (Daftar Akun) */
+.register-card {
+    background: #fff;
+    border-radius: 22px;
+    border: 1.5px solid #001348;
+    padding: 2.25rem 2.25rem 2.25rem;
+    width: 100%;
+    max-width: 410px;
+    box-shadow: 0 4px 20px rgba(0, 19, 72, 0.04);
+}
+.register-field {
+    margin-bottom: 1.25rem;
+}
+.register-field label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #001348;
+    margin-bottom: 0.45rem;
+}
+.register-input-wrap {
+    position: relative;
+}
+.register-input-wrap input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #111827;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.register-input-wrap input::placeholder {
+    color: #9ca3af;
+}
+.register-input-wrap input:focus {
+    border-color: #001348;
+    box-shadow: 0 0 0 3px rgba(0, 19, 72, 0.08);
+}
+.register-input-wrap input.has-error {
+    border-color: #ef4444;
+}
+.register-input-wrap input.with-toggle {
+    padding-right: 2.75rem;
+}
+.register-btn {
+    width: 100%;
+    padding: 0.82rem 1rem;
+    background: #001348;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1.25rem;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.01em;
+}
+.register-btn:hover {
+    background: #0a1e55;
+}
+.register-btn:active {
+    transform: scale(0.98);
+}
+
 @media (max-width: 480px) {
-    .login-card {
-        padding: 1.5rem 1.25rem;
-    }
-    .login-watermark {
-        width: 85vw;
-        left: -15%;
-    }
-    .login-back-link {
-        top: 1rem;
-        left: 1rem;
-    }
+    .login-card { padding: 1.5rem 1.25rem; }
+    .register-card { padding: 1.75rem 1.25rem; border-radius: 18px; }
+    .login-watermark { width: 85vw; left: -15%; }
+    .login-back-link { top: 1rem; left: 1rem; }
 }

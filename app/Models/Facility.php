@@ -13,19 +13,30 @@ class Facility extends Model
 
     protected $table = 'facilities';
 
+    /**
+     * Unified Mass Assignable Attributes.
+     * Supports both SRS domain schema and existing view/controller attributes.
+     */
     protected $fillable = [
         'nama_fasilitas',
+        'kategori',
         'tipe',
         'lokasi',
         'kapasitas',
         'deskripsi',
-        'status_fasilitas'
+        'foto',
+        'is_active',
+        'status_fasilitas',
     ];
 
+    /**
+     * Unified Attribute Casting (Laravel 11 Casts Method).
+     */
     protected function casts(): array
     {
         return [
-            'kapasitas' => 'integer',
+            'is_active'        => 'boolean',
+            'kapasitas'        => 'integer',
             'status_fasilitas' => 'string',
         ];
     }
@@ -40,6 +51,9 @@ class Facility extends Model
         }
         if (!empty($params['tipe'])) {
             $query->where('tipe', $params['tipe']);
+        }
+        if (!empty($params['kategori'])) {
+            $query->where('kategori', $params['kategori']);
         }
         if (!empty($params['lokasi'])) {
             $query->where('lokasi', 'like', "%{$params['lokasi']}%");
@@ -56,20 +70,20 @@ class Facility extends Model
     public function getStatusBadgeClass(): string
     {
         return match ($this->status_fasilitas) {
-            'active' => 'bg-green-100 text-green-800',
+            'active'    => 'bg-green-100 text-green-800',
             'in_repair' => 'bg-red-100 text-red-800',
-            'inactive' => 'bg-gray-100 text-gray-800',
-            default => 'bg-gray-100 text-gray-800',
+            'inactive'  => 'bg-gray-100 text-gray-800',
+            default     => 'bg-gray-100 text-gray-800',
         };
     }
 
     public function getStatusLabel(): string
     {
         return match ($this->status_fasilitas) {
-            'active' => 'Tersedia',
+            'active'    => 'Tersedia',
             'in_repair' => 'Dalam Perbaikan',
-            'inactive' => 'Tidak Aktif',
-            default => 'Tidak Diketahui',
+            'inactive'  => 'Tidak Aktif',
+            default     => 'Tidak Diketahui',
         };
     }
 
@@ -78,7 +92,7 @@ class Facility extends Model
     // ==========================================
     public function isActive(): bool
     {
-        return $this->status_fasilitas === 'active';
+        return $this->status_fasilitas === 'active' || $this->is_active === true;
     }
 
     public function isInRepair(): bool
@@ -88,12 +102,12 @@ class Facility extends Model
 
     public function markInRepair(): bool
     {
-        return $this->update(['status_fasilitas' => 'in_repair']);
+        return $this->update(['status_fasilitas' => 'in_repair', 'is_active' => false]);
     }
 
     public function markActive(): bool
     {
-        return $this->update(['status_fasilitas' => 'active']);
+        return $this->update(['status_fasilitas' => 'active', 'is_active' => true]);
     }
 
     // ==========================================
