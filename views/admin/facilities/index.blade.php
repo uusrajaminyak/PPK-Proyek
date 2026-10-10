@@ -3,6 +3,14 @@
 @section('header_title', 'Kelola Fasilitas')
 
 @section('content')
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    .font-jakarta {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+</style>
+
 <!-- Master Content Outer Container -->
 <div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-2.5 shadow-sm flex flex-col justify-between overflow-hidden">
 
