@@ -11,7 +11,7 @@
 .officer-reservation-filter { flex: 0 0 auto; }
 .officer-reservation-filter select { width: 100%; min-width: 105px; height: 36px; padding: 0 32px 0 12px; appearance: none; border: 0; outline: 0; background: transparent; color: #001348; font: inherit; font-size: 12px; }
 .officer-reservation-filter { position: relative; }
-.officer-reservation-dropdown-icon { position: absolute; top: 50%; right: 10px; width: 14px; height: 14px; transform: translateY(-50%); pointer-events: none; }
+.officer-reservation-dropdown-icon { position: absolute; top: 50%; right: 10px; width: 14px; height: 14px; transform: translateY(-50%); filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
 .officer-reservation-date { flex: 0 0 auto; gap: 5px; padding: 0 8px; }
 .officer-reservation-date-field { position: relative; display: flex; min-width: 0; }
 .officer-reservation-date-field input { width: 92px; min-width: 0; padding-right: 17px; border: 0; outline: 0; background: transparent; color: #001348; font: inherit; font-size: 11px; }
@@ -30,6 +30,7 @@
 .officer-col-action { width: 10%; }
 .officer-management-table th { padding: 10px 12px; font-size: 11px; }
 .officer-management-table td { padding: 9px 12px; }
+.officer-management-table .officer-empty-row td { text-align: center; vertical-align: middle; }
 .officer-management-table tbody tr { height: 48px; }
 .officer-management-table td small { font-size: 9px; }
 .officer-management-table .officer-purpose { max-width: 190px; }
@@ -39,7 +40,7 @@
 .officer-reservation-status.is-pending { background: #ffd51e; color: #001348; }
 .officer-reservation-status.is-approved { background: #46c878; color: #fff; }
 .officer-reservation-status.is-completed { background: #f0f1f5; color: #465064; }
-.officer-reservation-status.is-cancelled { background: #e5e7eb; color: #465064; }
+.officer-reservation-status.is-cancelled { background: #f0f1f5; color: #465064; }
 .officer-reservation-status.is-rejected { background: #FF383C; color: #fff; }
 .officer-reservation-pagination { display: block; padding: 12px 0 2px; color: #001348; font-size: 13px; }
 .officer-pagination { display: flex; min-width: 0; align-items: flex-end; justify-content: space-between; gap: 16px; }

@@ -58,7 +58,7 @@
                             </td>
                             <td class="officer-purpose" title="{{ $reservation->tujuan_penggunaan }}">{{ \Illuminate\Support\Str::limit($reservation->tujuan_penggunaan, 28) }}</td>
                             <td><span class="officer-status-pending">Menunggu</span></td>
-                            <td><a class="officer-detail-button" href="#reservation-queue" aria-label="Detail reservasi {{ $reservation->id }}">Detail</a></td>
+                            <td><a class="officer-detail-button" href="{{ route('officer.reservations.show', ['reservation' => $reservation, 'from' => 'dashboard']) }}" aria-label="Detail reservasi {{ $reservation->id }}">Detail</a></td>
                         </tr>
                     @empty
                         <tr class="officer-empty-row">

@@ -95,22 +95,29 @@
                         @csrf
                         @method('PATCH')
                         <label>Status Penanganan
-                            <select name="status_laporan" required>
-                                <option value="baru" @selected(old('status_laporan', $report->status_laporan) === 'baru')>Baru</option>
-                                <option value="diproses" @selected(old('status_laporan', $report->status_laporan) === 'diproses')>Diproses</option>
-                                <option value="selesai" @selected(old('status_laporan', $report->status_laporan) === 'selesai')>Selesai</option>
-                                <option value="ditolak" @selected(old('status_laporan', $report->status_laporan) === 'ditolak')>Ditolak</option>
-                            </select>
+                            <span class="officer-report-select">
+                                <select name="status_laporan" required>
+                                    <option value="baru" @selected(old('status_laporan', $report->status_laporan) === 'baru')>Baru</option>
+                                    <option value="diproses" @selected(old('status_laporan', $report->status_laporan) === 'diproses')>Diproses</option>
+                                    <option value="selesai" @selected(old('status_laporan', $report->status_laporan) === 'selesai')>Selesai</option>
+                                    <option value="ditolak" @selected(old('status_laporan', $report->status_laporan) === 'ditolak')>Ditolak</option>
+                                </select>
+                                <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                            </span>
                         </label>
                         <label>Catatan Resolusi
                             <textarea name="catatan_resolusi" rows="3" minlength="5" maxlength="1000" placeholder="Wajib diisi jika laporan selesai atau ditolak">{{ old('catatan_resolusi', $report->catatan_resolusi) }}</textarea>
                         </label>
                         <label>Status Fasilitas
-                            <select name="update_facility_status">
-                                <option value="keep">Tidak mengubah status saat ini</option>
-                                <option value="in_repair">Dalam Perbaikan</option>
-                                <option value="active">Aktif</option>
-                            </select>
+                            <span class="officer-report-select">
+                                <select name="update_facility_status">
+                                    <option value="keep">Tidak mengubah status saat ini</option>
+                                    <option value="in_repair">Dalam Perbaikan</option>
+                                    <option value="active">Aktif</option>
+                                    <option value="inactive">Tidak Tersedia</option>
+                                </select>
+                                <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                            </span>
                         </label>
                         <button class="officer-detail-action is-approve" type="submit">Simpan Perubahan</button>
                     </form>
