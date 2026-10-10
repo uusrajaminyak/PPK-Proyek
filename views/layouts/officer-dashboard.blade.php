@@ -28,13 +28,13 @@
         <div class="officer-workspace">
             <aside class="officer-sidebar" aria-label="Navigasi petugas">
                 <nav class="officer-nav-main">
-                    <a href="{{ route('officer.dashboard') }}" class="officer-nav-link {{ request()->routeIs('officer.dashboard') ? 'is-active' : '' }}" @if (request()->routeIs('officer.dashboard')) aria-current="page" @endif>
+                    <a href="{{ route('officer.dashboard') }}" class="officer-nav-link {{ request()->routeIs('officer.dashboard') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'dashboard') ? 'is-active' : '' }}" @if (request()->routeIs('officer.dashboard') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'dashboard')) aria-current="page" @endif>
                         <img src="{{ asset('images/officer/dashboard.svg') }}" alt="" aria-hidden="true"><span>Dasbor</span>
                     </a>
-                    <a href="{{ route('officer.reservations.index') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.index', 'officer.reservations.show', 'officer.reservations.update-status') ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.index', 'officer.reservations.show', 'officer.reservations.update-status')) aria-current="page" @endif>
+                    <a href="{{ route('officer.reservations.index') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.index', 'officer.reservations.update-status') || (request()->routeIs('officer.reservations.show') && ! in_array(request()->query('from'), ['history', 'dashboard'], true)) ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.index', 'officer.reservations.update-status') || (request()->routeIs('officer.reservations.show') && ! in_array(request()->query('from'), ['history', 'dashboard'], true))) aria-current="page" @endif>
                         <img src="{{ asset('images/officer/reservations.svg') }}" alt="" aria-hidden="true"><span>Kelola Reservasi</span>
                     </a>
-                    <a href="{{ route('officer.reservations.history') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.history') ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.history')) aria-current="page" @endif>
+                    <a href="{{ route('officer.reservations.history') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.history') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'history') ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.history') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'history')) aria-current="page" @endif>
                         <img src="{{ asset('images/officer/history.svg') }}" alt="" aria-hidden="true"><span>Riwayat Reservasi</span>
                     </a>
                     <a href="{{ route('officer.reports.index') }}" class="officer-nav-link {{ request()->routeIs('officer.reports.*') ? 'is-active' : '' }}" @if (request()->routeIs('officer.reports.*')) aria-current="page" @endif>

@@ -22,7 +22,7 @@ class UpdateFacilityStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status_fasilitas' => ['required', 'string', 'in:active,in_repair'],
+            'status_fasilitas' => ['required', 'string', 'in:active,in_repair,inactive'],
         ];
     }
 
@@ -47,7 +47,7 @@ class UpdateFacilityStatusRequest extends FormRequest
     {
         return [
             'status_fasilitas.required' => 'Status fasilitas wajib dipilih.',
-            'status_fasilitas.in' => 'Petugas hanya berwenang mengubah status fasilitas menjadi Aktif (active) atau Dalam Perbaikan (in_repair).',
+            'status_fasilitas.in' => 'Status fasilitas harus Aktif, Dalam Perbaikan, atau Tidak Tersedia.',
         ];
     }
 }

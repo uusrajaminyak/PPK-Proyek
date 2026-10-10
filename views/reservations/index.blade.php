@@ -168,7 +168,7 @@
                         rows="3" 
                         required 
                         placeholder="Contoh: Rapat dibatalkan / Ada perubahan jadwal perkuliahan..."
-                        style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.85rem; color: #1e293b; outline: none; resize: vertical; font-family: inherit; margin-top: 0.35rem;"
+                        style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.85rem; color: #1e293b; outline: none; resize: none; font-family: inherit; margin-top: 0.35rem;"
                     ></textarea>
                 </div>
 

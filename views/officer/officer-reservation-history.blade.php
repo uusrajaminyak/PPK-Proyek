@@ -110,7 +110,7 @@
                                     @endphp
                                     <span class="officer-reservation-status {{ $statusClass }}">{{ $statusLabel }}</span>
                                 </td>
-                                <td><a class="officer-detail-button" href="{{ route('officer.reservations.show', $reservation) }}" aria-label="Detail reservasi {{ $reservation->id }}">Detail</a></td>
+                                <td><a class="officer-detail-button" href="{{ route('officer.reservations.show', ['reservation' => $reservation, 'from' => 'history']) }}" aria-label="Detail reservasi {{ $reservation->id }}">Detail</a></td>
                             </tr>
                         @empty
                             <tr class="officer-empty-row">

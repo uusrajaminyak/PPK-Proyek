@@ -34,7 +34,7 @@
                         <option value="">Status</option>
                         <option value="active" @selected(($filters['status'] ?? '') === 'active')>Tersedia</option>
                         <option value="in_repair" @selected(($filters['status'] ?? '') === 'in_repair')>Dalam Perbaikan</option>
-                        <option value="inactive" @selected(($filters['status'] ?? '') === 'inactive')>Nonaktif</option>
+                        <option value="inactive" @selected(($filters['status'] ?? '') === 'inactive')>Tidak Tersedia</option>
                     </select>
                     <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                 </label>
@@ -67,7 +67,7 @@
                     [$facilityStatusLabel, $facilityStatusClass] = match ($facility->status_fasilitas) {
                         'active' => ['Tersedia', 'is-active'],
                         'in_repair' => ['Dalam Perbaikan', 'is-repair'],
-                        default => ['Nonaktif', 'is-inactive'],
+                        default => ['Tidak Tersedia', 'is-inactive'],
                     };
                 @endphp
 

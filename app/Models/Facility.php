@@ -93,7 +93,7 @@ class Facility extends Model
         return match ($this->status_fasilitas) {
             'active' => 'Tersedia',
             'in_repair' => 'Dalam Perbaikan',
-            'inactive' => 'Tidak Aktif',
+            'inactive' => 'Tidak Tersedia',
             default => 'Tidak Diketahui',
         };
     }
@@ -106,6 +106,21 @@ class Facility extends Model
     public function isInRepair(): bool
     {
         return ($this->attributes['status_fasilitas'] ?? '') === 'in_repair';
+    }
+
+    public function markInRepair(): void
+    {
+        $this->update(['status_fasilitas' => 'in_repair']);
+    }
+
+    public function markActive(): void
+    {
+        $this->update(['status_fasilitas' => 'active']);
+    }
+
+    public function markUnavailable(): void
+    {
+        $this->update(['status_fasilitas' => 'inactive']);
     }
 
     // ==========================================

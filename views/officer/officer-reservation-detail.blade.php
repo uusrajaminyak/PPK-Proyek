@@ -1,7 +1,7 @@
 @extends('layouts.officer-dashboard')
 
 @section('title', 'Detail Reservasi')
-@section('header_title', 'Kelola Reservasi')
+@section('header_title', match (request()->query('from')) { 'history' => 'Riwayat Reservasi', 'dashboard' => 'Dasbor', default => 'Kelola Reservasi' })
 
 @section('content')
     <div class="officer-main-watermark" aria-hidden="true">
@@ -28,7 +28,7 @@
 
         <div class="officer-reservation-detail-grid">
             <section class="officer-detail-facility" aria-labelledby="officer-detail-facility-title">
-                <a class="officer-detail-back" href="{{ route('officer.reservations.index') }}">
+                <a class="officer-detail-back" href="{{ match (request()->query('from')) { 'history' => route('officer.reservations.history'), 'dashboard' => route('officer.dashboard'), default => route('officer.reservations.index') } }}">
                     <img src="{{ asset('images/officer/return.svg') }}" alt="" aria-hidden="true"> Kembali
                 </a>
 
@@ -83,24 +83,37 @@
 
                 @if ($reservation->status_reservasi === 'pending')
                     <div class="officer-detail-actions">
+                        <button class="officer-detail-action is-reject" type="button" data-open-rejection-dialog>Tolak Reservasi</button>
                         <form method="POST" action="{{ route('officer.reservations.update-status', $reservation) }}">
                             @csrf
                             @method('PATCH')
-                            <input type="hidden" name="status_reservasi" value="cancelled_by_officer">
-                            <button class="officer-detail-action is-reject" type="submit">Tolak Reservasi</button>
-                        </form>
-                        <form method="POST" action="{{ route('officer.reservations.update-status', $reservation) }}">
-                            @csrf
-                            @method('PATCH')
+                            <input type="hidden" name="from" value="{{ request()->query('from') }}">
                             <input type="hidden" name="status_reservasi" value="approved">
                             <button class="officer-detail-action is-approve" type="submit">Setujui Reservasi</button>
                         </form>
                     </div>
-                @elseif ($reservation->status_reservasi === 'cancelled_by_officer' && $reservation->alasan_pembatalan)
-                    <p class="officer-detail-rejection-note">Alasan: {{ $reservation->alasan_pembatalan }}</p>
+                @elseif ($reservation->status_reservasi === 'cancelled_by_officer')
+                    <div class="officer-detail-applicant-data officer-detail-rejection-data">
+                        <h3>Alasan Penolakan</h3>
+                        <p class="officer-detail-purpose">{{ $reservation->alasan_pembatalan ?: 'Tidak ada alasan penolakan yang dicantumkan.' }}</p>
+                    </div>
                 @endif
                 </div>
             </section>
         </div>
+
+        <dialog class="officer-rejection-dialog" aria-labelledby="officer-rejection-title" data-rejection-dialog>
+            <form method="POST" action="{{ route('officer.reservations.update-status', $reservation) }}">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="status_reservasi" value="cancelled_by_officer">
+                <input type="hidden" name="from" value="{{ request()->query('from') }}">
+                <button class="officer-rejection-close" type="button" aria-label="Tutup" data-close-rejection-dialog>&times;</button>
+                <h2 id="officer-rejection-title">Alasan Penolakan</h2>
+                <label class="sr-only" for="officer-rejection-reason">Alasan menolak pengajuan reservasi</label>
+                <textarea id="officer-rejection-reason" name="alasan_pembatalan" placeholder="Masukkan alasan menolak pengajuan reservasi" maxlength="1000" required></textarea>
+                <button class="officer-rejection-submit" type="submit">Tolak Reservasi</button>
+            </form>
+        </dialog>
     </div>
 @endsection

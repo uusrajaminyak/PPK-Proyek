@@ -70,7 +70,7 @@ class ReportController extends Controller
         $reports = $reportsQuery
             ->orderBy('created_at', $sortDirection)
             ->orderBy('id', $sortDirection)
-            ->paginate(8)
+            ->paginate(6)
             ->withQueryString();
 
         return view('officer.reports.index', compact('reports', 'filters'));
@@ -110,6 +110,9 @@ class ReportController extends Controller
             } elseif ($validated['update_facility_status'] === 'active') {
                 $report->facility->markActive();
                 $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" dikembalikan ke status Aktif";
+            } elseif ($validated['update_facility_status'] === 'inactive') {
+                $report->facility->markUnavailable();
+                $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" ditandai Tidak Tersedia";
             }
         }
 
