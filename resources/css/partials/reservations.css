@@ -303,6 +303,17 @@
         padding: 1.25rem;
     }
 }
+
+/* Modal Pembatalan Form Enhancements */
+#cancelModal textarea:focus {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+#btnSubmitCancel:hover {
+    background: #dc2626 !important;
+}
+
 @media (max-width: 600px) {
     .reservation-main {
         padding: 130px 0.75rem 3rem;
