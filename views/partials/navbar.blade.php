@@ -6,9 +6,9 @@
         </a>
         <nav class="desktop-nav" aria-label="Navigasi utama">
             <a class="nav-link {{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">Beranda</a>
-            <a class="nav-link {{ request()->routeIs('facilities.*') ? 'is-active' : '' }}" href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
+            <a class="nav-link {{ (request()->routeIs('facilities.*') || request()->routeIs('reservations.create')) ? 'is-active' : '' }}" href="{{ route('facilities.index') }}">Jelajah Fasilitas</a>
             @auth
-                <a class="nav-link {{ request()->routeIs('reservations.*') ? 'is-active' : '' }}" href="{{ route('reservations.index') }}">Reservasi Saya</a>
+                <a class="nav-link {{ request()->routeIs('reservations.index') ? 'is-active' : '' }}" href="{{ route('reservations.index') }}">Reservasi Saya</a>
                 <a class="nav-link {{ request()->routeIs('reports.*') ? 'is-active' : '' }}" href="{{ route('reports.create') }}">Lapor Kerusakan</a>
             @else
                 <a class="nav-link" href="{{ route('login') }}">Reservasi Saya</a>
@@ -34,9 +34,9 @@
             <summary aria-label="Buka menu navigasi"><span></span><span></span><span></span></summary>
             <nav class="mobile-nav-panel" aria-label="Navigasi utama">
                 <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'aria-current="page"' : '' }}>Beranda</a>
-                <a href="{{ route('facilities.index') }}" {{ request()->routeIs('facilities.*') ? 'aria-current="page"' : '' }}>Jelajah Fasilitas</a>
+                <a href="{{ route('facilities.index') }}" {{ (request()->routeIs('facilities.*') || request()->routeIs('reservations.create')) ? 'aria-current="page"' : '' }}>Jelajah Fasilitas</a>
                 @auth
-                    <a href="{{ route('reservations.index') }}">Reservasi Saya</a>
+                    <a href="{{ route('reservations.index') }}" {{ request()->routeIs('reservations.index') ? 'aria-current="page"' : '' }}>Reservasi Saya</a>
                     <a href="{{ route('reports.create') }}">Lapor Kerusakan</a>
                 @else
                     <a href="{{ route('login') }}">Reservasi Saya</a>
