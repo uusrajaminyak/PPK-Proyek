@@ -1,5 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+use App\Http\Controllers\Admin\OfficerController as AdminOfficerController;
+use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\Officer\DashboardController as OfficerDashboardController;
+use App\Http\Controllers\Officer\FacilityController as OfficerFacilityController;
+use App\Http\Controllers\Officer\ReportController as OfficerReportController;
+use App\Http\Controllers\Officer\ReservationController as OfficerReservationController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReservationController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FacilityController;
@@ -42,14 +56,22 @@ Route::prefix('reports')->name('reports.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('officer')->name('officer.')->group(function () {
+    Route::get('/dashboard', [OfficerDashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+    Route::get('/reservations', [OfficerReservationController::class, 'index'])->middleware('auth')->name('reservations.index');
+    Route::get('/reservations/history', [OfficerReservationController::class, 'history'])->middleware('auth')->name('reservations.history');
+    Route::get('/reservations/{reservation}', [OfficerReservationController::class, 'show'])->middleware('auth')->name('reservations.show');
+    Route::patch('/reservations/{reservation}/status', [OfficerReservationController::class, 'updateStatus'])->middleware('auth')->name('reservations.update-status');
+
     Route::prefix('reports')->name('reports.')->group(function () {
-        Route::get('/', [OfficerReportController::class, 'index'])->name('index');
-        Route::patch('/{report}/status', [OfficerReportController::class, 'update'])->name('update');
+        Route::get('/', [OfficerReportController::class, 'index'])->middleware('auth')->name('index');
+        Route::get('/{report}', [OfficerReportController::class, 'show'])->middleware('auth')->name('show');
+        Route::patch('/{report}/status', [OfficerReportController::class, 'update'])->middleware('auth')->name('update');
     });
 
     Route::prefix('facilities')->name('facilities.')->group(function () {
-        Route::get('/', [OfficerFacilityController::class, 'index'])->name('index');
-        Route::patch('/{facility}/status', [OfficerFacilityController::class, 'updateStatus'])->name('update-status');
+        Route::get('/', [OfficerFacilityController::class, 'index'])->middleware('auth')->name('index');
+        Route::get('/{facility}', [OfficerFacilityController::class, 'show'])->middleware('auth')->name('show');
+        Route::patch('/{facility}/status', [OfficerFacilityController::class, 'updateStatus'])->middleware('auth')->name('update-status');
     });
 });
 
@@ -88,6 +110,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 */
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login/staff', [AuthController::class, 'showStaffLogin'])->name('login.staff');
+Route::post('/login/staff', [AuthController::class, 'loginStaff'])->name('login.staff.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

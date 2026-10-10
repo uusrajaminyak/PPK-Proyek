@@ -20,12 +20,14 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showStaffLogin()
     public function showRegister(): View|RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('home');
         }
 
+        return view('auth.staff-login');
         return view('auth.register');
     }
 
@@ -84,6 +86,41 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => 'Email atau password salah.',
         ]);
+    }
+
+    public function loginStaff(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => 'Email atau password salah.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+        $user = Auth::user();
+
+        if (! $user->isVerified()) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => 'Akun belum diverifikasi. Hubungi administrator.',
+            ]);
+        }
+
+        if (! $user->isAdmin() && ! $user->isPetugas()) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => 'Akun ini tidak memiliki akses ke portal Petugas/Admin.',
+            ]);
+        }
+
+        $destination = $user->isAdmin() ? 'admin.dashboard' : 'officer.dashboard';
+
+        return redirect()->route($destination)->with('success', 'Selamat datang, '.$user->name.'!');
     }
 
     public function logout(Request $request)

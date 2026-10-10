@@ -1,0 +1,85 @@
+/* Halaman Kelola Laporan Petugas */
+.officer-report-table { min-width: 860px; }
+.officer-report-col-id { width: 15%; }
+.officer-report-col-reporter { width: 14%; }
+.officer-report-col-facility { width: 16%; }
+.officer-report-col-date { width: 16%; }
+.officer-report-col-type { width: 13%; }
+.officer-report-col-status { width: 13%; }
+.officer-report-col-action { width: 13%; }
+.officer-report-id { white-space: nowrap; }
+.officer-report-type { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.officer-report-table td:last-child { width: 92px; }
+.officer-report-status { display: inline-flex; min-height: 24px; align-items: center; justify-content: center; padding: 0 11px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.officer-report-status.is-new { background: #f0f1f5; color: #465064; }
+.officer-report-status.is-processing { background: #ffd51e; color: #001348; }
+.officer-report-status.is-done { background: #46c878; color: #fff; }
+.officer-report-status.is-rejected { background: #FF383C; color: #fff; }
+.officer-report-table .officer-detail-button { border: 0; cursor: pointer; font: inherit; }
+.officer-report-table a.officer-detail-button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.officer-report-alert { padding: 11px 14px; border: 1px solid transparent; border-radius: 8px; font-size: 13px; }
+.officer-report-alert.is-success { border-color: #a7e4bd; background: #effaf3; color: #176a36; }
+.officer-report-alert.is-error { border-color: #f2b6b6; background: #fff3f3; color: #9a2929; }
+
+.officer-report-dialog { width: min(680px, calc(100vw - 32px)); max-width: 680px; max-height: min(88vh, 900px); padding: 0; overflow: auto; border: 1px solid #d2d5dd; border-radius: 14px; background: #fff; color: #001348; box-shadow: 0 24px 70px rgb(0 19 72 / 24%); }
+.officer-report-dialog::backdrop { background: rgb(0 12 43 / 50%); backdrop-filter: blur(2px); }
+.officer-report-dialog-header { position: sticky; z-index: 1; top: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid #e1e3e8; background: #fff; }
+.officer-report-dialog-header h2 { margin: 0; font-size: 23px; font-weight: 700; }
+.officer-report-dialog-header p { margin: 5px 0 0; color: #657087; font-size: 13px; }
+.officer-report-dialog-close { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border: 1px solid #d2d5dd; border-radius: 50%; background: #fff; color: #001348; cursor: pointer; font-size: 24px; line-height: 1; }
+.officer-report-dialog-content { display: grid; gap: 20px; padding: 20px 22px 24px; }
+.officer-report-details { display: grid; gap: 14px; margin: 0; }
+.officer-report-details div { display: grid; gap: 4px; }
+.officer-report-details dt { color: #657087; font-size: 13px; }
+.officer-report-details dd { margin: 0; color: #001348; font-size: 15px; line-height: 1.5; white-space: pre-line; overflow-wrap: anywhere; }
+.officer-report-photos { display: flex; flex-wrap: wrap; gap: 9px; }
+.officer-report-photos a { display: block; width: 76px; height: 76px; overflow: hidden; border: 1px solid #d2d5dd; border-radius: 8px; }
+.officer-report-photos img { width: 100%; height: 100%; object-fit: cover; }
+.officer-report-update { display: grid; gap: 14px; padding-top: 18px; border-top: 1px solid #e1e3e8; }
+.officer-report-update label { display: grid; gap: 6px; color: #001348; font-size: 13px; font-weight: 700; }
+.officer-report-update select,
+.officer-report-update textarea { width: 100%; min-height: 42px; padding: 10px 12px; border: 1px solid #cdd2dc; border-radius: 8px; background: #fff; color: #001348; font: inherit; font-size: 14px; }
+.officer-report-update textarea { min-height: 92px; resize: vertical; }
+.officer-report-update .officer-detail-action { justify-self: end; min-height: 42px; background: #001348; }
+.officer-report-update .officer-detail-action:hover { background: #10285d; }
+
+/* Detail laporan memakai struktur dua kolom yang sama dengan detail reservasi. */
+.officer-report-detail-page { min-height: 0; }
+.officer-report-detail-shell .officer-app-frame { height: 100vh; min-height: 0; overflow: hidden; }
+.officer-report-detail-shell .officer-workspace { min-height: 0; overflow: hidden; }
+.officer-report-detail-shell .officer-main { min-height: 0; }
+.officer-report-detail-shell .officer-report-detail-page { overflow-y: auto; }
+.officer-report-information { justify-content: center; }
+.officer-report-information .officer-detail-eyebrow { margin-top: 20px; }
+.officer-report-information .officer-detail-facility-meta { gap: 11px; }
+.officer-report-facility-current-status { margin: 12px 0 0; color: #536078; font-size: 14px; }
+.officer-report-facility-current-status strong { color: #001348; font-weight: 700; }
+.officer-report-detail-photos { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+.officer-report-detail-photos a,
+.officer-report-detail-photos .officer-detail-photo-empty { display: block; width: 82px; height: 82px; flex: 0 0 82px; overflow: hidden; border: 1px solid #e1e3e8; border-radius: 8px; background: #e5e7eb; }
+.officer-report-detail-photos img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.officer-report-information .officer-detail-block { margin-top: 18px; }
+.officer-report-detail-page .officer-detail-heading .officer-report-status { position: absolute; top: 0; right: 0; }
+.officer-report-detail-update { margin-top: 22px; }
+.officer-report-resolution-note { display: grid; gap: 5px; margin: 18px 0 0; color: #243653; font-size: 15px; line-height: 1.5; }
+.officer-report-resolution-note strong { color: #001348; font-size: 16px; }
+.officer-report-detail-update .officer-detail-action { justify-self: end; }
+
+@media (max-width: 760px) {
+    .officer-report-detail-shell .officer-app-frame { height: auto; min-height: 100vh; overflow: visible; }
+    .officer-report-detail-shell .officer-workspace { overflow: visible; }
+    .officer-report-detail-page { min-height: 640px; }
+    .officer-report-detail-update { margin-top: 18px; }
+}
+
+@media (max-width: 560px) {
+    .officer-report-detail-photos a,
+    .officer-report-detail-photos .officer-detail-photo-empty { width: 72px; height: 72px; flex-basis: 72px; }
+    .officer-report-detail-update .officer-detail-action { width: 100%; }
+}
+
+@media (max-width: 560px) {
+    .officer-report-dialog-header,
+    .officer-report-dialog-content { padding-right: 16px; padding-left: 16px; }
+    .officer-report-dialog-header h2 { font-size: 20px; }
+}

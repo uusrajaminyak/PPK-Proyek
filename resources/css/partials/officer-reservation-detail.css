@@ -1,0 +1,83 @@
+/* Detail reservasi petugas */
+.officer-reservation-detail-page { display: flex; min-width: 0; min-height: 0; flex: 1; flex-direction: column; }
+.officer-reservation-detail-grid { display: grid; min-width: 0; min-height: 0; flex: 1; grid-template-columns: minmax(0, .9fr) 1px minmax(0, 1.1fr); gap: 24px; }
+.officer-detail-facility,
+.officer-detail-applicant { position: relative; display: flex; min-width: 0; flex-direction: column; }
+.officer-detail-facility { justify-content: center; text-align: left; }
+.officer-detail-applicant { text-align: left; }
+.officer-detail-applicant-content { display: flex; min-height: 0; flex: 1; flex-direction: column; justify-content: center; }
+.officer-detail-facility .officer-detail-back { position: absolute; top: 0; left: 0; z-index: 1; align-self: flex-start; }
+.officer-detail-facility > :not(.officer-detail-back),
+.officer-detail-applicant-content { padding-left: 20px; }
+.officer-detail-back { display: inline-flex; width: fit-content; min-height: 32px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid #d2d5dd; border-radius: 999px; background: #fff; color: #001348; font-size: 12px; font-weight: 600; line-height: 1; text-decoration: none; }
+.officer-detail-back img { width: 16px; height: 16px; object-fit: contain; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
+.officer-detail-back:hover { background: #f5f5f5; }
+.officer-detail-eyebrow { margin: 20px 0 6px; color: #536078; font-size: 15px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.officer-detail-facility h2 { margin: 0; color: #001348; font-size: 30px; font-weight: 700; letter-spacing: -.035em; }
+.officer-detail-facility-meta { display: grid; gap: 9px; margin-top: 12px; color: #536078; font-size: 16px; }
+.officer-detail-facility-meta span { display: flex; align-items: center; gap: 8px; line-height: 1.25; }
+.officer-detail-facility-meta img { width: 18px; height: 18px; object-fit: contain; }
+.officer-detail-facility-meta span { justify-content: flex-start; }
+.officer-detail-facility-meta .officer-detail-capacity-icon { filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
+.officer-detail-photo-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 82px)); gap: 8px; margin-top: 14px; }
+.officer-detail-photo-empty { width: 100%; aspect-ratio: 1; border: 1px solid #e1e3e8; border-radius: 8px; background: #e5e7eb; }
+.officer-detail-block { margin-top: 17px; }
+.officer-detail-block h3,
+.officer-detail-applicant-data h3 { margin: 0 0 11px; color: #001348; font-size: 17px; font-weight: 700; letter-spacing: .015em; text-transform: uppercase; }
+.officer-detail-schedule,
+.officer-detail-applicant-data dl { display: grid; gap: 9px; margin: 0; }
+.officer-detail-schedule div,
+.officer-detail-applicant-data dl div { display: grid; gap: 2px; }
+.officer-detail-schedule dt,
+.officer-detail-applicant-data dt { color: #657087; font-size: 15px; }
+.officer-detail-schedule dd,
+.officer-detail-applicant-data dd { margin: 0; color: #001348; font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
+.officer-detail-purpose { margin: 0; color: #243653; font-size: 17px; line-height: 1.55; }
+.officer-detail-divider { width: 1px; height: 100%; background: #d2d5dd; }
+.officer-detail-heading { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; margin: 2px 0 22px; text-align: left; }
+.officer-detail-heading .officer-reservation-status { position: absolute; top: 0; right: 0; }
+.officer-detail-heading h2 { margin: 0; color: #001348; font-size: 32px; font-weight: 700; letter-spacing: -.035em; }
+.officer-detail-heading p { margin: 7px 0 0; color: #758096; font-size: 16px; }
+.officer-detail-applicant-data { margin-top: 2px; }
+.officer-detail-applicant-data dl div { text-align: left; }
+.officer-detail-applicant-data { display: flex; flex-direction: column; justify-content: flex-start; }
+.officer-detail-applicant-data h3 { margin-bottom: 19px; }
+.officer-detail-applicant-data dl { gap: 13px; }
+.officer-detail-applicant-data dt { font-size: 15px; }
+.officer-detail-applicant-data dd { font-size: 17px; font-weight: 500; }
+.officer-detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; padding-top: 0; }
+.officer-detail-actions form { margin: 0; }
+.officer-detail-action { min-height: 40px; padding: 0 18px; border: 0; border-radius: 7px; color: #fff; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; }
+.officer-detail-action.is-reject { background: #ed4145; }
+.officer-detail-action.is-reject:hover { background: #d93236; }
+.officer-detail-action.is-approve { background: #28a95d; }
+.officer-detail-action.is-approve:hover { background: #208e4e; }
+.officer-detail-rejection-note { margin: auto 0 0; padding-top: 28px; color: #6b3440; font-size: 12px; }
+.officer-detail-alert { margin-bottom: 14px; padding: 11px 14px; border: 1px solid transparent; border-radius: 8px; font-size: 13px; }
+.officer-detail-alert.is-success { border-color: #a7e4bd; background: #effaf3; color: #176a36; }
+.officer-detail-alert.is-error { border-color: #f2b6b6; background: #fff3f3; color: #9a2929; }
+
+@media (max-width: 900px) {
+    .officer-reservation-detail-grid { grid-template-columns: minmax(0, .9fr) 1px minmax(0, 1.1fr); gap: 18px; }
+}
+
+@media (max-width: 760px) {
+    .officer-reservation-detail-page { min-height: 640px; }
+    .officer-reservation-detail-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .officer-detail-divider { width: 100%; height: 1px; }
+    .officer-detail-heading { margin-bottom: 20px; }
+    .officer-detail-actions { margin-top: 20px; padding-top: 0; }
+}
+
+@media (max-width: 560px) {
+    .officer-detail-facility > :not(.officer-detail-back),
+    .officer-detail-applicant-content { padding-left: 12px; }
+    .officer-detail-photo-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .officer-detail-facility h2 { font-size: 24px; }
+    .officer-detail-heading h2 { font-size: 26px; }
+    .officer-detail-heading { align-items: flex-start; }
+    .officer-detail-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .officer-detail-actions form,
+    .officer-detail-action { width: 100%; }
+    .officer-detail-action { min-height: 42px; padding: 0 8px; font-size: 11px; }
+}

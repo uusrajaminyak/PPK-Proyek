@@ -1,0 +1,128 @@
+/* Kelola Fasilitas petugas: kartu visual mengikuti frame desain. */
+.officer-facilities-page { display: flex; min-width: 0; min-height: 0; flex: 1; flex-direction: column; gap: 12px; }
+.officer-facility-filterbar { display: flex; min-width: 0; flex-wrap: nowrap; align-items: center; gap: 8px; }
+.officer-facility-search { position: relative; display: flex; min-width: 0; min-height: 38px; flex: 1 1 290px; align-items: center; border: 1px solid #d2d5dd; border-radius: 9px; background: #fff; }
+.officer-facility-search input { width: 100%; min-width: 0; height: 36px; padding: 0 38px 0 14px; border: 0; outline: 0; border-radius: inherit; background: transparent; color: #001348; font: inherit; font-size: 12px; }
+.officer-facility-search input::placeholder { color: #9298a5; }
+.officer-facility-search button { position: absolute; top: 0; right: 0; display: grid; width: 38px; height: 100%; place-items: center; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+.officer-facility-search button img { width: 17px; height: 17px; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
+.officer-facility-filter-controls { display: flex; min-width: 0; flex: 0 0 auto; flex-wrap: nowrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.officer-facility-select { position: relative; display: flex; min-width: 105px; min-height: 38px; flex: 0 0 auto; align-items: center; border: 1px solid #d2d5dd; border-radius: 9px; background: #fff; color: #001348; }
+.officer-facility-select select { width: 100%; min-width: 105px; height: 36px; padding: 0 32px 0 12px; appearance: none; border: 0; outline: 0; border-radius: inherit; background: transparent; color: inherit; font: inherit; font-size: 12px; cursor: pointer; }
+.officer-facility-select > img { position: absolute; top: 50%; right: 10px; width: 14px; height: 14px; transform: translateY(-50%); filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
+.officer-facility-sort { min-width: 104px; }
+.officer-facility-sort > img { position: absolute; top: 50%; right: 10px; width: 14px; height: 14px; transform: translateY(-50%); filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
+.officer-facility-sort select { padding-right: 34px; }
+
+.officer-facility-card-grid { display: grid; min-width: 0; min-height: 0; flex: 1; grid-template-columns: repeat(5, minmax(0, 280px)); align-content: start; justify-content: center; gap: 12px; }
+.officer-facility-card { display: flex; min-width: 0; aspect-ratio: 1 / 1; flex-direction: column; overflow: hidden; border: 1px solid #001348; border-radius: 10px; background: #fff; }
+.officer-facility-card-image { position: relative; min-height: 0; flex: 1 1 auto; overflow: hidden; background: #d1d1d6; }
+.officer-facility-card-image > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.officer-facility-card-status { display: inline-flex; min-height: 18px; align-items: center; justify-content: center; padding: 0 8px; border-radius: 999px; font-size: 9px; font-weight: 700; line-height: 1; white-space: nowrap; }
+.officer-facility-card-image .officer-facility-card-status { position: absolute; top: 8px; right: 8px; }
+.officer-facility-card-status.is-active { background: #fff; color: #001348; }
+.officer-facility-card-status.is-repair { background: #ffd51e; color: #001348; }
+.officer-facility-card-status.is-inactive { background: #f0f1f5; color: #465064; }
+.officer-facility-card-body { display: flex; min-width: 0; min-height: 91px; flex: 0 0 91px; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 13px; }
+.officer-facility-card-copy { display: grid; min-width: 0; gap: 3px; color: #001348; }
+.officer-facility-card-copy h2 { overflow: hidden; margin: 0 0 1px; color: #001348; font-size: 17px; font-weight: 700; letter-spacing: -.03em; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+.officer-facility-card-copy p { display: flex; min-width: 0; align-items: center; gap: 5px; margin: 0; font-size: 11px; line-height: 1.2; }
+.officer-facility-card-copy p img { width: 13px; height: 13px; flex: 0 0 13px; object-fit: contain; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
+.officer-facility-card-copy p span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.officer-facility-detail-button { display: inline-flex; min-width: 60px; min-height: 34px; flex: 0 0 auto; align-items: center; justify-content: center; padding: 0 12px; border: 0; border-radius: 6px; background: #001348; color: #fff; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; text-decoration: none; }
+.officer-facility-detail-button:hover { background: #10285d; }
+.officer-facility-empty { grid-column: 1 / -1; display: grid; min-height: 180px; align-content: center; justify-items: center; padding: 24px; border: 1px solid #d2d5dd; border-radius: 10px; background: #fff; text-align: center; }
+.officer-facility-empty h2 { margin: 0; color: #001348; font-size: 18px; }
+.officer-facility-empty p { margin: 6px 0 0; color: #657087; font-size: 13px; }
+
+.officer-facility-pagination { flex: 0 0 auto; }
+.officer-facility-pagination .officer-pagination { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.officer-facility-pagination .officer-pagination-summary { grid-column: 1; grid-row: 1; color: #8a91a0; font-size: 11px; }
+.officer-facility-pagination .officer-pagination-controls { grid-column: 2; grid-row: 1; gap: 6px; }
+.officer-facility-pagination .officer-pagination-page,
+.officer-facility-pagination .officer-pagination-arrow { min-width: 35px; min-height: 35px; border-radius: 6px; font-size: 13px; }
+.officer-facility-pagination .officer-pagination-arrow { width: 35px; }
+.officer-facility-pagination .officer-pagination-arrow img { width: 16px; height: 16px; }
+
+.officer-facility-detail-page { display: grid; min-width: 0; min-height: 0; flex: 1; grid-template-columns: minmax(0, .9fr) 1px minmax(0, 1.1fr); gap: 24px; }
+.officer-facility-detail-gallery { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; padding-left: 20px; }
+.officer-facility-detail-back { position: absolute; top: 0; left: 0; display: inline-flex; min-height: 36px; align-items: center; gap: 8px; padding: 0 17px; border: 1px solid #001348; border-radius: 999px; background: #fff; color: #001348; font-size: 14px; font-weight: 600; text-decoration: none; }
+.officer-facility-detail-back img { width: 16px; height: 16px; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
+.officer-facility-detail-main-photo { width: min(100%, 400px); aspect-ratio: 2 / 1; overflow: hidden; border-radius: 16px; background: #d1d1d6; }
+.officer-facility-detail-main-photo img,
+.officer-facility-detail-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.officer-facility-detail-thumbnails { display: grid; width: min(100%, 400px); grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+.officer-facility-detail-thumbnail { aspect-ratio: 1 / 1; overflow: hidden; border: 1px solid #cbd0dc; border-radius: 12px; background: #d1d1d6; }
+.officer-facility-detail-thumbnail.has-image { border: 2px solid #001348; }
+.officer-facility-detail-information { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 20px; color: #001348; }
+.officer-facility-detail-heading h2 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -.03em; }
+.officer-facility-detail-heading p { margin: 7px 0 0; font-size: 12px; }
+.officer-facility-detail-summary { margin-top: 28px; }
+.officer-facility-detail-summary h3 { margin: 0; font-size: clamp(34px, 3.2vw, 42px); font-weight: 700; letter-spacing: -.045em; line-height: 1.15; }
+.officer-facility-detail-meta { display: grid; gap: 8px; margin-top: 13px; color: #001348; font-size: 13px; }
+.officer-facility-detail-meta span { display: flex; min-width: 0; align-items: center; gap: 8px; }
+.officer-facility-detail-meta img { width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
+.officer-facility-description { margin-top: 18px; }
+.officer-facility-description h3 { margin: 0 0 9px; font-size: 32px; font-weight: 700; letter-spacing: -.04em; }
+.officer-facility-description p { max-width: 440px; margin: 0; color: #162b50; font-size: 12px; line-height: 1.35; }
+.officer-facility-operational-status { margin-top: 18px; }
+.officer-facility-operational-status h3 { margin: 0 0 9px; font-size: 14px; font-weight: 700; text-transform: uppercase; }
+.officer-facility-status-form { margin: 0; }
+.officer-facility-status-select { position: relative; display: inline-flex; min-width: 190px; min-height: 40px; align-items: center; border: 1px solid #001348; border-radius: 8px; background: #fff; color: #001348; }
+.officer-facility-status-select select { width: 100%; min-width: 0; height: 38px; padding: 0 42px 0 14px; appearance: none; border: 0; outline: 0; border-radius: inherit; background: transparent; color: inherit; font: inherit; font-size: 14px; cursor: pointer; }
+.officer-facility-status-select > img { position: absolute; top: 50%; right: 12px; width: 16px; height: 16px; transform: translateY(-50%); pointer-events: none; }
+.officer-facility-status-select.is-disabled { opacity: .58; }
+.officer-facility-status-select select:disabled { cursor: not-allowed; }
+.officer-facility-detail-information .officer-detail-alert { width: 100%; margin: 0 0 14px; }
+
+@media (max-width: 1050px) {
+    .officer-facility-card-grid { grid-template-columns: repeat(3, minmax(0, 280px)); }
+    .officer-facility-filterbar { flex-wrap: wrap; }
+    .officer-facility-search { flex-basis: 100%; }
+}
+
+@media (max-width: 760px) {
+    .officer-facility-card-grid { grid-template-columns: repeat(2, minmax(0, 280px)); }
+    .officer-facility-card-grid { min-height: 420px; }
+    .officer-facility-filter-controls { gap: 6px; }
+    .officer-facility-select { min-width: 96px; }
+}
+
+@media (max-width: 560px) {
+    .officer-facilities-page { padding: 0; }
+    .officer-facility-filterbar { gap: 10px; }
+    .officer-facility-search { flex-basis: 100%; }
+    .officer-facility-filter-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .officer-facility-select { min-width: 0; }
+    .officer-facility-select select { min-width: 0; padding-right: 27px; padding-left: 9px; font-size: 11px; }
+    .officer-facility-select > img,
+    .officer-facility-sort > img { right: 7px; width: 12px; height: 12px; }
+    .officer-facility-card-grid { grid-template-columns: minmax(0, 1fr); }
+    .officer-facility-card-body { min-height: 90px; flex-basis: 90px; }
+    .officer-facility-pagination .officer-pagination { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .officer-facility-pagination .officer-pagination-summary { align-self: flex-start; }
+}
+
+@media (max-width: 900px) {
+    .officer-facility-detail-page { gap: 18px; }
+    .officer-facility-detail-summary { margin-top: 24px; }
+    .officer-facility-description h3 { font-size: 28px; }
+}
+
+@media (max-width: 760px) {
+    .officer-facility-detail-page { min-height: 640px; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .officer-facility-detail-gallery { min-height: 360px; padding-left: 12px; }
+    .officer-detail-divider { width: 100%; height: 1px; }
+    .officer-facility-detail-back { left: 12px; }
+    .officer-facility-detail-main-photo,
+    .officer-facility-detail-thumbnails { width: min(100%, 400px); }
+    .officer-facility-detail-information { padding: 0 12px 16px; }
+    .officer-facility-detail-summary { margin-top: 24px; }
+}
+
+@media (max-width: 560px) {
+    .officer-facility-detail-page { gap: 16px; }
+    .officer-facility-detail-thumbnails { gap: 8px; }
+    .officer-facility-detail-summary h3 { font-size: 32px; }
+    .officer-facility-description h3 { font-size: 26px; }
+}

@@ -1,0 +1,77 @@
+/* Konten halaman Kelola Reservasi Petugas */
+.officer-reservations-page { display: flex; min-width: 0; min-height: 0; flex: 1; flex-direction: column; gap: 14px; }
+.officer-reservation-filters { display: flex; min-width: 0; flex-wrap: nowrap; align-items: center; gap: 8px; }
+.officer-reservation-search,
+.officer-reservation-filter,
+.officer-reservation-date { display: flex; min-width: 0; min-height: 38px; align-items: center; border: 1px solid #d2d5dd; border-radius: 9px; background: #fff; color: #001348; }
+.officer-reservation-search { position: relative; flex: 1 1 290px; }
+.officer-reservation-search input { width: 100%; min-width: 0; height: 36px; padding: 0 38px 0 14px; border: 0; outline: 0; background: transparent; color: #001348; font: inherit; font-size: 12px; }
+.officer-reservation-search input::placeholder { color: #8a91a0; }
+.officer-reservation-search img { position: absolute; right: 12px; width: 17px; height: 17px; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
+.officer-reservation-filter { flex: 0 0 auto; }
+.officer-reservation-filter select { width: 100%; min-width: 105px; height: 36px; padding: 0 32px 0 12px; appearance: none; border: 0; outline: 0; background: transparent; color: #001348; font: inherit; font-size: 12px; }
+.officer-reservation-filter { position: relative; }
+.officer-reservation-dropdown-icon { position: absolute; top: 50%; right: 10px; width: 14px; height: 14px; transform: translateY(-50%); pointer-events: none; }
+.officer-reservation-date { flex: 0 0 auto; gap: 5px; padding: 0 8px; }
+.officer-reservation-date-field { position: relative; display: flex; min-width: 0; }
+.officer-reservation-date-field input { width: 92px; min-width: 0; padding-right: 17px; border: 0; outline: 0; background: transparent; color: #001348; font: inherit; font-size: 11px; }
+.officer-reservation-date-field input::-webkit-calendar-picker-indicator { position: absolute; right: 0; width: 17px; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.officer-reservation-date-field img { position: absolute; top: 50%; right: 1px; z-index: 1; width: 13px; height: 13px; transform: translateY(-50%); filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
+.officer-reservation-date > span:not(.sr-only) { color: #747d8e; }
+.officer-reservation-sort select { min-width: 96px; }
+.officer-reservation-table-card { display: flex; min-width: 0; min-height: 0; flex: 1; flex-direction: column; padding: 14px 16px; border: 1px solid #d2d5dd; border-radius: 10px; background: #fff; }
+.officer-management-table { min-width: 860px; table-layout: fixed; border-spacing: 0 7px; font-size: 12px; }
+.officer-col-reservation-id { width: 17%; }
+.officer-col-applicant { width: 14%; }
+.officer-col-facility { width: 15%; }
+.officer-col-date { width: 16%; }
+.officer-col-purpose { width: 17%; }
+.officer-col-status { width: 11%; }
+.officer-col-action { width: 10%; }
+.officer-management-table th { padding: 10px 12px; font-size: 11px; }
+.officer-management-table td { padding: 9px 12px; }
+.officer-management-table tbody tr { height: 48px; }
+.officer-management-table td small { font-size: 9px; }
+.officer-management-table .officer-purpose { max-width: 190px; }
+.officer-management-table th:last-child,
+.officer-management-table td:last-child { width: 92px; }
+.officer-reservation-status { display: inline-flex; min-height: 22px; align-items: center; justify-content: center; padding: 0 10px; border-radius: 999px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.officer-reservation-status.is-pending { background: #ffd51e; color: #001348; }
+.officer-reservation-status.is-approved { background: #46c878; color: #fff; }
+.officer-reservation-status.is-completed { background: #f0f1f5; color: #465064; }
+.officer-reservation-status.is-cancelled { background: #e5e7eb; color: #465064; }
+.officer-reservation-status.is-rejected { background: #FF383C; color: #fff; }
+.officer-reservation-pagination { display: block; padding: 12px 0 2px; color: #001348; font-size: 13px; }
+.officer-pagination { display: flex; min-width: 0; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.officer-pagination-summary { margin: 0; color: #536078; font-size: 13px; }
+.officer-pagination-summary strong { color: #001348; font-weight: 700; }
+.officer-pagination-controls { display: flex; align-items: center; gap: 8px; }
+.officer-pagination-page,
+.officer-pagination-arrow,
+.officer-pagination-ellipsis { display: inline-flex; min-width: 40px; min-height: 40px; align-items: center; justify-content: center; padding: 0 10px; border: 1px solid #d2d5dd; border-radius: 7px; background: #fff; color: #001348; font-size: 14px; text-decoration: none; }
+.officer-pagination-page.is-current { border-color: #001348; background: #001348; color: #fff; }
+.officer-pagination-arrow { width: 40px; padding: 0; }
+.officer-pagination-arrow img { display: block; width: 18px; height: 18px; }
+.officer-pagination-arrow img.is-previous { transform: rotate(90deg); }
+.officer-pagination-arrow img.is-next { transform: rotate(-90deg); }
+.officer-pagination-arrow.is-disabled { color: #a4a9b3; }
+.officer-pagination-arrow.is-disabled img { opacity: .4; }
+.officer-pagination-ellipsis { border-color: transparent; background: transparent; }
+
+@media (max-width: 1050px) {
+    .officer-reservation-filters { flex-wrap: wrap; }
+    .officer-reservation-search { flex-basis: 100%; }
+}
+
+@media (max-width: 760px) {
+    .officer-reservations-page { min-height: 420px; }
+}
+
+@media (max-width: 560px) {
+    .officer-reservation-table-card { padding: 10px 8px; }
+    .officer-reservation-date { flex: 1 1 100%; justify-content: space-between; }
+    .officer-reservation-date-field { flex: 1; }
+    .officer-reservation-date-field input { width: 100%; }
+    .officer-reservation-filter select { min-width: 100px; }
+    .officer-management-table { min-width: 800px; }
+}
