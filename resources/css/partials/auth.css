@@ -8,6 +8,26 @@
     overflow: hidden;
     background: #f7f7f8;
     color: #07183f;
+/* Masuk (Login) — kartu autentikasi dan form */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    position: relative;
+    overflow: hidden;
+}
+.login-watermark {
+    position: fixed;
+    bottom: -5%;
+    left: -8%;
+    width: 55vw;
+    max-width: 700px;
+    min-width: 340px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
 }
 
 .login-main {
@@ -31,6 +51,21 @@
     text-align: center;
 }
 
+.login-back-link:hover {
+    opacity: 0.7;
+}
+.login-brand-header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.login-brand-header img {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    object-fit: contain;
+}
 .login-card {
     width: min(100%, 450px);
     padding: 1.5rem 1.45rem 1.35rem;
@@ -46,6 +81,28 @@
     color: #111d36;
     font-size: .875rem;
     font-weight: 600;
+.login-field {
+    margin-bottom: 1.1rem;
+}
+.login-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.4rem;
+}
+.login-input-wrap {
+    position: relative;
+}
+.login-input-wrap .field-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.85rem;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
 }
 
 .login-input-wrap { position: relative; }
@@ -70,6 +127,21 @@
 .login-input-wrap input[type="password"],
 .login-input-wrap input[type="text"] { padding-right: 2.7rem; }
 
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+.login-input-wrap input:focus {
+    border-color: #001348;
+    box-shadow: 0 0 0 3px rgba(0, 19, 72, 0.08);
+}
+.login-input-wrap input.has-error {
+    border-color: #ef4444;
+}
+.login-input-wrap input[type="password"],
+.login-input-wrap input[type="text"] {
+    padding-right: 2.75rem;
+}
 .toggle-password {
     position: absolute;
     top: 50%;
@@ -105,6 +177,26 @@
 .login-alert p + p { margin-top: .25rem; }
 .field-error { margin: .3rem 0 0; color: #b4232c; font-size: .78rem; }
 
+.toggle-password:hover {
+    color: #001348;
+}
+.field-error {
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
+    color: #ef4444;
+}
+.login-alert {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    color: #991b1b;
+}
+.login-alert p {
+    margin: 0;
+}
 .login-remember-row {
     display: flex;
     align-items: center;
@@ -121,6 +213,12 @@
     accent-color: #07183f;
 }
 
+.login-remember-row input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #001348;
+    cursor: pointer;
+}
 .login-btn {
     display: flex;
     width: 100%;
@@ -151,6 +249,34 @@
     margin-top: 1.15rem;
     color: #3e4656;
     font-size: .8rem;
+    transition:
+        background 0.2s,
+        transform 0.1s;
+    letter-spacing: 0.01em;
+}
+.login-btn:hover {
+    background: #0a1e55;
+}
+.login-btn:active {
+    transform: scale(0.98);
+}
+.login-register {
+    margin-top: 1.1rem;
+    text-align: center;
+    font-size: 0.84rem;
+    color: #6b7280;
+}
+.login-register a {
+    color: #001348;
+    font-weight: 700;
+    text-decoration: none;
+}
+.login-register a:hover {
+    text-decoration: underline;
+}
+.login-footer {
+    background: #001348;
+    color: rgba(255, 255, 255, 0.8);
     text-align: center;
 }
 .login-links p { margin: 0; }
@@ -168,4 +294,92 @@
     .login-main { justify-content: flex-start; padding-top: 1rem; padding-bottom: 1rem; }
     .login-title { margin-bottom: .75rem; }
     .login-card { padding-top: 1.1rem; padding-bottom: 1rem; }
+/* Register (Daftar Akun) */
+.register-card {
+    background: #fff;
+    border-radius: 22px;
+    border: 1.5px solid #001348;
+    padding: 2.25rem 2.25rem 2.25rem;
+    width: 100%;
+    max-width: 410px;
+    box-shadow: 0 4px 20px rgba(0, 19, 72, 0.04);
+}
+.register-field {
+    margin-bottom: 1.25rem;
+}
+.register-field label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #001348;
+    margin-bottom: 0.45rem;
+}
+.register-input-wrap {
+    position: relative;
+}
+.register-input-wrap input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #111827;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.register-input-wrap input::placeholder {
+    color: #9ca3af;
+}
+.register-input-wrap input:focus {
+    border-color: #001348;
+    box-shadow: 0 0 0 3px rgba(0, 19, 72, 0.08);
+}
+.register-input-wrap input.has-error {
+    border-color: #ef4444;
+}
+.register-input-wrap input.with-toggle {
+    padding-right: 2.75rem;
+}
+.register-btn {
+    width: 100%;
+    padding: 0.82rem 1rem;
+    background: #001348;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1.25rem;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.01em;
+}
+.register-btn:hover {
+    background: #0a1e55;
+}
+.register-btn:active {
+    transform: scale(0.98);
+}
+.register-input-wrap .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+}
+.register-input-wrap .toggle-password:hover { color: #001348; }
+
+@media (max-width: 480px) {
+    .login-card { padding: 1.5rem 1.25rem; }
+    .register-card { padding: 1.75rem 1.25rem; border-radius: 18px; }
+    .login-watermark { width: 85vw; left: -15%; }
+    .login-back-link { top: 1rem; left: 1rem; }
 }

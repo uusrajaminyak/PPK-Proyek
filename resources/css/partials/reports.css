@@ -1,0 +1,288 @@
+/* ─── Lapor Kerusakan Fasilitas (reports/create.blade.php) ────────────── */
+.report-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f6f9;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.report-main {
+    flex: 1;
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 140px 1.25rem 5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header Judul Halaman */
+.report-header {
+    text-align: center;
+    margin-bottom: 2.25rem;
+}
+
+.report-title {
+    font-size: clamp(1.85rem, 4vw, 2.35rem);
+    font-weight: 800;
+    color: #001348;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.report-subtitle {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Card Form Laporan */
+.report-card {
+    background: #ffffff;
+    border: 1.5px solid #001348;
+    border-radius: 20px;
+    padding: 2.5rem 2.25rem;
+    box-shadow: 0 6px 25px rgba(0, 19, 72, 0.04);
+}
+
+.report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+}
+
+/* Form Group & Label */
+.report-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.report-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #001348;
+}
+
+.report-label .required-mark {
+    color: #ef4444;
+}
+
+/* Grid 2 Kolom (Nama Pelapor & No WhatsApp) */
+.report-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+/* Input Fields */
+.report-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.report-input-icon {
+    position: absolute;
+    left: 1rem;
+    color: #94a3b8;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+.report-input {
+    width: 100%;
+    height: 46px;
+    padding: 0 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #111827;
+    background: #ffffff;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.report-input.has-icon {
+    padding-left: 2.75rem;
+}
+
+.report-input:focus {
+    border-color: #001348;
+    box-shadow: 0 0 0 3px rgba(0, 19, 72, 0.08);
+}
+
+.report-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Dropdown Select Lokasi */
+.report-select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.report-select {
+    width: 100%;
+    height: 46px;
+    padding: 0 2.5rem 0 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #111827;
+    background: #ffffff;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.report-select:focus {
+    border-color: #001348;
+    box-shadow: 0 0 0 3px rgba(0, 19, 72, 0.08);
+}
+
+.report-select-arrow {
+    position: absolute;
+    right: 1rem;
+    color: #001348;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+/* Textarea Deskripsi */
+.report-textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #111827;
+    background: #ffffff;
+    outline: none;
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.report-textarea:focus {
+    border-color: #001348;
+    box-shadow: 0 0 0 3px rgba(0, 19, 72, 0.08);
+}
+
+.report-textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* Upload Dropzone Box */
+.report-dropzone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2.25rem 1.5rem;
+    text-align: center;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.report-dropzone:hover,
+.report-dropzone.drag-over {
+    border-color: #001348;
+    background: #f8fafc;
+}
+
+.dropzone-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+}
+
+.dropzone-text {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Image Preview Grid */
+.report-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.preview-thumb-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.preview-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Tombol Submit Buat Laporan */
+.btn-submit-report {
+    width: 100%;
+    height: 48px;
+    margin-top: 0.75rem;
+    background: #001348;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-submit-report:hover {
+    background: #0a1e55;
+    transform: translateY(-1px);
+}
+
+/* Footer & Watermark layer */
+.report-page .site-footer {
+    margin-top: auto;
+    position: relative;
+    z-index: 2;
+    background-color: #001348;
+}
+
+/* Responsif Mobile */
+@media (max-width: 640px) {
+    .report-main {
+        padding: 120px 1rem 3.5rem;
+    }
+    .report-card {
+        padding: 1.5rem 1.25rem;
+        border-radius: 16px;
+    }
+    .report-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+    }
+}

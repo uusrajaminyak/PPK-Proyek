@@ -12,20 +12,24 @@
 </style>
 
 <!-- Master Content Outer Container -->
-<div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-2.5 shadow-sm flex flex-col justify-between overflow-hidden">
+<div id="facilities-container" class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-2.5 shadow-sm flex flex-col justify-between overflow-hidden font-jakarta">
 
     <!-- Search Bar & Filter Dropdowns -->
     <div class="space-y-1.5 shrink-0 mb-1">
         <!-- Search Bar Row -->
         <div class="w-full flex justify-center">
-            <form action="{{ route('admin.facilities.index') }}" method="GET" class="w-full max-w-xl relative">
+            <form id="search-form" action="{{ route('admin.facilities.index') }}" method="GET" class="w-full max-w-xl relative">
                 @if(request('status'))
                 <input type="hidden" name="status" value="{{ request('status') }}">
                 @endif
                 @if(request('kategori'))
                 <input type="hidden" name="kategori" value="{{ request('kategori') }}">
                 @endif
+                @if(request('sort'))
+                <input type="hidden" name="sort" value="{{ request('sort') }}">
+                @endif
                 <input type="text"
+                    id="search-input"
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Cari fasilitas"
@@ -40,29 +44,31 @@
         </div>
 
         <!-- Filter & Sort Dropdowns Row -->
-        <form action="{{ route('admin.facilities.index') }}" method="GET" class="w-full flex justify-end items-center space-x-2">
+        <form id="filter-form" action="{{ route('admin.facilities.index') }}" method="GET" class="w-full flex justify-end items-center space-x-2">
             @if(request('search'))
             <input type="hidden" name="search" value="{{ request('search') }}">
             @endif
+            <input type="hidden" name="sort" id="sort-input" value="{{ request('sort', 'asc') }}">
 
             <!-- Status Filter -->
-            <select name="status" onchange="this.form.submit()" class="bg-white border border-gray-300 rounded px-3 py-0.5 text-xs font-medium text-gray-600 focus:outline-none focus:ring-1 focus:ring-[#001248] shadow-none cursor-pointer">
-                <option value="">Status</option>
-                <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+            <select name="status" id="status-select" class="bg-white border border-gray-300 rounded px-3 py-0.5 text-xs font-medium text-gray-600 focus:outline-none focus:ring-1 focus:ring-[#001248] shadow-none cursor-pointer">
+                <option value="">Semua Status</option>
+                <option value="aktif" {{ request('status') === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ request('status') === 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
             </select>
 
             <!-- Kategori Filter -->
-            <select name="kategori" onchange="this.form.submit()" class="bg-white border border-gray-300 rounded px-3 py-0.5 text-xs font-medium text-gray-600 focus:outline-none focus:ring-1 focus:ring-[#001248] shadow-none cursor-pointer">
-                <option value="">Kategori</option>
-                <option value="Ruang Kelas" {{ request('kategori') == 'Ruang Kelas' ? 'selected' : '' }}>Ruang Kelas</option>
-                <option value="Aula" {{ request('kategori') == 'Aula' ? 'selected' : '' }}>Aula</option>
-                <option value="Laboratorium" {{ request('kategori') == 'Laboratorium' ? 'selected' : '' }}>Laboratorium</option>
-                <option value="Lapangan" {{ request('kategori') == 'Lapangan' ? 'selected' : '' }}>Lapangan</option>
+            <select name="kategori" id="kategori-select" class="bg-white border border-gray-300 rounded px-3 py-0.5 text-xs font-medium text-gray-600 focus:outline-none focus:ring-1 focus:ring-[#001248] shadow-none cursor-pointer">
+                <option value="">Semua Kategori</option>
+                <option value="Ruang Kelas" {{ request('kategori') === 'Ruang Kelas' ? 'selected' : '' }}>Ruang Kelas</option>
+                <option value="Aula" {{ request('kategori') === 'Aula' ? 'selected' : '' }}>Aula</option>
+                <option value="Laboratorium" {{ request('kategori') === 'Laboratorium' ? 'selected' : '' }}>Laboratorium</option>
+                <option value="Lapangan" {{ request('kategori') === 'Lapangan' ? 'selected' : '' }}>Lapangan</option>
+                <option value="Ruang Rapat" {{ request('kategori') === 'Ruang Rapat' ? 'selected' : '' }}>Ruang Rapat</option>
             </select>
 
             <!-- Urutkan Button -->
-            <button type="submit" class="bg-white border border-gray-300 rounded px-3 py-0.5 text-xs font-medium text-gray-600 hover:text-[#001248] flex items-center space-x-1.5 transition-colors shadow-none">
+            <button type="button" id="sort-btn" class="bg-white border border-gray-300 rounded px-3 py-0.5 text-xs font-medium text-gray-600 hover:text-[#001248] flex items-center space-x-1.5 transition-colors shadow-none cursor-pointer">
                 <span>Urutkan</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
@@ -71,16 +77,31 @@
         </form>
     </div>
 
-    <!-- Dynamic Facility Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-1.5 flex-1 min-h-0 overflow-hidden pr-0">
+    <!-- Dynamic Facility Cards Grid Wrapper -->
+    <div id="facilities-grid" class="grid grid-cols-1 md:grid-cols-3 gap-1.5 flex-1 min-h-0 overflow-hidden pr-0">
         @forelse($facilities as $facility)
         @php
-        $statusName = $facility->is_active ? 'Aktif' : 'Nonaktif';
-        $imagePath = !empty($facility->foto) ? asset('storage/' . $facility->foto) : null;
+        $rawStatus = $facility->status_fasilitas;
+        $isActive = $rawStatus === 'active';
+
+        if ($rawStatus === 'in_repair') {
+        $statusName = 'Dalam Perbaikan';
+        } elseif ($isActive) {
+        $statusName = 'Aktif';
+        } else {
+        $statusName = 'Nonaktif';
+        }
+
+        $rawImage = $facility->foto_path ?? $facility->foto;
+        if ($rawImage && !str_starts_with($rawImage, 'http://') && !str_starts_with($rawImage, 'https://')) {
+        $imagePath = asset('storage/' . $rawImage);
+        } else {
+        $imagePath = $rawImage;
+        }
         @endphp
 
         <!-- Card Outer Frame -->
-        <div class="h-[190px] w-full bg-white border border-[#001248]/30 rounded-lg overflow-hidden flex flex-col justify-between shadow-none hover:border-[#001248] transition-colors">
+        <div class="h-[185px] w-full bg-white border border-[#001248]/30 rounded-lg overflow-hidden flex flex-col justify-between shadow-none hover:border-[#001248] transition-colors">
 
             <!-- Top Grey Thumbnail Area -->
             <div class="relative w-full h-[105px] bg-[#D2D6DE] flex items-center justify-center shrink-0 rounded-t-lg overflow-hidden">
@@ -94,7 +115,7 @@
                 @endif
 
                 <!-- Inset Status Pill -->
-                <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-2xl text-[10px] font-bold shadow-none {{ $facility->is_active ? 'bg-white text-[#001248]' : 'bg-white/90 text-[#001248]' }}">
+                <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-2xl text-[10px] font-bold shadow-none {{ $isActive ? 'bg-white text-[#001248]' : 'bg-white/90 text-[#001248]' }}">
                     {{ $statusName }}
                 </span>
             </div>
@@ -144,57 +165,178 @@
         @endforelse
     </div>
 
-    <!-- Bottom Dynamic Pagination Footer -->
-    <div class="relative flex flex-col sm:flex-row items-center justify-between pt-1 border-t border-gray-100 shrink-0 mt-0.5 min-h-[30px]">
+    <!-- Bottom Dynamic Pagination Footer (Capped at Max 5 Visible Page Buttons) -->
+    <div id="pagination-container" class="relative flex flex-col sm:flex-row items-center justify-between pt-1.5 border-t border-gray-100 shrink-0 mt-0.5 min-h-[36px] px-1">
         <!-- Item Summary Counter -->
-        <span class="text-xs font-medium text-gray-400 text-left sm:absolute sm:left-0">
-            Menampilkan {{ $facilities->firstItem() ?? 0 }} – {{ $facilities->lastItem() ?? 0 }} dari {{ $facilities->total() }} fasilitas
+        <span class="text-xs font-medium text-gray-400 text-left sm:absolute sm:left-1">
+            Menampilkan {{ $facilities->firstItem() ?? 0 }}–{{ $facilities->lastItem() ?? 0 }} dari {{ $facilities->total() }} fasilitas
         </span>
 
-        <!-- Numbered Pagination Control Buttons -->
-        <div class="flex items-center space-x-1.5 mx-auto my-0.5 sm:my-0 z-10">
-            @if ($facilities->hasPages())
-            {{-- Previous Page Link --}}
+        <!-- Capped 5-Button Window Pagination Control Buttons -->
+        <div class="flex items-center space-x-2 mx-auto my-0.5 sm:my-0 z-10">
+            {{-- Previous Page Button --}}
             @if ($facilities->onFirstPage())
-            <span class="w-6 h-6 rounded border border-gray-200 text-gray-300 flex items-center justify-center text-xs font-semibold">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <span class="w-8 h-8 rounded-lg border border-gray-300 text-gray-300 flex items-center justify-center text-xs font-medium bg-white cursor-not-allowed">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </span>
             @else
-            <a href="{{ $facilities->previousPageUrl() }}" class="w-6 h-6 rounded border border-gray-300 flex items-center justify-center text-gray-500 hover:border-[#001248] hover:text-[#001248] transition-colors text-xs font-semibold">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <a href="{{ $facilities->previousPageUrl() }}" class="pagination-link w-8 h-8 rounded-lg border border-gray-300 text-gray-600 hover:border-[#001248] hover:text-[#001248] transition-colors flex items-center justify-center text-xs font-medium bg-white">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </a>
             @endif
 
-            {{-- Page Number Links --}}
-            @foreach ($facilities->getUrlRange(1, $facilities->lastPage()) as $page => $url)
-            @if ($page == $facilities->currentPage())
-            <span class="w-6 h-6 rounded bg-[#001248] text-white flex items-center justify-center text-xs font-bold">{{ $page }}</span>
-            @else
-            <a href="{{ $url }}" class="w-6 h-6 rounded border border-gray-300 text-gray-700 hover:border-[#001248] flex items-center justify-center text-xs font-semibold transition-colors">{{ $page }}</a>
-            @endif
-            @endforeach
+            {{-- Sliding Window Math: Clamp visible page buttons to max 5 --}}
+            @php
+            $totalPages = max(1, $facilities->lastPage());
+            $currentPage = $facilities->currentPage();
+            $maxVisible = 5;
 
-            {{-- Next Page Link --}}
-            @if ($facilities->hasMorePages())
-            <a href="{{ $facilities->nextPageUrl() }}" class="w-6 h-6 rounded bg-[#001248] text-white flex items-center justify-center text-xs font-bold transition-colors">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </a>
-            @else
-            <span class="w-6 h-6 rounded-lg border border-gray-200 text-gray-300 flex items-center justify-center text-xs font-semibold">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </span>
-            @endif
-            @endif
+            $startPage = max(1, $currentPage - 2);
+            $endPage = min($totalPages, $startPage + $maxVisible - 1);
+
+            if ($endPage - $startPage + 1 < $maxVisible) {
+                $startPage=max(1, $endPage - $maxVisible + 1);
+                }
+                @endphp
+
+                @for ($page=$startPage; $page <=$endPage; $page++)
+                @if ($page==$currentPage)
+                <span class="w-8 h-8 rounded-lg bg-[#001248] text-white flex items-center justify-center text-xs font-extrabold shadow-none">
+                {{ $page }}
+                </span>
+                @else
+                <a href="{{ $facilities->url($page) }}" class="pagination-link w-8 h-8 rounded-lg border border-[#001248] text-[#001248] hover:bg-[#001248] hover:text-white transition-colors flex items-center justify-center text-xs font-bold bg-white">
+                    {{ $page }}
+                </a>
+                @endif
+                @endfor
+
+                {{-- Next Page Button --}}
+                @if ($facilities->hasMorePages())
+                <a href="{{ $facilities->nextPageUrl() }}" class="pagination-link w-8 h-8 rounded-lg bg-[#001248] text-white hover:bg-[#001a66] transition-colors flex items-center justify-center text-xs font-bold shadow-none">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a>
+                @else
+                <span class="w-8 h-8 rounded-lg border border-gray-200 text-gray-300 flex items-center justify-center text-xs font-medium bg-white cursor-not-allowed">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </span>
+                @endif
         </div>
     </div>
 
 </div>
+
+<!-- Vanilla JavaScript AJAX Engine -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSelect = document.getElementById('status-select');
+        const kategoriSelect = document.getElementById('kategori-select');
+        const searchInput = document.getElementById('search-input');
+        const searchForm = document.getElementById('search-form');
+        const sortBtn = document.getElementById('sort-btn');
+        const sortInput = document.getElementById('sort-input');
+
+        function fetchFilteredData(targetUrl) {
+            let url = targetUrl;
+
+            if (!url) {
+                const baseUrl = "{{ route('admin.facilities.index') }}";
+                const params = new URLSearchParams();
+
+                if (searchInput && searchInput.value.trim() !== '') {
+                    params.set('search', searchInput.value.trim());
+                }
+                if (statusSelect && statusSelect.value !== '') {
+                    params.set('status', statusSelect.value);
+                }
+                if (kategoriSelect && kategoriSelect.value !== '') {
+                    params.set('kategori', kategoriSelect.value);
+                }
+                if (sortInput && sortInput.value !== '') {
+                    params.set('sort', sortInput.value);
+                }
+
+                url = baseUrl + '?' + params.toString();
+            }
+
+            fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Server returned HTTP ' + response.status);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    const newGrid = doc.getElementById('facilities-grid');
+                    const newPagination = doc.getElementById('pagination-container');
+
+                    if (newGrid) {
+                        document.getElementById('facilities-grid').innerHTML = newGrid.innerHTML;
+                    }
+                    if (newPagination) {
+                        document.getElementById('pagination-container').innerHTML = newPagination.innerHTML;
+                    }
+
+                    window.history.pushState({}, '', url);
+                    bindPaginationLinks();
+                })
+                .catch(error => console.error('Error fetching filtered facility data:', error));
+        }
+
+        function bindPaginationLinks() {
+            document.querySelectorAll('.pagination-link').forEach(link => {
+                link.onclick = function(e) {
+                    e.preventDefault();
+                    fetchFilteredData(this.getAttribute('href'));
+                };
+            });
+        }
+
+        if (statusSelect) {
+            statusSelect.addEventListener('change', () => fetchFilteredData());
+        }
+        if (kategoriSelect) {
+            kategoriSelect.addEventListener('change', () => fetchFilteredData());
+        }
+
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                fetchFilteredData();
+            });
+        }
+
+        let debounceTimer;
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => fetchFilteredData(), 300);
+            });
+        }
+
+        if (sortBtn && sortInput) {
+            sortBtn.addEventListener('click', function() {
+                sortInput.value = sortInput.value === 'asc' ? 'desc' : 'asc';
+                fetchFilteredData();
+            });
+        }
+
+        bindPaginationLinks();
+    });
+</script>
 @endsection

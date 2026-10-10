@@ -3,158 +3,156 @@
 @section('header_title', 'Dasbor')
 
 @section('content')
-<!-- Master Outer Frame Card -->
-<div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-3.5 flex flex-col justify-between overflow-hidden">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    .font-jakarta {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+</style>
+
+<!-- Master Content Outer Container -->
+<div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-3 shadow-sm flex flex-col justify-between overflow-hidden font-jakarta text-[#001248]">
+
     <!-- Metrics Top & Bottom Grid Container -->
-    <div class="space-y-2.5 shrink-0">
+    <div class="space-y-2 shrink-0">
         <!-- Metrics Grid Top Row -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
             <!-- Card 1: Totalitas Fasilitas -->
-            <div class="bg-white rounded-lg p-3 border border-gray-200 flex flex-col justify-between">
-                <h3 class="text-xs font-bold text-[#081640] mb-1">Totalitas Fasilitas</h3>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Totalitas Fasilitas</h3>
                 <div class="space-y-0.5 text-[11px]">
                     <div class="flex justify-between items-center font-medium">
-                        <span class="text-gray-600">Aktif:</span>
-                        <span class="text-[#081640] font-bold">{{ $aktif ?? 36 }}</span>
+                        <span class="text-[#001248] font-normal">Aktif:</span>
+                        <span class="text-[#001248] font-normal">{{ $aktif }}</span>
                     </div>
                     <div class="flex justify-between items-center font-medium">
-                        <span class="text-gray-600">Dalam Perbaikan:</span>
-                        <span class="text-[#081640] font-bold">{{ $perbaikan ?? 2 }}</span>
+                        <span class="text-[#001248] font-normal">Dalam Perbaikan:</span>
+                        <span class="text-[#001248] font-normal">{{ $perbaikan }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Card 2: Reservasi Pending -->
-            <div class="bg-white rounded-lg p-3 border border-gray-200 flex flex-col justify-between">
-                <h3 class="text-xs font-bold text-[#081640] mb-0.5">Reservasi Pending</h3>
-                <span class="text-2xl font-bold text-[#081640] tracking-tight">{{ $reservasiMenunggu ?? 2 }}</span>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Reservasi Pending</h3>
+                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $reservasiMenunggu }}</span>
             </div>
 
             <!-- Card 3: Laporan Kerusakan -->
-            <div class="bg-white rounded-lg p-3 border border-gray-200 flex flex-col justify-between">
-                <h3 class="text-xs font-bold text-[#081640] mb-1">Laporan Kerusakan</h3>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Laporan Kerusakan</h3>
                 <div class="space-y-0.5 text-[11px]">
                     <div class="flex justify-between items-center font-medium">
-                        <span class="text-gray-600">Baru:</span>
-                        <span class="text-[#081640] font-bold">{{ $statusLaporan['baru'] ?? 5 }}</span>
+                        <span class="text-[#001248] font-normal">Baru:</span>
+                        <span class="text-[#001248] font-normal">{{ $statusLaporan['baru'] }}</span>
                     </div>
                     <div class="flex justify-between items-center font-medium">
-                        <span class="text-gray-600">Diproses:</span>
-                        <span class="text-[#081640] font-bold">{{ $statusLaporan['diproses'] ?? 3 }}</span>
+                        <span class="text-[#001248] font-normal">Diproses:</span>
+                        <span class="text-[#001248] font-normal">{{ $statusLaporan['diproses'] }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Metrics Grid Bottom Row -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <!-- Card 4: Total Pengguna -->
-            <div class="bg-white rounded-lg p-3 border border-gray-200 flex flex-col justify-between">
-                <h3 class="text-xs font-bold text-[#081640] mb-0.5">Total Pengguna</h3>
-                <span class="text-2xl font-bold text-[#081640] tracking-tight">{{ $totalPengguna ?? 348 }}</span>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Total Pengguna</h3>
+                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $totalPengguna }}</span>
             </div>
 
             <!-- Card 5: Total Petugas -->
-            <div class="bg-white rounded-lg p-3 border border-gray-200 flex flex-col justify-between">
-                <h3 class="text-xs font-bold text-[#081640] mb-0.5">Total Petugas</h3>
-                <span class="text-2xl font-bold text-[#081640] tracking-tight">{{ $totalPetugas ?? 10 }}</span>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Total Petugas</h3>
+                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $totalPetugas }}</span>
             </div>
         </div>
     </div>
 
-    <!-- Rekap Section -->
-    <div class="bg-white rounded-lg p-3.5 border border-gray-200 flex-1 flex flex-col justify-between mt-2.5 min-h-0">
+    <!-- Rekap Visualization Section -->
+    <div class="bg-white rounded-lg p-3 border border-gray-200 flex-1 flex flex-col justify-between mt-2 min-h-0 shadow-none">
 
         <!-- Rekap Header Controls -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2 gap-2 shrink-0">
-            <div class="flex items-center space-x-2.5">
-                <h2 class="text-xl font-bold text-[#081640] mr-1">Rekap</h2>
-                <select class="border border-gray-300 rounded-lg px-2 py-0.5 text-xs font-semibold text-[#081640] focus:ring-[#081640] focus:border-[#081640] bg-white">
-                    <option>September</option>
-                    <option>Oktober</option>
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2 shrink-0">
+            <div class="flex items-center space-x-2">
+                <h2 class="text-3xl font-bold text-[#001248] mr-1">Rekap</h2>
+
+                <select name="month" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
+                    @foreach($months as $num => $name)
+                    <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
+                    @endforeach
                 </select>
-                <select class="border border-gray-300 rounded-lg px-2 py-0.5 text-xs font-semibold text-[#081640] focus:ring-[#081640] focus:border-[#081640] bg-white">
-                    <option>2026</option>
-                    <option>2025</option>
+
+                <select name="year" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
+                    @foreach($years as $yr)
+                    <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
+                    @endforeach
                 </select>
             </div>
 
-            <div class="flex items-center space-x-2.5">
-                <!-- Segmented Control -->
-                <div class="flex bg-gray-100 rounded-lg p-0.5 border border-gray-200">
-                    <button class="px-2.5 py-0.5 text-[10px] font-semibold text-gray-500 hover:text-[#081640] rounded-md transition-colors">CSV</button>
-                    <button class="px-2.5 py-0.5 text-[10px] font-semibold text-gray-500 hover:text-[#081640] rounded-md transition-colors">XLSX</button>
-                    <button class="px-2.5 py-0.5 text-[10px] font-semibold bg-white text-[#081640] rounded-md transition-colors">PDF</button>
+            <div class="flex items-center space-x-2">
+                <!-- Export Format Controls -->
+                <div class="flex bg-gray-100 rounded p-0.5 border border-gray-200">
+                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-[#001248] bg-white rounded shadow-xs">CSV</button>
+                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">XLSX</button>
+                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">PDF</button>
                 </div>
-                <!-- Action Button -->
-                <button class="bg-[#081640] hover:bg-[#0a1e5c] text-white px-3 py-1 rounded-lg text-xs font-semibold flex items-center transition-colors">
-                    <i class="fas fa-download mr-1.5 text-[10px]"></i> Ekspor
-                </button>
+
+                <a href="{{ route('admin.recap.export', ['month' => $selectedMonth, 'year' => $selectedYear, 'format' => 'CSV']) }}" class="bg-[#001248] hover:bg-[#001a66] text-white px-3 py-1 rounded text-xs font-normal flex items-center transition-colors shadow-none shrink-0">
+                    <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Ekspor</span>
+                </a>
             </div>
-        </div>
+        </form>
 
-        @php
-        $mockOkupansi = [
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 85],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 70],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 60],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 45],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 30],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 20],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 15],
-        ];
-
-        $mockFrekuensi = [
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 85],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 70],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 60],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 45],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 30],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 20],
-        ['name' => 'Lorem Ipsum', 'val' => 'xx', 'pct' => 15],
-        ];
-        @endphp
-
-        <!-- Rekap Panels -->
+        <!-- Rekap Panels Side-by-Side -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 flex-1 min-h-0">
 
             <!-- Okupansi Fasilitas Card -->
-            <div class="border border-gray-200 rounded-lg p-3 relative flex flex-col justify-between bg-white min-h-0 shadow-none">
-                <h3 class="text-xs font-bold text-[#081640] mb-1.5 shrink-0">Okupansi Fasilitas</h3>
-                <div class="space-y-1.5 flex-1 overflow-y-auto">
-                    @foreach($mockOkupansi as $item)
-                    <div class="flex items-center text-[11px] font-medium text-[#081640]">
-                        <span class="w-20 truncate mr-2 text-gray-700">{{ $item['name'] }}</span>
-                        <!-- Flat Progress Track with Indicator Fill -->
-                        <div class="flex-1 h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden flex items-center shadow-none">
-                            <div class="h-full bg-[#94A3B8] rounded-full shadow-none" style="width: {{ $item['pct'] }}%;"></div>
+            <div class="border border-gray-200 rounded-xl p-2.5 flex flex-col justify-between bg-white min-h-0 shadow-none">
+                <h3 class="text-xl font-semibold text-[#001248] mb-1.5 shrink-0">Okupansi Fasilitas</h3>
+                <div class="space-y-1 flex-1 overflow-hidden">
+                    @forelse($occupancyData as $item)
+                    <div class="flex items-center text-[11px] font-medium text-[#001248]">
+                        <span class="w-24 truncate mr-2 text-[#001248] font-normal">{{ $item['name'] }}</span>
+                        <div class="flex-1 h-1.5">
+                            <div class="h-1.5 bg-gray-400 rounded-full transition-all duration-500" style="width: {{ max($item['pct'], 8) }}%;"></div>
                         </div>
-                        <span class="w-5 text-right ml-2 text-gray-500 font-semibold">{{ $item['val'] }}</span>
+                        <span class="w-6 text-right ml-2 text-[#001248] font-normal">{{ $item['val'] }}</span>
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="text-xs text-gray-400 text-center py-2">Belum ada data okupansi.</div>
+                    @endforelse
                 </div>
-                <div class="mt-1.5 text-right shrink-0">
-                    <button class="bg-[#081640] text-white px-3.5 py-1 rounded-lg text-xs font-semibold hover:bg-[#0a1e5c] transition-colors shadow-none">Detail</button>
+                <div class="mt-1 text-right shrink-0">
+                    <a href="{{ route('admin.recap.index') }}" class="inline-block bg-[#001248] text-white px-3 py-0.5 rounded text-xs font-semibold hover:bg-[#001a66] transition-colors shadow-none">Detail</a>
                 </div>
             </div>
 
             <!-- Frekuensi Laporan Fasilitas Card -->
-            <div class="border border-gray-200 rounded-lg p-3 relative flex flex-col justify-between bg-white min-h-0 shadow-none">
-                <h3 class="text-xs font-bold text-[#081640] mb-1.5 shrink-0">Frekuensi Laporan Fasilitas</h3>
-                <div class="space-y-1.5 flex-1 overflow-y-auto">
-                    @foreach($mockFrekuensi as $item)
-                    <div class="flex items-center text-[11px] font-medium text-[#081640]">
-                        <span class="w-20 truncate mr-2 text-gray-700">{{ $item['name'] }}</span>
-                        <!-- Flat Progress Track with Indicator Fill -->
-                        <div class="flex-1 h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden flex items-center shadow-none">
-                            <div class="h-full bg-[#94A3B8] rounded-full shadow-none" style="width: {{ $item['pct'] }}%;"></div>
+            <div class="border border-gray-200 rounded-xl p-2.5 flex flex-col justify-between bg-white min-h-0 shadow-none">
+                <h3 class="text-xl font-semibold text-[#001248] mb-1.5 shrink-0">Frekuensi Laporan Fasilitas</h3>
+                <div class="space-y-1 flex-1 overflow-hidden">
+                    @forelse($reportFrequencyData as $item)
+                    <div class="flex items-center text-[11px] font-medium text-[#001248]">
+                        <span class="w-24 truncate mr-2 text-[#001248] font-normal">{{ $item['name'] }}</span>
+                        <div class="flex-1 h-1.5">
+                            <div class="h-1.5 bg-gray-400 rounded-full transition-all duration-500" style="width: {{ max($item['pct'], 8) }}%;"></div>
                         </div>
-                        <span class="w-5 text-right ml-2 text-gray-500 font-semibold">{{ $item['val'] }}</span>
+                        <span class="w-6 text-right ml-2 text-[#001248] font-normal">{{ $item['val'] }}</span>
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="text-xs text-gray-400 text-center py-2">Belum ada data laporan.</div>
+                    @endforelse
                 </div>
-                <div class="mt-1.5 text-right shrink-0">
-                    <button class="bg-[#081640] text-white px-3.5 py-1 rounded-lg text-xs font-semibold hover:bg-[#0a1e5c] transition-colors shadow-none">Detail</button>
+                <div class="mt-1 text-right shrink-0">
+                    <a href="{{ route('admin.recap.index') }}" class="inline-block bg-[#001248] text-white px-3 py-0.5 rounded text-xs font-semibold hover:bg-[#001a66] transition-colors shadow-none">Detail</a>
                 </div>
             </div>
 

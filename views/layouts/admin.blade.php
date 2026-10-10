@@ -29,7 +29,7 @@
             </div>
 
             <!-- Vertical Divider Line -->
-            <div class="h-7 w-[1px] bg-[#D3D5DB] ml-[50px] mr-6 self-center"></div>
+            <div class="h-7 w-[1px] bg-[#D3D5DB] ml-[50px] mr-3 self-center"></div>
 
             <!-- Dynamic Page Title -->
             <h1 class="text-[26px] font-bold text-[#001248] tracking-tight">@yield('header_title', 'Dasbor')</h1>
@@ -102,9 +102,9 @@
                     <span class="ml-3">Kelola Petugas</span>
                 </a>
 
-                <!-- 5. Rekap -->
-                <a href="{{ route('admin.dashboard') }}"
-                    class="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold transition-colors {{ request()->routeIs('admin.rekap.*') ? 'bg-white text-[#001248] shadow-sm' : 'text-gray-200 hover:text-white hover:bg-white/10 font-semibold' }}">
+                <!-- 5. Recap -->
+                <a href="{{ route('admin.recap.index') }}"
+                    class="flex items-center px-4 py-2.5 rounded-xl text-xs font-bold transition-colors {{ request()->routeIs('admin.recap.*') ? 'bg-white text-[#081640] shadow-sm' : 'text-gray-200 hover:text-white hover:bg-white/10 font-semibold' }}">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
@@ -113,42 +113,41 @@
                     </svg>
                     <span class="ml-3">Rekap</span>
                 </a>
-            </nav>
 
-            <!-- Bottom Navigation Items -->
-            <div class="space-y-2 pt-2">
-                <!-- 6. Pengaturan Akun -->
-                <a href="#" class="flex items-center px-3.5 py-2.5 text-gray-200 hover:text-white hover:bg-white/10 rounded-xl font-semibold transition-colors text-sm">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                    <span class="ml-3">Pengaturan Akun</span>
-                </a>
-
-                <!-- 7. Bantuan -->
-                <a href="#" class="flex items-center px-3.5 py-2.5 text-gray-200 hover:text-white hover:bg-white/10 rounded-xl font-semibold transition-colors text-sm">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                    <span class="ml-3">Bantuan</span>
-                </a>
-
-                <!-- 8. Keluar -->
-                <form action="{{ route('logout') }}" method="POST" class="w-full">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center px-3.5 py-2.5 text-gray-200 hover:text-white hover:bg-white/10 rounded-xl font-semibold transition-colors text-sm">
+                <!-- Bottom Navigation Items -->
+                <div class="space-y-2 pt-2">
+                    <!-- 6. Pengaturan Akun -->
+                    <a href="#" class="flex items-center px-3.5 py-2.5 text-gray-200 hover:text-white hover:bg-white/10 rounded-xl font-semibold transition-colors text-sm">
                         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                            <polyline points="16 17 21 12 16 7"></polyline>
-                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                         </svg>
-                        <span class="ml-3">Keluar</span>
-                    </button>
-                </form>
-            </div>
+                        <span class="ml-3">Pengaturan Akun</span>
+                    </a>
+
+                    <!-- 7. Bantuan -->
+                    <a href="#" class="flex items-center px-3.5 py-2.5 text-gray-200 hover:text-white hover:bg-white/10 rounded-xl font-semibold transition-colors text-sm">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span class="ml-3">Bantuan</span>
+                    </a>
+
+                    <!-- 8. Keluar -->
+                    <form action="{{ route('logout') }}" method="POST" class="w-full">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center px-3.5 py-2.5 text-gray-200 hover:text-white hover:bg-white/10 rounded-xl font-semibold transition-colors text-sm">
+                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span class="ml-3">Keluar</span>
+                        </button>
+                    </form>
+                </div>
         </aside>
 
         <!-- Main Dynamic Content Wrapper -->

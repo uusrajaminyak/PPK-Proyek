@@ -14,12 +14,28 @@ use App\Http\Controllers\Officer\ReservationController as OfficerReservationCont
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReportController;
+
+use App\Http\Controllers\Officer\FacilityController as OfficerFacilityController;
+use App\Http\Controllers\Officer\ReportController as OfficerReportController;
+
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+use App\Http\Controllers\Admin\OfficerController as AdminOfficerController;
+use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
+use App\Http\Controllers\Admin\RecapController;
 
 /*
 |--------------------------------------------------------------------------
 | Public & Landing Routes
 |--------------------------------------------------------------------------
 */
+
 Route::view('/', 'landing')->name('home');
 Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities.index');
 
@@ -61,14 +77,14 @@ Route::prefix('officer')->name('officer.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Modul Admin: Dashboard, Facilities, Users, Officers, & Reservations - FR-13 s/d FR-17
+| Modul Admin: Dashboard, Facilities, Users, Officers, Reservations, & Recap
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Dashboard & Rekap (FR-17)
+    // Dashboard (FR-17)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Kelola Data Fasilitas (FR-16)
+    // Kelola Data Fasilitas (FR-16 - Handles index, create, store, show, edit, update, destroy)
     Route::resource('facilities', AdminFacilityController::class);
 
     // Kelola Pengguna (FR-14, FR-15)
@@ -79,8 +95,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/officers/create', [AdminOfficerController::class, 'create'])->name('officers.create');
     Route::post('/officers', [AdminOfficerController::class, 'store'])->name('officers.store');
 
-    // Kelola & Rekap Reservasi
+    // Kelola Reservasi
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
+
+    // Rekap & Ekspor Laporan (FR-17)
+    Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
+    Route::get('/recap/export', [RecapController::class, 'export'])->name('recap.export');
 });
 
 /*
@@ -92,6 +112,8 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/login/staff', [AuthController::class, 'showStaffLogin'])->name('login.staff');
 Route::post('/login/staff', [AuthController::class, 'loginStaff'])->name('login.staff.submit');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
@@ -101,6 +123,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::middleware(['auth'])->group(function () {
     Route::get('/facilities/{facility}/reservation', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/facilities/{facility}/schedule-data', [ReservationController::class, 'getScheduleData'])->name('reservations.schedule');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::post('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -18,12 +21,43 @@ class AuthController extends Controller
     }
 
     public function showStaffLogin()
+    public function showRegister(): View|RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('home');
         }
 
         return view('auth.staff-login');
+        return view('auth.register');
+    }
+
+    public function register(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal harus 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]);
+
+        $name = explode('@', $validated['email'])[0];
+
+        $user = User::create([
+            'name' => $name,
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+            'role' => 'pengguna',
+            'status_akun' => 'verified',
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('home')->with('success', 'Akun berhasil dibuat! Selamat datang di Fasilita UNDIP.');
     }
 
     public function login(Request $request)

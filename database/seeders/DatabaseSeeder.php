@@ -16,138 +16,60 @@ class DatabaseSeeder extends Seeder
     {
         $password = Hash::make('password');
 
-        $admin = User::create([
-            'name' => 'Admin Utama',
-            'email' => 'admin@undip.ac.id',
-            'password' => $password,
-            'role' => 'admin',
-            'status_akun' => 'verified',
-            'nomor_identitas' => '19850912201012',
-            'kategori' => 'Staf',
-        ]);
+        // 1. Seed Admin
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@undip.ac.id'],
+            [
+                'name'            => 'Admin Utama',
+                'password'        => $password,
+                'role'            => 'admin',
+                'status_akun'     => 'verified',
+                'nomor_identitas' => '19850912201012',
+                'kategori'        => 'Staf',
+            ]
+        );
 
+        // 2. Seed Officers
         $mockupOfficers = [
-            ['name' => 'Budi Santoso', 'id' => 'PTG-001', 'email' => 'budi.santoso@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-01-15 10:00:00'],
-            ['name' => 'Siti Aminah', 'id' => 'PTG-002', 'email' => 'siti.aminah@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-01-18 10:00:00'],
-            ['name' => 'Bambang Wijaya', 'id' => 'PTG-003', 'email' => 'bambang.w@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-01-20 10:00:00'],
-            ['name' => 'Dewi Lestari', 'id' => 'PTG-004', 'email' => 'dewi.lestari@staff.undip.ac.id', 'status' => 'suspended', 'date' => '2026-02-02 10:00:00'],
-            ['name' => 'Hendra Wijaya', 'id' => 'PTG-005', 'email' => 'hendra.w@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-02-10 10:00:00'],
-            ['name' => 'Rina Kartika', 'id' => 'PTG-006', 'email' => 'rina.k@staff.undip.ac.id', 'status' => 'verified', 'date' => '2026-02-14 10:00:00'],
+            ['name' => 'Budi Santoso', 'id' => 'PTG-001', 'email' => 'budi.santoso@staff.undip.ac.id', 'status' => 'verified'],
+            ['name' => 'Siti Aminah', 'id' => 'PTG-002', 'email' => 'siti.aminah@staff.undip.ac.id', 'status' => 'verified'],
+            ['name' => 'Bambang Wijaya', 'id' => 'PTG-003', 'email' => 'bambang.w@staff.undip.ac.id', 'status' => 'verified'],
+            ['name' => 'Dewi Lestari', 'id' => 'PTG-004', 'email' => 'dewi.lestari@staff.undip.ac.id', 'status' => 'suspended'],
+            ['name' => 'Hendra Wijaya', 'id' => 'PTG-005', 'email' => 'hendra.w@staff.undip.ac.id', 'status' => 'verified'],
+            ['name' => 'Rina Kartika', 'id' => 'PTG-006', 'email' => 'rina.k@staff.undip.ac.id', 'status' => 'verified'],
         ];
 
         foreach ($mockupOfficers as $off) {
-            User::create([
-                'name' => $off['name'],
-                'email' => $off['email'],
-                'password' => $password,
-                'role' => 'petugas',
-                'status_akun' => $off['status'],
-                'nomor_identitas' => $off['id'],
-                'kategori' => 'Staf',
-                'created_at' => $off['date'],
-                'updated_at' => $off['date'],
-            ]);
+            User::firstOrCreate(
+                ['email' => $off['email']],
+                [
+                    'name'            => $off['name'],
+                    'password'        => $password,
+                    'role'            => 'petugas',
+                    'status_akun'     => $off['status'],
+                    'nomor_identitas' => $off['id'],
+                    'kategori'        => 'Staf',
+                ]
+            );
         }
 
-        $pengguna = User::create([
-            'name' => 'Ahmed Fauzi (HMTI)',
-            'email' => 'ahmed@student.undip.ac.id',
-            'password' => $password,
-            'role' => 'pengguna',
-            'status_akun' => 'verified',
-            'nomor_identitas' => '21120122140089',
-            'kategori' => 'Mahasiswa',
-        ]);
+        // 3. Seed Standard Pengguna
+        $pengguna = User::firstOrCreate(
+            ['email' => 'ahmed@student.undip.ac.id'],
+            [
+                'name'            => 'Ahmed Fauzi (HMTI)',
+                'password'        => $password,
+                'role'            => 'pengguna',
+                'status_akun'     => 'verified',
+                'nomor_identitas' => '21120122140089',
+                'kategori'        => 'Mahasiswa',
+            ]
+        );
 
-        $kelas = Facility::create([
-            'nama_fasilitas' => 'Ruang Kelas E101',
-            'tipe' => 'Ruang Kelas',
-            'lokasi' => 'FSM - Gedung E - Lt. 1',
-            'kapasitas' => 60,
-            'deskripsi' => 'Ruang kelas standar.',
-            'status_fasilitas' => 'active',
-            'foto_path' => 'https://images.unsplash.com/photo-1571260899304-425dea5cfd5b?auto=format&fit=crop&w=800&q=80',
-        ]);
-
-        $aula = Facility::create([
-            'nama_fasilitas' => 'Aula Imam Bardjo',
-            'tipe' => 'Aula Serbaguna',
-            'lokasi' => 'Undip Pleburan',
-            'kapasitas' => 500,
-            'deskripsi' => 'Aula utama untuk seminar.',
-            'status_fasilitas' => 'active',
-            'foto_path' => 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80',
-        ]);
-
-        $labKomputer = Facility::create([
-            'nama_fasilitas' => 'Lab Komputer Terpadu',
-            'tipe' => 'Laboratorium',
-            'lokasi' => 'FSM - Gedung Lab - Lt. 3',
-            'kapasitas' => 40,
-            'deskripsi' => 'Lab komputer dengan spesifikasi tinggi.',
-            'status_fasilitas' => 'in_repair',
-            'foto_path' => 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80',
-        ]);
-
-        $lapangan = Facility::create([
-            'nama_fasilitas' => 'Lapangan Basket FSM',
-            'tipe' => 'Lapangan Olahraga',
-            'lokasi' => 'FSM - Area Outdoor',
-            'kapasitas' => 0,
-            'deskripsi' => 'Lapangan basket outdoor utama.',
-            'status_fasilitas' => 'active',
-            'foto_path' => 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80',
-        ]);
-
-        $ruangRapat = Facility::create([
-            'nama_fasilitas' => 'Ruang Sidang Utama',
-            'tipe' => 'Ruang Rapat',
-            'lokasi' => 'Rektorat - Gedung Widya Puraya',
-            'kapasitas' => 30,
-            'deskripsi' => 'Ruang rapat eksklusif rektorat.',
-            'status_fasilitas' => 'inactive',
-            'foto_path' => 'https://images.unsplash.com/photo-1577415124269-311451f28b3a?auto=format&fit=crop&w=800&q=80',
-        ]);
-
-        $labKimia = Facility::create([
-            'nama_fasilitas' => 'Lab Kimia Analitik',
-            'tipe' => 'Laboratorium',
-            'lokasi' => 'FSM - Gedung Lab - Lt. 1',
-            'kapasitas' => 25,
-            'deskripsi' => 'Laboratorium kimia untuk praktikum.',
-            'status_fasilitas' => 'active',
-            'foto_path' => 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=800&q=80',
-        ]);
-
-        // Panggil FacilitySeeder (6 fasilitas terstandar)
+        // 4. Run FacilitySeeder to populate 12 FSM Campus Facilities
         $this->call(FacilitySeeder::class);
 
-        $aula = Facility::where('nama_fasilitas', 'Aula Utama Kampus')->first();
-        $kelas101 = Facility::where('nama_fasilitas', 'Ruang Kelas 101')->first();
-        $lab = Facility::where('nama_fasilitas', 'Laboratorium Komputer 1')->first();
-        $ruangRapat = Facility::where('nama_fasilitas', 'Ruang Rapat Dekan')->first();
-        $lapangan = Facility::where('nama_fasilitas', 'Lapangan Olahraga')->first();
-        $kelas205 = Facility::where('nama_fasilitas', 'Ruang Kelas 205 (Renovasi)')->first();
-
-        $today = Carbon::today();
-
-        Reservation::create([
-            'user_id' => $pengguna->id,
-            'facility_id' => $aula->id,
-            'tujuan_penggunaan' => 'Seminar Teknologi Informasi',
-            'start_time' => $today->copy()->setTime(9, 0),
-            'end_time' => $today->copy()->setTime(12, 0),
-            'status_reservasi' => 'approved',
-        ]);
-
-        Reservation::create([
-            'user_id' => $pengguna->id,
-            'facility_id' => $lapangan->id,
-            'tujuan_penggunaan' => 'Latihan Rutin UKM Olahraga',
-            'start_time' => $today->copy()->addDay()->setTime(15, 0),
-            'end_time' => $today->copy()->addDay()->setTime(17, 0),
-            'status_reservasi' => 'pending',
-        ]);
+        $facilityModels = Facility::all();
 
         for ($i = 1; $i <= 5; $i++) {
             Reservation::create([
@@ -159,16 +81,21 @@ class DatabaseSeeder extends Seeder
                 'status_reservasi' => 'approved',
                 'created_at' => $today->copy()->subDays($i)->setTime(8, 0),
             ]);
+        // 5. Seed Reservations across all facilities (Spanning Sept & Oct 2026)
+        $sept2026 = Carbon::create(2026, 9, 15, 9, 0, 0);
+        $oct2026  = Carbon::create(2026, 10, 5, 10, 0, 0);
 
-            if ($i % 2 == 0) {
+        foreach ($facilityModels as $index => $fac) {
+            // September Reservations
+            for ($i = 0; $i < 2; $i++) {
                 Reservation::create([
-                    'user_id' => $pengguna->id,
-                    'facility_id' => $lab->id,
-                    'tujuan_penggunaan' => 'Praktikum Pemrograman',
-                    'start_time' => $today->copy()->subDays($i)->setTime(13, 0),
-                    'end_time' => $today->copy()->subDays($i)->setTime(15, 0),
-                    'status_reservasi' => 'approved',
-                    'created_at' => $today->copy()->subDays($i)->setTime(9, 0),
+                    'user_id'           => $pengguna->id,
+                    'facility_id'       => $fac->id,
+                    'tujuan_penggunaan' => "Kegiatan Akademik & Ormawa #{$i} - {$fac->nama_fasilitas}",
+                    'start_time'        => $sept2026->copy()->addDays($i)->setTime(8 + ($i % 8), 0),
+                    'end_time'          => $sept2026->copy()->addDays($i)->setTime(10 + ($i % 8), 0),
+                    'status_reservasi'  => 'approved',
+                    'created_at'        => $sept2026->copy()->subDays(2),
                 ]);
             }
         }
@@ -226,11 +153,28 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        foreach ($testUsers as $userData) {
-            User::firstOrCreate(
-                ['email' => $userData['email']],
-                $userData
-            );
+            // October Reservations
+            Reservation::create([
+                'user_id'           => $pengguna->id,
+                'facility_id'       => $fac->id,
+                'tujuan_penggunaan' => "Sewa Oktober - " . $fac->nama_fasilitas,
+                'start_time'        => $oct2026->copy()->addDays($index),
+                'end_time'          => $oct2026->copy()->addDays($index)->addHours(2),
+                'status_reservasi'  => 'approved',
+                'created_at'        => $oct2026,
+            ]);
+        }
+
+        // 6. Seed Reports across facilities
+        foreach ($facilityModels as $index => $fac) {
+            Report::create([
+                'reporter_id'      => $pengguna->id,
+                'facility_id'      => $fac->id,
+                'kategori_laporan' => 'Fasilitas umum / Perangkat',
+                'deskripsi'        => "Laporan kendala atau pemeliharaan di " . $fac->nama_fasilitas,
+                'status_laporan'   => $index % 2 == 0 ? 'selesai' : 'diproses',
+                'created_at'       => $sept2026->copy()->addDays($index),
+            ]);
         }
     }
 }

@@ -14,24 +14,22 @@ class Facility extends Model
     protected $table = 'facilities';
 
     /**
-     * Unified Mass Assignable Attributes.
-     * Supports both SRS domain schema and existing view/controller attributes.
+     * Physical Mass Assignable Columns matching PostgreSQL schema.
      */
     protected $fillable = [
         'nama_fasilitas',
-        'kategori',
         'tipe',
         'lokasi',
         'kapasitas',
         'deskripsi',
         'foto',
-        'foto_path',
         'is_active',
+        'foto_path',
         'status_fasilitas',
     ];
 
     /**
-     * Unified Attribute Casting (Laravel 11 Casts Method).
+     * Unified Attribute Casting.
      */
     protected function casts(): array
     {
@@ -39,13 +37,35 @@ class Facility extends Model
             'is_active' => 'boolean',
             'kapasitas' => 'integer',
             'status_fasilitas' => 'string',
+            'kapasitas' => 'integer',
         ];
     }
 
     // ==========================================
-    // Scopes
+    // Virtual Accessors (Schema & UI Compatibility Layer)
     // ==========================================
-    public function scopeSearch($query, $params)
+
+    public function getKategoriAttribute()
+    {
+        return $this->attributes['tipe'] ?? 'Ruang Kelas';
+    }
+
+    public function setKategoriAttribute($value)
+    {
+        $this->attributes['tipe'] = $value;
+    }
+
+    public function getFotoAttribute()
+    {
+        return $this->attributes['foto_path'] ?? null;
+    }
+
+    public function setFotoAttribute($value)
+    {
+        $this->attributes['foto_path'] = $value;
+    }
+
+    public function getIsActiveAttribute(): bool
     {
         if (! empty($params['nama'])) {
             $query->where('nama_fasilitas', 'like', "%{$params['nama']}%");
@@ -64,11 +84,18 @@ class Facility extends Model
         }
 
         return $query;
+        return ($this->attributes['status_fasilitas'] ?? 'active') === 'active';
+    }
+
+    public function getStatusFasilitasAttribute($value)
+    {
+        return $value ?: 'active';
     }
 
     // ==========================================
-    // UI Helpers
+    // UI & Business Logic Helpers
     // ==========================================
+
     public function getStatusBadgeClass(): string
     {
         return match ($this->status_fasilitas) {
@@ -76,6 +103,10 @@ class Facility extends Model
             'in_repair' => 'bg-red-100 text-red-800',
             'inactive' => 'bg-gray-100 text-gray-800',
             default => 'bg-gray-100 text-gray-800',
+            'active'    => 'bg-green-100 text-green-800',
+            'in_repair' => 'bg-amber-100 text-amber-800',
+            'inactive'  => 'bg-gray-100 text-gray-800',
+            default     => 'bg-gray-100 text-gray-800',
         };
     }
 
@@ -89,32 +120,20 @@ class Facility extends Model
         };
     }
 
-    // ==========================================
-    // Business Logic Helpers
-    // ==========================================
     public function isActive(): bool
     {
-        return $this->status_fasilitas === 'active' || $this->is_active === true;
+        return ($this->attributes['status_fasilitas'] ?? 'active') === 'active';
     }
 
     public function isInRepair(): bool
     {
-        return $this->status_fasilitas === 'in_repair';
-    }
-
-    public function markInRepair(): bool
-    {
-        return $this->update(['status_fasilitas' => 'in_repair', 'is_active' => false]);
-    }
-
-    public function markActive(): bool
-    {
-        return $this->update(['status_fasilitas' => 'active', 'is_active' => true]);
+        return ($this->attributes['status_fasilitas'] ?? '') === 'in_repair';
     }
 
     // ==========================================
     // Relationships
     // ==========================================
+
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
