@@ -6,6 +6,7 @@
 @import "./partials/reservations.css";
 @import "./partials/auth.css";
 @import "./partials/reservation-create.css";
+@import "./partials/reports.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
