@@ -11,18 +11,6 @@ use App\Http\Controllers\Officer\ReportController as OfficerReportController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FacilityController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\ReportController;
-
-use App\Http\Controllers\Officer\FacilityController as OfficerFacilityController;
-use App\Http\Controllers\Officer\ReportController as OfficerReportController;
-
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\OfficerController as AdminOfficerController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
 use App\Http\Controllers\Admin\RecapController;
