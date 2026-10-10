@@ -70,6 +70,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/officers', [AdminOfficerController::class, 'index'])->name('officers.index');
     Route::get('/officers/create', [AdminOfficerController::class, 'create'])->name('officers.create');
     Route::post('/officers', [AdminOfficerController::class, 'store'])->name('officers.store');
+    Route::get('/officers/{officer}', [AdminOfficerController::class, 'show'])->name('officers.show');
+    Route::patch('/officers/{officer}/status', [AdminOfficerController::class, 'updateStatus'])->name('officers.update-status');
+    Route::post('/officers/{officer}/reset-password', [AdminOfficerController::class, 'resetPassword'])->name('officers.reset-password');
 
     // Kelola & Rekap Reservasi
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
