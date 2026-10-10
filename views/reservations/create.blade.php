@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $facility->nama_fasilitas }} Ã¢â‚¬â€ Fasilita UNDIP</title>
+    <title>{{ $facility->nama_fasilitas }} - Fasilita UNDIP</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>

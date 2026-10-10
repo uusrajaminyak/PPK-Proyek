@@ -534,3 +534,11 @@
         transform: rotate(360deg);
     }
 }
+
+/* Memastikan footer solid menutupi siluet watermark di bawah */
+.detail-page .site-footer {
+    margin-top: auto;
+    position: relative;
+    z-index: 2;
+    background-color: #001348;
+}
