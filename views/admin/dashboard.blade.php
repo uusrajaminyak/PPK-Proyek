@@ -79,13 +79,13 @@
             <div class="flex items-center space-x-2">
                 <h2 class="text-3xl font-bold text-[#001248] mr-1">Rekap</h2>
 
-                <select name="month" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
+                <select name="month" id="dashMonth" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
                     @foreach($months as $num => $name)
                     <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
                 </select>
 
-                <select name="year" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
+                <select name="year" id="dashYear" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
                     @foreach($years as $yr)
                     <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
                     @endforeach
@@ -93,14 +93,15 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <!-- Export Format Controls -->
+                <!-- Interactive Export Format Controls -->
                 <div class="flex bg-gray-100 rounded p-0.5 border border-gray-200">
-                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-[#001248] bg-white rounded shadow-xs">CSV</button>
-                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">XLSX</button>
-                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">PDF</button>
+                    <button type="button" id="btn-fmt-csv" onclick="setDashboardFormat('CSV')" class="px-2.5 py-0.5 text-[10px] font-bold text-[#001248] bg-white rounded shadow-xs transition-colors">CSV</button>
+                    <button type="button" id="btn-fmt-xlsx" onclick="setDashboardFormat('XLSX')" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded transition-colors">XLSX</button>
+                    <button type="button" id="btn-fmt-pdf" onclick="setDashboardFormat('PDF')" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded transition-colors">PDF</button>
                 </div>
 
-                <a href="{{ route('admin.recap.export', ['month' => $selectedMonth, 'year' => $selectedYear, 'format' => 'CSV']) }}" class="bg-[#001248] hover:bg-[#001a66] text-white px-3 py-1 rounded text-xs font-normal flex items-center transition-colors shadow-none shrink-0">
+                <!-- Dynamic Export Action Link -->
+                <a id="dashboardExportBtn" href="{{ route('admin.recap.export', ['month' => $selectedMonth, 'year' => $selectedYear, 'format' => 'CSV']) }}" class="bg-[#001248] hover:bg-[#001a66] text-white px-3 py-1 rounded text-xs font-normal flex items-center transition-colors shadow-none shrink-0">
                     <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="7 10 12 15 17 10"></polyline>
@@ -160,4 +161,34 @@
     </div>
 
 </div>
+
+<!-- JavaScript Engine for Export Format State Switching -->
+<script>
+    let currentFormat = 'CSV';
+
+    function setDashboardFormat(fmt) {
+        currentFormat = fmt;
+        const formats = ['CSV', 'XLSX', 'PDF'];
+
+        // Update active button visual state
+        formats.forEach(f => {
+            const btn = document.getElementById('btn-fmt-' + f.toLowerCase());
+            if (btn) {
+                if (f === fmt) {
+                    btn.className = 'px-2.5 py-0.5 text-[10px] font-bold text-[#001248] bg-white rounded shadow-xs transition-colors';
+                } else {
+                    btn.className = 'px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded transition-colors';
+                }
+            }
+        });
+
+        // Rebuild export URL with selected format, month, and year
+        const month = document.getElementById('dashMonth').value;
+        const year = document.getElementById('dashYear').value;
+        const exportBtn = document.getElementById('dashboardExportBtn');
+        if (exportBtn) {
+            exportBtn.href = "{{ route('admin.recap.export') }}?month=" + month + "&year=" + year + "&format=" + fmt;
+        }
+    }
+</script>
 @endsection
