@@ -1,0 +1,138 @@
+/* Masuk (Login) — kartu autentikasi dan form */
+
+.login-page { min-height: 100vh; display: flex; flex-direction: column; background-color: #f0f0f0; position: relative; overflow: hidden; }
+.login-watermark {
+    position: fixed;
+    bottom: -5%;
+    left: -8%;
+    width: 55vw;
+    max-width: 700px;
+    min-width: 340px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+.login-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem 2rem;
+    position: relative;
+    z-index: 1;
+}
+.login-back-link {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #001348;
+    text-decoration: none;
+    z-index: 10;
+    transition: opacity 0.15s;
+}
+.login-back-link:hover { opacity: 0.7; }
+.login-brand-header { margin-bottom: 1.5rem; text-align: center; display: flex; justify-content: center; }
+.login-brand-header img { width: 100%; max-width: 340px; height: auto; object-fit: contain; }
+.login-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1.5px solid #d1d5db;
+    padding: 2rem 2rem 1.75rem;
+    width: 100%;
+    max-width: 380px;
+}
+.login-field { margin-bottom: 1.1rem; }
+.login-field label { display: block; font-size: 0.85rem; font-weight: 600; color: #111827; margin-bottom: 0.4rem; }
+.login-input-wrap { position: relative; }
+.login-input-wrap .field-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.85rem;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+.login-input-wrap input {
+    width: 100%;
+    padding: 0.65rem 0.85rem 0.65rem 2.5rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #111827;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.login-input-wrap input:focus { border-color: #001348; box-shadow: 0 0 0 3px rgba(0,19,72,0.08); }
+.login-input-wrap input.has-error { border-color: #ef4444; }
+.login-input-wrap input[type="password"],
+.login-input-wrap input[type="text"] { padding-right: 2.75rem; }
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+}
+.toggle-password:hover { color: #001348; }
+.field-error { margin-top: 0.3rem; font-size: 0.78rem; color: #ef4444; }
+.login-alert { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 0.65rem 0.9rem; margin-bottom: 1rem; font-size: 0.82rem; color: #991b1b; }
+.login-alert p { margin: 0; }
+.login-remember-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 1.35rem;
+    font-size: 0.84rem;
+    color: #374151;
+    cursor: pointer;
+}
+.login-remember-row input[type="checkbox"] { width: 15px; height: 15px; accent-color: #001348; cursor: pointer; }
+.login-btn {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: #001348;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.01em;
+}
+.login-btn:hover { background: #0a1e55; }
+.login-btn:active { transform: scale(0.98); }
+.login-register { margin-top: 1.1rem; text-align: center; font-size: 0.84rem; color: #6b7280; }
+.login-register a { color: #001348; font-weight: 700; text-decoration: none; }
+.login-register a:hover { text-decoration: underline; }
+.login-footer {
+    background: #001348;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    font-size: 0.78rem;
+    padding: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 480px) {
+    .login-card { padding: 1.5rem 1.25rem; }
+    .login-watermark { width: 85vw; left: -15%; }
+    .login-back-link { top: 1rem; left: 1rem; }
+}

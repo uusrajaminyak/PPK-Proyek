@@ -2,23 +2,41 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Report extends Model
 {
-    protected $guarded = [];
+    use HasFactory;
 
-    protected $casts = [
-        'foto_paths' => 'array',
+    protected $fillable = [
+        'reporter_id',
+        'facility_id',
+        'kategori_laporan',
+        'deskripsi',
+        'foto_paths',
+        'status_laporan',
+        'catatan_resolusi',
     ];
 
-    public function reporter()
+    protected function casts(): array
+    {
+        return [
+            'foto_paths' => 'array',
+        ];
+    }
+
+    // ==========================================
+    // Relationships
+    // ==========================================
+    public function reporter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reporter_id');
     }
 
-    public function facility()
+    public function facility(): BelongsTo
     {
-        return $this->belongsTo(Facility::class);
+        return $this->belongsTo(Facility::class, 'facility_id');
     }
 }
