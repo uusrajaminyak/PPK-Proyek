@@ -3,44 +3,67 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f5f5f5">
+    <meta name="theme-color" content="#f7f7f8">
     <meta name="description" content="Daftar akun Fasilita UNDIP untuk reservasi dan pelaporan fasilitas kampus.">
     <title>Daftar Akun — Fasilita UNDIP</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
+    <style>
+        .register-page {
+            overflow: hidden;
+        }
+
+        .register-page .site-footer {
+            flex-shrink: 0;
+        }
+
+        .register-page .login-main {
+            justify-content: flex-start;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .register-page .login-title {
+            margin-bottom: 0.6rem;
+        }
+
+        .register-page .register-card {
+            padding: 1rem 1.25rem;
+        }
+
+        .register-page .register-field {
+            margin-bottom: 0.65rem;
+        }
+
+        .register-page .register-input-wrap input {
+            padding-top: 0.55rem;
+            padding-bottom: 0.55rem;
+        }
+
+        .register-page .register-btn {
+            margin-top: 0.7rem;
+            padding-top: 0.65rem;
+            padding-bottom: 0.65rem;
+        }
+
+        .register-page .login-links {
+            margin-top: 0.65rem;
+        }
+    </style>
 </head>
-<body class="login-page">
+<body class="login-page register-page">
+    <div class="hero-watermark login-watermark" aria-hidden="true">
+        <img src="{{ asset('images/landing/undip-blue-watermark.png') }}" alt="">
+    </div>
 
-    {{-- ── BACK LINK: fixed top-left, outside card ───────────── --}}
-    <a class="login-back-link" href="{{ route('login') }}">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5M12 5l-7 7 7 7"/>
-        </svg>
-        Kembali ke Login
-    </a>
-
-    {{-- ── WATERMARK: left side ───────────────────────────────── --}}
-    <img
-        class="login-watermark"
-        src="{{ asset('images/landing/undip-watermark.png') }}"
-        alt=""
-        aria-hidden="true"
-    >
-
-    {{-- ── MAIN ────────────────────────────────────────────────── --}}
     <main class="login-main">
+        <h1 class="login-title">Daftar Akun</h1>
 
-        {{-- Brand header above card: single horizontal image --}}
-        <div class="login-brand-header">
-            <img src="{{ asset('images/fasilita-header.png') }}" alt="Fasilita UNDIP - Sistem Reservasi & Pelaporan Fasilitas Kampus">
-        </div>
+        <section class="register-card" aria-labelledby="register-title">
+            <h2 id="register-title" class="sr-only">Daftar akun Fasilita</h2>
 
-        {{-- Register card --}}
-        <div class="register-card">
-
-            {{-- Validation errors --}}
             @if ($errors->any())
-                <div class="login-alert">
+                <div class="login-alert" role="alert">
                     @foreach ($errors->all() as $error)
                         <p>{{ $error }}</p>
                     @endforeach
@@ -50,8 +73,7 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                {{-- Email --}}
-                <div class="register-field">
+                    <div class="register-field">
                     <label for="email">Email</label>
                     <div class="register-input-wrap">
                         <input
@@ -68,7 +90,6 @@
                     @error('email')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Password --}}
                 <div class="register-field">
                     <label for="password">Password</label>
                     <div class="register-input-wrap">
@@ -100,7 +121,6 @@
                     @error('password')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Confirm Password --}}
                 <div class="register-field">
                     <label for="password_confirmation">Confirm Password</label>
                     <div class="register-input-wrap">
@@ -132,17 +152,15 @@
                     @error('password_confirmation')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Submit --}}
                 <button type="submit" class="register-btn">Buat Akun</button>
             </form>
-
-        </div>
+            <div class="login-links">
+                <a href="{{ route('login') }}">Kembali ke Login</a>
+            </div>
+        </section>
     </main>
 
-    {{-- ── FOOTER ──────────────────────────────────────────────── --}}
-    <footer class="login-footer">
-        Fasilita UNDIP &mdash; Sistem Reservasi &amp; Pelaporan Fasilitas Kampus Universitas Diponegoro &copy; 2026
-    </footer>
+    @include('partials.footer')
 
     <script>
         function toggleVisibility(inputId, showIconId, hideIconId) {
@@ -158,4 +176,3 @@
 
 </body>
 </html>
-
