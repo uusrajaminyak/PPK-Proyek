@@ -15,7 +15,7 @@ class DashboardController extends Controller
         abort_unless(auth()->user()->isPetugas() || auth()->user()->isAdmin(), 403);
 
         $pendingReservationsCount = Reservation::where('status_reservasi', 'pending')->count();
-        $incomingReportsCount = Report::whereIn('status_laporan', ['baru', 'diproses'])->count();
+        $incomingReportsCount = Report::count();
         $facilitiesInRepairCount = Facility::where('status_fasilitas', 'in_repair')->count();
 
         $pendingReservations = Reservation::query()

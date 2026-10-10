@@ -39,7 +39,10 @@
 .officer-report-update label { display: grid; gap: 6px; color: #001348; font-size: 13px; font-weight: 700; }
 .officer-report-update select,
 .officer-report-update textarea { width: 100%; min-height: 42px; padding: 10px 12px; border: 1px solid #cdd2dc; border-radius: 8px; background: #fff; color: #001348; font: inherit; font-size: 14px; }
-.officer-report-update textarea { min-height: 92px; resize: vertical; }
+.officer-report-update textarea { min-height: 92px; resize: none; }
+.officer-report-select { position: relative; display: block; }
+.officer-report-update .officer-report-select select { padding-right: 38px; appearance: none; }
+.officer-report-select img { position: absolute; top: 50%; right: 12px; width: 16px; height: 16px; transform: translateY(-50%); pointer-events: none; }
 .officer-report-update .officer-detail-action { justify-self: end; min-height: 42px; background: #001348; }
 .officer-report-update .officer-detail-action:hover { background: #10285d; }
 
@@ -59,6 +62,7 @@
 .officer-report-detail-photos .officer-detail-photo-empty { display: block; width: 82px; height: 82px; flex: 0 0 82px; overflow: hidden; border: 1px solid #e1e3e8; border-radius: 8px; background: #e5e7eb; }
 .officer-report-detail-photos img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .officer-report-information .officer-detail-block { margin-top: 18px; }
+.officer-report-detail-page .officer-detail-heading { position: relative; padding-right: 90px; }
 .officer-report-detail-page .officer-detail-heading .officer-report-status { position: absolute; top: 0; right: 0; }
 .officer-report-detail-update { margin-top: 22px; }
 .officer-report-resolution-note { display: grid; gap: 5px; margin: 18px 0 0; color: #243653; font-size: 15px; line-height: 1.5; }

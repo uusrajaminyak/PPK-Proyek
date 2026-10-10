@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Officer;
 use App\Http\Controllers\Controller;
 use App\Models\Facility;
 use App\Models\Reservation;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -29,6 +30,15 @@ class ReservationController extends Controller
                 'user:id,name,fakultas',
                 'facility:id,nama_fasilitas,tipe,lokasi',
             ])
+            ->where(function (Builder $reservations): void {
+                $reservations
+                    ->where('status_reservasi', 'pending')
+                    ->orWhere(function (Builder $approvedReservations): void {
+                        $approvedReservations
+                            ->where('status_reservasi', 'approved')
+                            ->where('end_time', '>', now());
+                    });
+            })
             ->when($filters['search'] ?? null, function ($reservations, string $search): void {
                 $search = trim($search);
                 $hasFormattedId = preg_match('/^RSV-\d{8}-(\d+)$/i', $search, $idMatch) === 1;
@@ -156,15 +166,22 @@ class ReservationController extends Controller
 
         $validated = $request->validate([
             'status_reservasi' => ['required', 'in:approved,cancelled_by_officer'],
+            'alasan_pembatalan' => ['required_if:status_reservasi,cancelled_by_officer', 'nullable', 'string', 'max:1000'],
+            'from' => ['nullable', 'in:dashboard,history'],
         ]);
 
         $statusLabel = $validated['status_reservasi'] === 'approved' ? 'disetujui' : 'ditolak';
         $attributes = [
             'status_reservasi' => $validated['status_reservasi'],
             'alasan_pembatalan' => $validated['status_reservasi'] === 'cancelled_by_officer'
-                ? 'Ditolak oleh petugas'
+                ? $validated['alasan_pembatalan']
                 : null,
         ];
+
+        $detailRouteParameters = array_filter([
+            'reservation' => $reservation,
+            'from' => $validated['from'] ?? null,
+        ]);
 
         $updated = Reservation::query()
             ->whereKey($reservation->getKey())
@@ -173,12 +190,12 @@ class ReservationController extends Controller
 
         if ($updated === 0) {
             return redirect()
-                ->route('officer.reservations.show', $reservation)
+                ->route('officer.reservations.show', $detailRouteParameters)
                 ->with('error', 'Reservasi ini sudah diproses sebelumnya.');
         }
 
         return redirect()
-            ->route('officer.reservations.show', $reservation)
+            ->route('officer.reservations.show', $detailRouteParameters)
             ->with('success', "Reservasi berhasil {$statusLabel}.");
     }
 }

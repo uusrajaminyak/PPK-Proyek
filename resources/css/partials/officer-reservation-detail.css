@@ -16,9 +16,8 @@
 .officer-detail-facility h2 { margin: 0; color: #001348; font-size: 30px; font-weight: 700; letter-spacing: -.035em; }
 .officer-detail-facility-meta { display: grid; gap: 9px; margin-top: 12px; color: #536078; font-size: 16px; }
 .officer-detail-facility-meta span { display: flex; align-items: center; gap: 8px; line-height: 1.25; }
-.officer-detail-facility-meta img { width: 18px; height: 18px; object-fit: contain; }
+.officer-detail-facility-meta img { width: 18px; height: 18px; object-fit: contain; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
 .officer-detail-facility-meta span { justify-content: flex-start; }
-.officer-detail-facility-meta .officer-detail-capacity-icon { filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
 .officer-detail-photo-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 82px)); gap: 8px; margin-top: 14px; }
 .officer-detail-photo-empty { width: 100%; aspect-ratio: 1; border: 1px solid #e1e3e8; border-radius: 8px; background: #e5e7eb; }
 .officer-detail-block { margin-top: 17px; }
@@ -52,7 +51,17 @@
 .officer-detail-action.is-reject:hover { background: #d93236; }
 .officer-detail-action.is-approve { background: #28a95d; }
 .officer-detail-action.is-approve:hover { background: #208e4e; }
-.officer-detail-rejection-note { margin: auto 0 0; padding-top: 28px; color: #6b3440; font-size: 12px; }
+.officer-detail-rejection-data { margin-top: 22px; }
+.officer-detail-rejection-data .officer-detail-purpose { color: #6b3440; overflow-wrap: anywhere; }
+.officer-rejection-dialog { position: fixed; inset: 50% auto auto 50%; width: min(450px, calc(100vw - 32px)); max-width: 450px; max-height: calc(100vh - 32px); margin: 0; padding: 24px 16px 18px; transform: translate(-50%, -50%); border: 1px solid #001348; border-radius: 19px; background: #fff; color: #001348; }
+.officer-rejection-dialog::backdrop { background: rgb(0 12 43 / 42%); }
+.officer-rejection-dialog form { display: grid; justify-items: center; gap: 18px; }
+.officer-rejection-dialog h2 { margin: 0; color: #001348; font-size: 24px; font-weight: 700; text-align: center; }
+.officer-rejection-dialog textarea { width: 100%; min-height: 152px; padding: 12px 14px; border: 1px solid #c8cbd3; border-radius: 10px; outline-color: #001348; color: #001348; font: inherit; font-size: 14px; resize: none; }
+.officer-rejection-dialog textarea::placeholder { color: #92949c; }
+.officer-rejection-close { position: absolute; top: 8px; right: 10px; display: grid; width: 28px; height: 28px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: #001348; cursor: pointer; font: inherit; font-size: 24px; line-height: 1; }
+.officer-rejection-submit { min-height: 38px; padding: 0 22px; border: 0; border-radius: 7px; background: #ff383c; color: #fff; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; }
+.officer-rejection-submit:hover { background: #e52f33; }
 .officer-detail-alert { margin-bottom: 14px; padding: 11px 14px; border: 1px solid transparent; border-radius: 8px; font-size: 13px; }
 .officer-detail-alert.is-success { border-color: #a7e4bd; background: #effaf3; color: #176a36; }
 .officer-detail-alert.is-error { border-color: #f2b6b6; background: #fff3f3; color: #9a2929; }

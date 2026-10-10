@@ -14,7 +14,7 @@
         $facilityStatus = match ($facility->status_fasilitas) {
             'active' => ['Aktif', 'is-active'],
             'in_repair' => ['Dalam Perbaikan', 'is-repair'],
-            default => ['Nonaktif', 'is-inactive'],
+            default => ['Tidak Tersedia', 'is-inactive'],
         };
         $imagePath = $facility->foto_path ?? $facility->foto ?? null;
         $imageUrl = $imagePath
@@ -82,28 +82,19 @@
 
             <section class="officer-facility-operational-status" aria-labelledby="officer-facility-status-title">
                 <h3 id="officer-facility-status-title">Status Fasilitas</h3>
-                @if ($facility->status_fasilitas === 'inactive')
-                    <label class="officer-facility-status-select is-disabled">
+                <form class="officer-facility-status-form" action="{{ route('officer.facilities.update-status', $facility) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <label class="officer-facility-status-select">
                         <span class="sr-only">Status fasilitas</span>
-                        <select disabled aria-label="Status fasilitas: {{ $facilityStatus[0] }}">
-                            <option selected>{{ $facilityStatus[0] }}</option>
+                        <select name="status_fasilitas" onchange="this.form.submit()">
+                            <option value="active" @selected($facility->status_fasilitas === 'active')>Aktif</option>
+                            <option value="in_repair" @selected($facility->status_fasilitas === 'in_repair')>Dalam Perbaikan</option>
+                            <option value="inactive" @selected($facility->status_fasilitas === 'inactive')>Tidak Tersedia</option>
                         </select>
                         <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                     </label>
-                @else
-                    <form class="officer-facility-status-form" action="{{ route('officer.facilities.update-status', $facility) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <label class="officer-facility-status-select">
-                            <span class="sr-only">Status fasilitas</span>
-                            <select name="status_fasilitas" onchange="this.form.submit()">
-                                <option value="active" @selected($facility->status_fasilitas === 'active')>Aktif</option>
-                                <option value="in_repair" @selected($facility->status_fasilitas === 'in_repair')>Dalam Perbaikan</option>
-                            </select>
-                            <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
-                        </label>
-                    </form>
-                @endif
+                </form>
             </section>
         </section>
     </div>

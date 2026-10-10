@@ -79,7 +79,7 @@
                             </a>
                         @else
                             <span class="facility-card-button is-repair">
-                                Sedang Perbaikan
+                                {{ $facility->status_fasilitas === 'in_repair' ? 'Sedang Perbaikan' : 'Tidak Tersedia' }}
                             </span>
                         @endif
                     </article>

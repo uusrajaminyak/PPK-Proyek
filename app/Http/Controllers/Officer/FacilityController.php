@@ -41,7 +41,7 @@ class FacilityController extends Controller
         $facilities = $facilitiesQuery
             ->orderBy('created_at', $sortDirection)
             ->orderBy('id', $sortDirection)
-            ->paginate(6)
+            ->paginate(10)
             ->withQueryString();
 
         $facilityTypes = Facility::query()
@@ -74,13 +74,18 @@ class FacilityController extends Controller
 
         if ($newStatus === 'in_repair') {
             $facility->markInRepair();
+        } elseif ($newStatus === 'inactive') {
+            $facility->markUnavailable();
         } else {
             $facility->markActive();
         }
 
-        $message = $newStatus === 'in_repair'
-            ? "Fasilitas \"{$facility->nama_fasilitas}\" berhasil ditandai Dalam Perbaikan (in_repair)."
-            : "Fasilitas \"{$facility->nama_fasilitas}\" berhasil dikembalikan ke status Aktif (active).";
+        $statusLabel = match ($newStatus) {
+            'in_repair' => 'Dalam Perbaikan',
+            'inactive' => 'Tidak Tersedia',
+            default => 'Aktif',
+        };
+        $message = "Status fasilitas \"{$facility->nama_fasilitas}\" berhasil diubah menjadi {$statusLabel}.";
 
         return redirect()->back()->with('success', $message);
     }

@@ -35,6 +35,43 @@
 * {
     box-sizing: border-box;
 }
+
+input:is([type="text"], [type="search"], [type="email"], [type="tel"], [type="url"], [type="password"], [type="date"], [type="number"], [type="month"], [type="time"]),
+select,
+textarea {
+    border-color: #d2d5dd;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+input:is([type="text"], [type="search"], [type="email"], [type="tel"], [type="url"], [type="password"], [type="date"], [type="number"], [type="month"], [type="time"]):focus,
+input:is([type="text"], [type="search"], [type="email"], [type="tel"], [type="url"], [type="password"], [type="date"], [type="number"], [type="month"], [type="time"]).has-value,
+select:focus,
+select.has-value,
+textarea:focus,
+textarea.has-value {
+    border-color: #001348;
+    outline-color: #001348;
+}
+
+.officer-reservation-search:focus-within,
+.officer-reservation-search:has(input.has-value),
+.officer-reservation-date:focus-within,
+.officer-reservation-date:has(input.has-value),
+.officer-reservation-filter:focus-within,
+.officer-reservation-filter:has(select.has-value),
+.officer-facility-search:focus-within,
+.officer-facility-search:has(input.has-value),
+.officer-facility-select:focus-within,
+.officer-facility-select:has(select.has-value),
+.officer-facility-status-select:focus-within,
+.officer-facility-status-select:has(select.has-value) {
+    border-color: #001348;
+}
+
+.officer-facility-status-select {
+    border-color: #d2d5dd;
+}
+
 html {
     scroll-behavior: smooth;
 }

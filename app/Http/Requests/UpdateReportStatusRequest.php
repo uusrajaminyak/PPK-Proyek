@@ -33,7 +33,7 @@ class UpdateReportStatusRequest extends FormRequest
             'update_facility_status' => [
                 'nullable',
                 'string',
-                'in:active,in_repair,keep',
+                'in:active,in_repair,inactive,keep',
             ],
         ];
     }

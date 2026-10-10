@@ -167,7 +167,7 @@
     color: #111827;
     background: #ffffff;
     outline: none;
-    resize: vertical;
+    resize: none;
     min-height: 120px;
     font-family: inherit;
     transition: all 0.2s ease;

@@ -75,17 +75,17 @@
                             {{-- Aksi --}}
                             <div class="col-actions">
                                 @if($res->canBeCancelled())
-                                    <form action="{{ route('reservations.cancel', $res->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">
-                                        @csrf
-                                        <button type="submit" class="btn-cancel">Batal</button>
-                                    </form>
+                                    <button type="button" class="btn-cancel" 
+                                        onclick="openCancelModal('{{ $res->id }}', '{{ addslashes($res->facility->nama_fasilitas) }}', '{{ $res->start_time->format('d M Y, H:i') }}')">
+                                        Batal
+                                    </button>
                                 @endif
-                                <button type="button" class="btn-detail"
+                                <button type="button" class="btn-detail" 
                                     onclick="showDetailModal(
                                         'RSV-{{ $res->start_time->format('Ymd') }}-{{ str_pad($res->id, 4, '0', STR_PAD_LEFT) }}',
                                         '{{ addslashes($res->facility->nama_fasilitas) }}',
                                         '{{ addslashes($res->facility->lokasi) }}',
-                                        '{{ $res->start_time->format('d F Y') }} ({{ $res->start_time->format('H:i') }} - {{ $res->end_time->format('H:i') }})',
+                                        '{{ $res->start_time->format('d F Y, H:i') }} - {{ $res->end_time->format('H:i') }} WIB',
                                         '{{ $res->status_reservasi === 'pending' ? 'Waiting' : $res->getStatusLabel() }}',
                                         '{{ addslashes($res->tujuan_penggunaan) }}'
                                     )">
@@ -142,6 +142,48 @@
         </div>
     </div>
 
+    {{-- Modal Konfirmasi Pembatalan --}}
+    <div class="modal-backdrop" id="cancelModal">
+        <div class="modal-card">
+            <h3 style="color: #ef4444; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                Batalkan Reservasi
+            </h3>
+            
+            <p style="font-size: 0.85rem; color: #64748b; margin: 0 0 1rem; line-height: 1.5;">
+                Apakah Anda yakin ingin membatalkan reservasi untuk <strong id="cancelTargetFacility" style="color:#001348;">-</strong> pada jadwal <strong id="cancelTargetTime" style="color:#001348;">-</strong>?
+            </p>
+
+            <form id="cancelReservationForm" method="POST" action="">
+                @csrf
+                <div class="modal-field">
+                    <label for="alasan_pembatalan" style="font-weight: 700; color: #001348;">Alasan Pembatalan <span style="color: #ef4444;">*</span></label>
+                    <textarea 
+                        name="alasan_pembatalan" 
+                        id="alasan_pembatalan" 
+                        rows="3" 
+                        required 
+                        placeholder="Contoh: Rapat dibatalkan / Ada perubahan jadwal perkuliahan..."
+                        style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.85rem; color: #1e293b; outline: none; resize: none; font-family: inherit; margin-top: 0.35rem;"
+                    ></textarea>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem;">
+                    <button type="button" onclick="closeCancelModal()" style="padding: 0.55rem 1.15rem; background: #ffffff; border: 1.5px solid #cbd5e1; color: #475569; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;">
+                        Kembali
+                    </button>
+                    <button type="submit" id="btnSubmitCancel" style="padding: 0.55rem 1.25rem; background: #ef4444; border: none; color: #ffffff; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.15s;">
+                        Ya, Batalkan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- Footer --}}
     @include('partials.footer')
 
@@ -155,8 +197,22 @@
             document.getElementById('modalPurpose').innerText = purpose;
             document.getElementById('detailModal').classList.add('show');
         }
+        
         function closeDetailModal() {
             document.getElementById('detailModal').classList.remove('show');
+        }
+
+        function openCancelModal(id, facility, schedule) {
+            const form = document.getElementById('cancelReservationForm');
+            form.action = `/reservations/${id}/cancel`;
+            document.getElementById('cancelTargetFacility').innerText = facility;
+            document.getElementById('cancelTargetTime').innerText = schedule;
+            document.getElementById('alasan_pembatalan').value = '';
+            document.getElementById('cancelModal').classList.add('show');
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').classList.remove('show');
         }
     </script>
 
