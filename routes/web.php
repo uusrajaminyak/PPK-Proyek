@@ -1,5 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+use App\Http\Controllers\Admin\OfficerController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\Officer\FacilityController as OfficerFacilityController;
+use App\Http\Controllers\Officer\ReportController as OfficerReportController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReservationController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FacilityController;
@@ -76,6 +87,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Kelola Reservasi
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
 
+Route::get('/admin/facilities/create', [AdminFacilityController::class, 'create'])->name('admin.facilities.create');
+Route::post('/admin/facilities', [AdminFacilityController::class, 'store'])->name('admin.facilities.store');
+
+Route::get('/officers', [OfficerController::class, 'index'])->name('admin.officers.index');
+
+Route::get('/officers/create', [OfficerController::class, 'create'])->name('admin.officers.create');
+Route::post('/officers', [OfficerController::class, 'store'])->name('admin.officers.store');
+
+Route::get('/reservations', [App\Http\Controllers\Admin\ReservationController::class, 'index'])->name('admin.reservations.index');
     // Rekap & Ekspor Laporan (FR-17)
     Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
     Route::get('/recap/export', [RecapController::class, 'export'])->name('recap.export');
@@ -87,6 +107,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 */
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
