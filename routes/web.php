@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FacilityController; 
+use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReportController;
 
@@ -11,15 +11,17 @@ use App\Http\Controllers\Officer\ReportController as OfficerReportController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FacilityController as AdminFacilityController; 
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\OfficerController as AdminOfficerController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
+use App\Http\Controllers\Admin\RecapController;
 
 /*
 |--------------------------------------------------------------------------
 | Public & Landing Routes
 |--------------------------------------------------------------------------
 */
+
 Route::view('/', 'landing')->name('home');
 Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities.index');
 
@@ -53,11 +55,11 @@ Route::prefix('officer')->name('officer.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Modul Admin: Dashboard, Facilities, Users, Officers, & Reservations - FR-13 s/d FR-17
+| Modul Admin: Dashboard, Facilities, Users, Officers, Reservations, & Rekap - FR-13 s/d FR-17
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Dashboard & Rekap (FR-17)
+    // Dashboard (FR-17)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Kelola Data Fasilitas (FR-16)
@@ -71,12 +73,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/officers/create', [AdminOfficerController::class, 'create'])->name('officers.create');
     Route::post('/officers', [AdminOfficerController::class, 'store'])->name('officers.store');
 
-    // Kelola & Rekap Reservasi
+    // Kelola Reservasi
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
+
+    // Rekap & Ekspor Laporan (FR-17)
+    Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
+    Route::get('/recap/export', [RecapController::class, 'export'])->name('recap.export');
 });
 
 /*
-|--------------------------------------------------------------------------
 | Authentication Routes - FR-18, FR-19
 |--------------------------------------------------------------------------
 */

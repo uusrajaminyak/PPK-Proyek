@@ -3,87 +3,94 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Facility;
 use App\Models\Reservation;
 use App\Models\Report;
-use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //KPI Cards Data
-        $totalPengguna = User::where('role', 'pengguna')->count();
-        $totalPetugas = User::where('role', 'petugas')->count();
-        $totalFasilitas = Facility::count();
+        $selectedMonth = (int) $request->get('month', 9); // September 2026 default
+        $selectedYear  = (int) $request->get('year', 2026);
 
-        $reservasiAktif = Reservation::whereDate('start_time', Carbon::today())
-            ->where('status_reservasi', 'approved')
-            ->count();
+        // 1. Dynamic Metric Summaries
+        $aktif = Facility::where('status_fasilitas', 'active')->count();
+        $perbaikan = Facility::where('status_fasilitas', 'in_repair')->count();
+
         $reservasiMenunggu = Reservation::where('status_reservasi', 'pending')->count();
-        $laporanAktif = Report::whereIn('status_laporan', ['baru', 'diproses'])->count();
 
-        //Chart Data (Reservations last 7 days)
-        $chartData = [];
-        $chartLabels = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::today()->subDays($i);
-            $chartLabels[] = $date->translatedFormat('D'); // Sen, Sel, Rab...
-            $chartData[] = Reservation::whereDate('created_at', $date)->count();
-        }
+        $statusLaporan = [
+            'baru' => Report::where('status_laporan', 'baru')->count(),
+            'diproses' => Report::where('status_laporan', 'diproses')->count(),
+        ];
 
-        //Facility Status Progress Bar
-        $statusFasilitas = Facility::selectRaw('status_fasilitas, count(*) as count')
-            ->groupBy('status_fasilitas')
-            ->pluck('count', 'status_fasilitas')->toArray();
+        $totalPengguna = User::where('role', 'pengguna')->count();
+        $totalPetugas  = User::where('role', 'petugas')->count();
 
-        $aktif = $statusFasilitas['active'] ?? 0;
-        $perbaikan = $statusFasilitas['in_repair'] ?? 0;
-        $inaktif = $statusFasilitas['inactive'] ?? 0;
+        // 2. Dynamic Monthly Rekap Aggregations
+        $facilities = Facility::withCount([
+            'reservations as total_direservasi' => function ($query) use ($selectedMonth, $selectedYear) {
+                $query->whereMonth('start_time', $selectedMonth)
+                    ->whereYear('start_time', $selectedYear);
+            },
+            'reports as total_dilaporkan' => function ($query) use ($selectedMonth, $selectedYear) {
+                $query->whereMonth('created_at', $selectedMonth)
+                    ->whereYear('created_at', $selectedYear);
+            }
+        ])->get();
 
-        //Report Status Breakdown
-        $statusLaporan = Report::selectRaw('status_laporan, count(*) as count')
-            ->groupBy('status_laporan')
-            ->pluck('count', 'status_laporan')->toArray();
+        $maxReservations = max($facilities->max('total_direservasi') ?? 1, 1);
+        $maxReports      = max($facilities->max('total_dilaporkan') ?? 1, 1);
 
-        //Recent Activity Timeline (Merge & Sort)
-        $recentReservations = Reservation::with(['user', 'facility'])->latest()->take(5)->get()->map(function ($item) {
+        $occupancyData = $facilities->map(function ($facility) use ($maxReservations) {
             return [
-                'type' => 'reservasi',
-                'description' => "Reservasi baru {$item->facility->nama_fasilitas} oleh {$item->user->nama}",
-                'created_at' => $item->created_at
+                'name' => $facility->nama_fasilitas,
+                'val'  => $facility->total_direservasi,
+                'pct'  => round(($facility->total_direservasi / $maxReservations) * 100),
             ];
-        });
+        })->sortByDesc('val')->take(6)->values();
 
-        $recentReports = Report::with(['reporter', 'facility'])->latest()->take(5)->get()->map(function ($item) {
+        $reportFrequencyData = $facilities->map(function ($facility) use ($maxReports) {
             return [
-                'type' => 'laporan',
-                'description' => "Laporan kerusakan {$item->facility->nama_fasilitas} berstatus '{$item->status_laporan}'",
-                'created_at' => $item->created_at
+                'name' => $facility->nama_fasilitas,
+                'val'  => $facility->total_dilaporkan,
+                'pct'  => round(($facility->total_dilaporkan / $maxReports) * 100),
             ];
-        });
+        })->sortByDesc('val')->take(6)->values();
 
-        $activities = $recentReservations->concat($recentReports)
-            ->sortByDesc('created_at')
-            ->take(5)
-            ->values();
+        $months = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+
+        $years = [2024, 2025, 2026, 2027];
 
         return view('admin.dashboard', compact(
-            'totalPengguna',
-            'totalPetugas',
-            'totalFasilitas',
-            'reservasiAktif',
-            'reservasiMenunggu',
-            'laporanAktif',
-            'chartLabels',
-            'chartData',
             'aktif',
             'perbaikan',
-            'inaktif',
+            'reservasiMenunggu',
             'statusLaporan',
-            'activities'
+            'totalPengguna',
+            'totalPetugas',
+            'occupancyData',
+            'reportFrequencyData',
+            'selectedMonth',
+            'selectedYear',
+            'months',
+            'years'
         ));
     }
 }
