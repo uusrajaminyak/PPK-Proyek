@@ -1,206 +1,163 @@
 @extends('layouts.admin')
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+@section('header_title', 'Dasbor')
+
 @section('content')
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-<!-- KPI Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-sm text-gray-500 mb-1">Total Pengguna</p>
-                <h3 class="text-3xl font-bold text-gray-800">{{ $totalPengguna }}</h3>
-                <p class="text-xs text-gray-400 mt-2">Siswa, Dosen & Staf terdaftar</p>
+    .font-jakarta {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+</style>
+
+<!-- Master Content Outer Container -->
+<div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-3 shadow-sm flex flex-col justify-between overflow-hidden font-jakarta text-[#001248]">
+
+    <!-- Metrics Top & Bottom Grid Container -->
+    <div class="space-y-2 shrink-0">
+        <!-- Metrics Grid Top Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <!-- Card 1: Totalitas Fasilitas -->
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Totalitas Fasilitas</h3>
+                <div class="space-y-0.5 text-[11px]">
+                    <div class="flex justify-between items-center font-medium">
+                        <span class="text-[#001248] font-normal">Aktif:</span>
+                        <span class="text-[#001248] font-normal">{{ $aktif }}</span>
+                    </div>
+                    <div class="flex justify-between items-center font-medium">
+                        <span class="text-[#001248] font-normal">Dalam Perbaikan:</span>
+                        <span class="text-[#001248] font-normal">{{ $perbaikan }}</span>
+                    </div>
+                </div>
             </div>
-            <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-medium">Aktif</span>
+
+            <!-- Card 2: Reservasi Pending -->
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Reservasi Pending</h3>
+                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $reservasiMenunggu }}</span>
+            </div>
+
+            <!-- Card 3: Laporan Kerusakan -->
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Laporan Kerusakan</h3>
+                <div class="space-y-0.5 text-[11px]">
+                    <div class="flex justify-between items-center font-medium">
+                        <span class="text-[#001248] font-normal">Baru:</span>
+                        <span class="text-[#001248] font-normal">{{ $statusLaporan['baru'] }}</span>
+                    </div>
+                    <div class="flex justify-between items-center font-medium">
+                        <span class="text-[#001248] font-normal">Diproses:</span>
+                        <span class="text-[#001248] font-normal">{{ $statusLaporan['diproses'] }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Grid Bottom Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <!-- Card 4: Total Pengguna -->
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Total Pengguna</h3>
+                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $totalPengguna }}</span>
+            </div>
+
+            <!-- Card 5: Total Petugas -->
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
+                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Total Petugas</h3>
+                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $totalPetugas }}</span>
+            </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-sm text-gray-500 mb-1">Total Petugas</p>
-                <h3 class="text-3xl font-bold text-gray-800">{{ $totalPetugas }}</h3>
-                <p class="text-xs text-gray-400 mt-2">Staf penanggung jawab lapangan</p>
+    <!-- Rekap Visualization Section -->
+    <div class="bg-white rounded-lg p-3 border border-gray-200 flex-1 flex flex-col justify-between mt-2 min-h-0 shadow-none">
+
+        <!-- Rekap Header Controls -->
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2 shrink-0">
+            <div class="flex items-center space-x-2">
+                <h2 class="text-3xl font-bold text-[#001248] mr-1">Rekap</h2>
+
+                <select name="month" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
+                    @foreach($months as $num => $name)
+                    <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
+                    @endforeach
+                </select>
+
+                <select name="year" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
+                    @foreach($years as $yr)
+                    <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
+                    @endforeach
+                </select>
             </div>
-            <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded font-medium">Siap</span>
+
+            <div class="flex items-center space-x-2">
+                <!-- Export Format Controls -->
+                <div class="flex bg-gray-100 rounded p-0.5 border border-gray-200">
+                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-[#001248] bg-white rounded shadow-xs">CSV</button>
+                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">XLSX</button>
+                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">PDF</button>
+                </div>
+
+                <a href="{{ route('admin.recap.export', ['month' => $selectedMonth, 'year' => $selectedYear, 'format' => 'CSV']) }}" class="bg-[#001248] hover:bg-[#001a66] text-white px-3 py-1 rounded text-xs font-normal flex items-center transition-colors shadow-none shrink-0">
+                    <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Ekspor</span>
+                </a>
+            </div>
+        </form>
+
+        <!-- Rekap Panels Side-by-Side -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 flex-1 min-h-0">
+
+            <!-- Okupansi Fasilitas Card -->
+            <div class="border border-gray-200 rounded-xl p-2.5 flex flex-col justify-between bg-white min-h-0 shadow-none">
+                <h3 class="text-xl font-semibold text-[#001248] mb-1.5 shrink-0">Okupansi Fasilitas</h3>
+                <div class="space-y-1 flex-1 overflow-hidden">
+                    @forelse($occupancyData as $item)
+                    <div class="flex items-center text-[11px] font-medium text-[#001248]">
+                        <span class="w-24 truncate mr-2 text-[#001248] font-normal">{{ $item['name'] }}</span>
+                        <div class="flex-1 h-1.5">
+                            <div class="h-1.5 bg-gray-400 rounded-full transition-all duration-500" style="width: {{ max($item['pct'], 8) }}%;"></div>
+                        </div>
+                        <span class="w-6 text-right ml-2 text-[#001248] font-normal">{{ $item['val'] }}</span>
+                    </div>
+                    @empty
+                    <div class="text-xs text-gray-400 text-center py-2">Belum ada data okupansi.</div>
+                    @endforelse
+                </div>
+                <div class="mt-1 text-right shrink-0">
+                    <a href="{{ route('admin.recap.index') }}" class="inline-block bg-[#001248] text-white px-3 py-0.5 rounded text-xs font-semibold hover:bg-[#001a66] transition-colors shadow-none">Detail</a>
+                </div>
+            </div>
+
+            <!-- Frekuensi Laporan Fasilitas Card -->
+            <div class="border border-gray-200 rounded-xl p-2.5 flex flex-col justify-between bg-white min-h-0 shadow-none">
+                <h3 class="text-xl font-semibold text-[#001248] mb-1.5 shrink-0">Frekuensi Laporan Fasilitas</h3>
+                <div class="space-y-1 flex-1 overflow-hidden">
+                    @forelse($reportFrequencyData as $item)
+                    <div class="flex items-center text-[11px] font-medium text-[#001248]">
+                        <span class="w-24 truncate mr-2 text-[#001248] font-normal">{{ $item['name'] }}</span>
+                        <div class="flex-1 h-1.5">
+                            <div class="h-1.5 bg-gray-400 rounded-full transition-all duration-500" style="width: {{ max($item['pct'], 8) }}%;"></div>
+                        </div>
+                        <span class="w-6 text-right ml-2 text-[#001248] font-normal">{{ $item['val'] }}</span>
+                    </div>
+                    @empty
+                    <div class="text-xs text-gray-400 text-center py-2">Belum ada data laporan.</div>
+                    @endforelse
+                </div>
+                <div class="mt-1 text-right shrink-0">
+                    <a href="{{ route('admin.recap.index') }}" class="inline-block bg-[#001248] text-white px-3 py-0.5 rounded text-xs font-semibold hover:bg-[#001a66] transition-colors shadow-none">Detail</a>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-sm text-gray-500 mb-1">Total Fasilitas</p>
-                <h3 class="text-3xl font-bold text-gray-800">{{ $totalFasilitas }}</h3>
-                <p class="text-xs text-gray-400 mt-2">Ruang kelas, aula, lapangan</p>
-            </div>
-            <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded font-medium">Unit</span>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-sm text-gray-500 mb-1">Reservasi Aktif</p>
-                <h3 class="text-3xl font-bold text-gray-800">{{ $reservasiAktif }}</h3>
-                <p class="text-xs text-gray-400 mt-2">Sedang berlangsung hari ini</p>
-            </div>
-            <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-medium">Aktif</span>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-sm text-gray-500 mb-1">Reservasi Menunggu</p>
-                <h3 class="text-3xl font-bold text-gray-800">{{ $reservasiMenunggu }}</h3>
-                <p class="text-xs text-gray-400 mt-2">Butuh persetujuan segera</p>
-            </div>
-            <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded font-medium">Pending</span>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-sm text-gray-500 mb-1">Laporan Kerusakan Aktif</p>
-                <h3 class="text-3xl font-bold text-gray-800">{{ $laporanAktif }}</h3>
-                <p class="text-xs text-gray-400 mt-2">Fasilitas butuh maintenance</p>
-            </div>
-            <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-medium">Urgent</span>
-        </div>
-    </div>
 </div>
-
-<!-- Main Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-
-    <!-- Chart Section -->
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 lg:col-span-2">
-        <h3 class="font-bold text-gray-800 mb-1">Aktivitas Reservasi (7 Hari Terakhir)</h3>
-        <p class="text-xs text-gray-400 mb-4">Statistik volume peminjaman fasilitas per hari</p>
-
-        <div class="relative w-full h-[250px] block">
-            <canvas id="reservasiChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Right Side Stats -->
-    <div class="space-y-6">
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="font-bold text-gray-800 mb-4">Laporan Kerusakan Fasilitas</h3>
-            <div class="grid grid-cols-4 gap-4 text-center">
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Baru</p>
-                    <p class="text-xl font-bold text-red-500">{{ $statusLaporan['baru'] ?? 0 }}</p>
-                </div>
-
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Diproses</p>
-                    <p class="text-xl font-bold text-yellow-500">{{ $statusLaporan['diproses'] ?? 0 }}</p>
-                </div>
-
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Selesai</p>
-                    <p class="text-xl font-bold text-green-500">{{ $statusLaporan['selesai'] ?? 0 }}</p>
-                </div>
-
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Ditolak</p>
-                    <p class="text-xl font-bold text-gray-500">{{ $statusLaporan['ditolak'] ?? 0 }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Facility Status Bar -->
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="font-bold text-gray-800 mb-4">Status Seluruh Fasilitas</h3>
-            @php $total = $aktif + $perbaikan + $inaktif ?: 1; @endphp
-            <div class="w-full bg-gray-200 rounded-full h-3 mb-3 flex overflow-hidden">
-                <div class="bg-green-500 h-3" style="width: {{ ($aktif / $total) * 100 }}%"></div>
-                <div class="bg-yellow-400 h-3" style="width: {{ ($perbaikan / $total) * 100 }}%"></div>
-                <div class="bg-gray-500 h-3" style="width: {{ ($inaktif / $total) * 100 }}%"></div>
-            </div>
-
-            <div class="flex justify-between text-xs text-gray-500">
-                <span><i class="fas fa-circle text-green-500 text-[8px] mr-1"></i> Aktif ({{ $aktif }})</span>
-                <span><i class="fas fa-circle text-yellow-400 text-[8px] mr-1"></i> Perbaikan ({{ $perbaikan }})</span>
-                <span><i class="fas fa-circle text-gray-500 text-[8px] mr-1"></i> Inaktif ({{ $inaktif }})</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Activity Timeline -->
-<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-    <h3 class="font-bold text-gray-800 mb-4">Aktivitas Terbaru Sistem</h3>
-    <ul class="space-y-4">
-        @forelse($activities as $activity)
-        <li class="flex items-center text-sm">
-            <span class="w-2 h-2 {{ $activity['type'] == 'reservasi' ? 'bg-blue-500' : 'bg-red-500' }} rounded-full mr-3"></span>
-            <p class="text-gray-700 flex-1">{{ $activity['description'] }}</p>
-            <span class="text-gray-400 text-xs">{{ $activity['created_at']->diffForHumans() }}</span>
-        </li>
-        @empty
-        <li class="text-sm text-gray-500">Belum ada aktivitas terbaru.</li>
-        @endforelse
-    </ul>
-</div>
-
-<!-- Chart Setup -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const canvas = document.getElementById('reservasiChart');
-
-        if (!canvas) {
-            console.error("Canvas error: ID 'reservasiChart' not found in the DOM.");
-            return;
-        }
-
-        const labels = {
-            !!json_encode($chartLabels ?? []) !!
-        };
-        const data = {
-            !!json_encode($chartData ?? []) !!
-        };
-
-        if (labels.length === 0 || data.length === 0) {
-            console.warn("Chart data is empty. Did the database seeder run correctly?");
-        }
-
-        new Chart(canvas, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Jumlah Reservasi',
-                    data: data,
-                    backgroundColor: '#0ea5e9',
-                    borderRadius: 4,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        display: false,
-                        beginAtZero: true
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    });
-</script>
 @endsection

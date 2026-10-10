@@ -5,66 +5,91 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Facility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FacilityController extends Controller
 {
+    /**
+     * Display a dynamic listing of facilities from MySQL database.
+     */
     public function index(Request $request)
     {
-        $query = Facility::query();
+        try {
+            $query = Facility::query();
 
-        // Search Filter
-        if ($request->filled('search')) {
-            $query->where('nama_fasilitas', 'like', '%' . $request->search . '%');
-        }
+            // 1. Search Filter (nama_fasilitas & lokasi)
+            if ($request->filled('search')) {
+                $search = trim($request->input('search'));
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_fasilitas', 'like', "%{$search}%")
+                      ->orWhere('lokasi', 'like', "%{$search}%");
+                });
+            }
 
-        // Dropdown Filters
-        if ($request->filled('tipe') && $request->tipe !== 'Semua') {
-            $query->where('tipe', $request->tipe);
-        }
-        
-        if ($request->filled('status') && $request->status !== 'Semua') {
-            $query->where('status_fasilitas', $request->status);
-        }
+            // 2. Status Filter (is_active boolean)
+            if ($request->filled('status') && $request->status !== 'Semua') {
+                if ($request->status === 'aktif' || $request->status === 'active') {
+                    $query->where('is_active', true);
+                } elseif ($request->status === 'nonaktif' || $request->status === 'inactive') {
+                    $query->where('is_active', false);
+                }
+            }
 
-        $facilities = $query->paginate(9)->withQueryString();
+            // 3. Category Filter
+            if ($request->filled('kategori') && $request->kategori !== 'Semua') {
+                $query->where('kategori', $request->kategori);
+            }
+
+            // Paginate 6 items per page (fits 3x2 grid layout)
+            $facilities = $query->latest()->paginate(6)->withQueryString();
+
+        } catch (\Exception $e) {
+            Log::error('FacilityController@index Database Exception: ' . $e->getMessage());
+            $facilities = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 6);
+        }
 
         return view('admin.facilities.index', compact('facilities'));
     }
 
+    /**
+     * Display detailed information for a single facility.
+     */
+    public function show($id)
+    {
+        $facility = Facility::findOrFail($id);
+        return view('admin.facilities.show', compact('facility'));
+    }
+
     public function create()
     {
-        $tipeOptions = ['Ruang Kelas', 'Aula Serbaguna', 'Laboratorium', 'Lapangan Olahraga', 'Ruang Rapat'];
-        return view('admin.facilities.create', compact('tipeOptions'));
+        $kategoriOptions = ['Ruang Kelas', 'Aula', 'Laboratorium', 'Lapangan', 'Ruang Rapat'];
+        return view('admin.facilities.create', compact('kategoriOptions'));
     }
 
     public function store(Request $request)
     {
-        // Strict Server-Side Validation
         $validated = $request->validate([
             'nama_fasilitas' => ['required', 'string', 'max:255'],
-            'tipe' => ['required', 'string', 'max:255'],
-            'lokasi' => ['required', 'string', 'max:255'],
-            'kapasitas' => ['nullable', 'integer', 'min:0'],
-            'deskripsi' => ['nullable', 'string'],
-            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'], // Max 5MB
+            'kategori'       => ['required', 'string', 'max:255'],
+            'lokasi'         => ['required', 'string', 'max:255'],
+            'kapasitas'      => ['nullable', 'integer', 'min:0'],
+            'deskripsi'      => ['nullable', 'string'],
+            'foto'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        // Handle File Upload
         $fotoPath = null;
         if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('facilities', 'public');
-            $fotoPath = '/storage/' . $path;
+            $fotoPath = $request->file('foto')->store('facilities', 'public');
         }
 
-        // Store Facility
         Facility::create([
             'nama_fasilitas' => $validated['nama_fasilitas'],
-            'tipe' => $validated['tipe'],
-            'lokasi' => $validated['lokasi'],
-            'kapasitas' => $validated['kapasitas'] ?? 0, 
-            'deskripsi' => $validated['deskripsi'],
-            'foto_path' => $fotoPath,
-            'status_fasilitas' => $request->has('status_aktif') ? 'active' : 'inactive',
+            'kategori'       => $validated['kategori'],
+            'lokasi'         => $validated['lokasi'],
+            'kapasitas'      => $validated['kapasitas'] ?? 0,
+            'deskripsi'      => $validated['deskripsi'] ?? null,
+            'foto'           => $fotoPath,
+            'is_active'      => $request->has('is_active'),
         ]);
 
         return redirect()->route('admin.facilities.index')->with('success', 'Fasilitas baru berhasil ditambahkan.');
