@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\OfficerController as AdminOfficerController;
+use App\Http\Controllers\Admin\RecapController;
 use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
@@ -14,21 +15,6 @@ use App\Http\Controllers\Officer\ReservationController as OfficerReservationCont
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FacilityController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\ReportController;
-
-use App\Http\Controllers\Officer\FacilityController as OfficerFacilityController;
-use App\Http\Controllers\Officer\ReportController as OfficerReportController;
-
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
-use App\Http\Controllers\Admin\OfficerController as AdminOfficerController;
-use App\Http\Controllers\Admin\ReservationController as AdminReservationController;
-use App\Http\Controllers\Admin\RecapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,12 +74,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('facilities', AdminFacilityController::class);
 
     // Kelola Pengguna (FR-14, FR-15)
+    Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.update-status');
+    Route::post('/users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
     Route::resource('users', UserController::class);
 
     // Kelola Petugas (FR-13)
     Route::get('/officers', [AdminOfficerController::class, 'index'])->name('officers.index');
     Route::get('/officers/create', [AdminOfficerController::class, 'create'])->name('officers.create');
     Route::post('/officers', [AdminOfficerController::class, 'store'])->name('officers.store');
+    Route::get('/officers/{officer}', [AdminOfficerController::class, 'show'])->name('officers.show');
+    Route::patch('/officers/{officer}/status', [AdminOfficerController::class, 'updateStatus'])->name('officers.update-status');
+    Route::post('/officers/{officer}/reset-password', [AdminOfficerController::class, 'resetPassword'])->name('officers.reset-password');
 
     // Kelola Reservasi
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
@@ -101,6 +92,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Rekap & Ekspor Laporan (FR-17)
     Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
     Route::get('/recap/export', [RecapController::class, 'export'])->name('recap.export');
+    Route::get('/recap/facilities/{facility}', [RecapController::class, 'showFacility'])->name('recap.facility');
 });
 
 /*

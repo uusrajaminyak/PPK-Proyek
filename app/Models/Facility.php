@@ -37,7 +37,6 @@ class Facility extends Model
             'is_active' => 'boolean',
             'kapasitas' => 'integer',
             'status_fasilitas' => 'string',
-            'kapasitas' => 'integer',
         ];
     }
 
@@ -67,24 +66,7 @@ class Facility extends Model
 
     public function getIsActiveAttribute(): bool
     {
-        if (! empty($params['nama'])) {
-            $query->where('nama_fasilitas', 'like', "%{$params['nama']}%");
-        }
-        if (! empty($params['tipe'])) {
-            $query->where('tipe', $params['tipe']);
-        }
-        if (! empty($params['kategori'])) {
-            $query->where('kategori', $params['kategori']);
-        }
-        if (! empty($params['lokasi'])) {
-            $query->where('lokasi', 'like', "%{$params['lokasi']}%");
-        }
-        if (! empty($params['kapasitas_min'])) {
-            $query->where('kapasitas', '>=', $params['kapasitas_min']);
-        }
-
-        return $query;
-        return ($this->attributes['status_fasilitas'] ?? 'active') === 'active';
+        return (bool) ($this->attributes['is_active'] ?? true);
     }
 
     public function getStatusFasilitasAttribute($value)
@@ -100,13 +82,9 @@ class Facility extends Model
     {
         return match ($this->status_fasilitas) {
             'active' => 'bg-green-100 text-green-800',
-            'in_repair' => 'bg-red-100 text-red-800',
+            'in_repair' => 'bg-amber-100 text-amber-800',
             'inactive' => 'bg-gray-100 text-gray-800',
             default => 'bg-gray-100 text-gray-800',
-            'active'    => 'bg-green-100 text-green-800',
-            'in_repair' => 'bg-amber-100 text-amber-800',
-            'inactive'  => 'bg-gray-100 text-gray-800',
-            default     => 'bg-gray-100 text-gray-800',
         };
     }
 

@@ -14,7 +14,25 @@ class FacilityController extends Controller
         // Hapus filter kosong
         $filters = array_filter($filters, fn($v) => $v !== '' && $v !== null);
 
-        $facilities = Facility::search($filters)
+        $facilitiesQuery = Facility::query();
+
+        if (! empty($filters['nama'])) {
+            $facilitiesQuery->where('nama_fasilitas', 'like', "%{$filters['nama']}%");
+        }
+
+        if (! empty($filters['tipe'])) {
+            $facilitiesQuery->where('tipe', $filters['tipe']);
+        }
+
+        if (! empty($filters['lokasi'])) {
+            $facilitiesQuery->where('lokasi', 'like', "%{$filters['lokasi']}%");
+        }
+
+        if (! empty($filters['kapasitas_min'])) {
+            $facilitiesQuery->where('kapasitas', '>=', $filters['kapasitas_min']);
+        }
+
+        $facilities = $facilitiesQuery
             ->orderBy('nama_fasilitas')
             ->paginate(12)
             ->withQueryString();

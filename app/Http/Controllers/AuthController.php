@@ -20,14 +20,21 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function showStaffLogin()
-    public function showRegister(): View|RedirectResponse
+    public function showStaffLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('home');
         }
 
         return view('auth.staff-login');
+    }
+
+    public function showRegister(): View|RedirectResponse
+    {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
+
         return view('auth.register');
     }
 

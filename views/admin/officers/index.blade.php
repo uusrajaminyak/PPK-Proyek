@@ -80,7 +80,7 @@
                             @endif
                         </td>
                         <td class="py-1.5 px-3 text-right align-middle">
-                            <a href="{{ route('admin.officers.index') }}" class="inline-block bg-[#001248] hover:bg-[#001a66] text-white px-3.5 py-1 rounded text-xs font-semibold transition-colors shadow-none">
+                            <a href="{{ route('admin.officers.show', $officer->id) }}" class="inline-block bg-[#001248] hover:bg-[#001a66] text-white px-3.5 py-1 rounded text-xs font-semibold transition-colors shadow-none">
                                 Detail
                             </a>
                         </td>
