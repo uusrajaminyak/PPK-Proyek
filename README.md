@@ -1,58 +1,119 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Fasilita FSM — Sistem Reservasi & Pelaporan Fasilitas Kampus Universitas Diponegoro
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Laravel Version](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP Version](https://img.shields.io/badge/PHP-8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15.0-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## About Laravel
+Fasilita FSM adalah aplikasi berbasis web yang dirancang khusus untuk Fakultas Sains dan Matematika Universitas Diponegoro. Platform ini menyediakan manajemen terpusat untuk peminjaman/reservasi fasilitas (ruang kelas, aula, laboratorium, alat, dan lapangan) serta pelaporan kerusakan fasilitas kampus secara real-time.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fitur Utama Sistem
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Modul Pengunjung & Pengguna Terdaftar (Mahasiswa/Dosen/Staf)
+* **Katalog & Ketersediaan Real-Time**: Merekap daftar fasilitas beserta status ketersediaan per slot waktu 30 menit tanpa menampilkan identitas pemohon lain demi privasi.
+* **Pengajuan Reservasi**: Pengajuan peminjaman fasilitas pada jam operasional (07.00–20.00 WIB) dengan durasi kelipatan 30 menit dan validasi ganda (Client & Server side).
+* **Pembatalan Mandiri 24 Jam**: Pengguna dapat membatalkan reservasi miliknya maksimal 24 jam sebelum `start_time`.
+* **Riwayat & Status Reservasi**: Pemantauan status persetujuan reservasi secara transparan.
+* **Pelaporan Kerusakan Fasilitas**: Pengajuan laporan kerusakan fasilitas dengan bukti foto (Maks. 3 foto, @2MB, format JPG/PNG/WEBP).
 
-## Learning Laravel
+### 2. Modul Petugas Operasional
+* **Dashboard Antrean Terpusat**: Pemrosesan antrean reservasi dan laporan masuk secara real-time.
+* **Persetujuan & Anti-Bentrok Jadwal**: Verifikasi manual persetujuan reservasi dengan proteksi otomatis di tingkat backend untuk mencegah schedule collision.
+* **Pembatalan Mendesak**: Pembatalan reservasi yang telah disetujui akibat kondisi darurat dengan pencatatan alasan resmi.
+* **Manajemen Kerusakan & Status Fasilitas**: Pembaruan status laporan (Baru, Diproses, Selesai, Ditolak) dan penandaan fasilitas berstatus `'Dalam Perbaikan'` yang secara otomatis memicu peringatan pembatalan pada reservasi terdampak.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 3. Modul Administrator
+* **Registrasi Terkontrol & Verifikasi Akun**: Pendaftaran akun petugas langsung oleh Admin (mencegah registrasi mandiri di level backend) dan verifikasi/penolakan registrasi mandiri akun pengguna.
+* **Manajemen Data Fasilitas & Soft Delete**: Pengelolaan data master fasilitas menggunakan mekanisme *Soft Delete* agar integritas riwayat transaksi tetap terjaga.
+* **Dashboard Analitik Zero-Scroll & Ekspor Laporan**: Visualisasi rekapitulasi okupansi dan frekuensi kerusakan fasilitas dengan fitur ekspor konsolidasi multi-format (**CSV**, **XLSX XML**, dan **PDF Print Engine**).
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## System Requirements
 
-## Agentic Development
+* **Docker & Docker Compose**
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
+## Panduan Instalasi
+
+* 1. Clone the Repository
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/uusrajaminyak/PPK-Proyek.git
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+* 2. Copy the environment file
+```bash
+cp .env.example .env
+```
 
-## Contributing
+* 3. Build the containers
+```bash
+docker compose up -d --build
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* 4. Install the dependencies
+```bash
+docker compose exec app composer install
+docker compose exec app npm install
+docker compose exec app npm run build
+```
 
-## Code of Conduct
+* 5. Generate the application key
+```bash
+docker compose exec app php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* 6. Configure storage folder access and cache
+```bash
+docker compose exec -u 0 app chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+docker compose exec -u 0 app chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+```
 
-## Security Vulnerabilities
+* 7. Database migration and links
+```bash
+docker compose exec app php artisan migrate:fresh --seed
+docker compose exec app php artisan storage:link
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Testing Accounts
+```bash
+Role: Mahasiswa / Pengguna Publik (Akses Halaman Utama)
+Email: ahmed@student.undip.ac.id
+Password: password
+Nama: Ahmed Fauzi (HMTI)
+NIM / Identitas: 21120122140089
+Kategori: Mahasiswa
 
-## License
+Role: Administrator (Akses Dashboard Admin)
+Email: admin@undip.ac.id
+Password: password
+Nama: Admin Utama
+NIP / Identitas: 19850912201012
+Kategori: Staf / Admin
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Role: Petugas / Staff (Akses Dashboard Petugas)
+Email: budi.santoso@staff.undip.ac.id
+Password: password
+Nama: Budi Santoso (PTG-001)
+```
+
+## Daily Runs
+
+* 1. Activate the containers
+```bash
+docker compose up -d
+```
+
+* 2. Access the localhost
+```bash
+localhost:8000
+```
+
+* 3. Shutting down the containers
+```bash
+docker compose down
+```
