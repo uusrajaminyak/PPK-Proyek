@@ -14,11 +14,11 @@
                     <i class="fas fa-search text-sm"></i>
                 </span>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari ID Reservasi, nama pemohon, atau keterangan..."
-                    class="w-full bg-white border border-gray-200 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400">
+                    class="w-full bg-white border border-gray-200 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#001348] placeholder-gray-400">
             </div>
 
             <div class="flex items-center gap-3">
-                <select name="fasilitas" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
+                <select name="fasilitas" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#001348] text-gray-700 min-w-[140px]">
                     <option value="Semua">Fasilitas: Semua</option>
                     @foreach($facilities as $fac)
                     <option value="{{ $fac->id }}" {{ request('fasilitas') == $fac->id ? 'selected' : '' }}>
@@ -27,7 +27,7 @@
                     @endforeach
                 </select>
 
-                <select name="status" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
+                <select name="status" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#001348] text-gray-700 min-w-[140px]">
                     <option value="Semua" {{ request('status') == 'Semua' ? 'selected' : '' }}>Status: Semua</option>
                     <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
                     <option value="disetujui" {{ request('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
@@ -36,7 +36,7 @@
                 </select>
 
                 <!-- Dropdown Waktu (Fungsional) -->
-                <select name="waktu" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
+                <select name="waktu" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#001348] text-gray-700 min-w-[140px]">
                     <option value="terbaru" {{ request('waktu') == 'terbaru' ? 'selected' : '' }}>Waktu: Terbaru</option>
                     <option value="terlama" {{ request('waktu') == 'terlama' ? 'selected' : '' }}>Waktu: Terlama</option>
                 </select>
@@ -63,10 +63,10 @@
                 <tbody class="text-sm divide-y divide-gray-100">
                     @forelse($reservations as $res)
                     <tr class="hover:bg-gray-50/50 transition-colors">
-                        <td class="py-4 px-6 font-semibold text-[#0a192f] whitespace-nowrap">
+                        <td class="py-4 px-6 font-semibold text-[#001348] whitespace-nowrap">
                             {{ 'RES-' . date('Y', strtotime($res->start_time)) . '-' . str_pad($res->id, 3, '0', STR_PAD_LEFT) }}
                         </td>
-                        <td class="py-4 px-6 font-medium text-[#0a192f] whitespace-nowrap">{{ $res->facility->nama_fasilitas ?? '-' }}</td>
+                        <td class="py-4 px-6 font-medium text-[#001348] whitespace-nowrap">{{ $res->facility->nama_fasilitas ?? '-' }}</td>
                         <td class="py-4 px-6 text-gray-600 whitespace-nowrap">
                             {{ $res->user->name ?? '-' }}
                             <span class="text-gray-400 text-xs">({{ $res->user->fakultas ?? 'Personal' }})</span>

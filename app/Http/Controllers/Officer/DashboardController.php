@@ -14,12 +14,18 @@ class DashboardController extends Controller
     {
         abort_unless(auth()->user()->isPetugas() || auth()->user()->isAdmin(), 403);
 
-        $pendingReservationsCount = Reservation::where('status_reservasi', 'pending')->count();
-        $incomingReportsCount = Report::count();
+        $pendingReservationsCount = Reservation::query()
+            ->where('status_reservasi', 'pending')
+            ->whereHas('facility', fn ($facilities) => $facilities->where('status_fasilitas', '!=', 'inactive'))
+            ->count();
+        $incomingReportsCount = Report::query()
+            ->whereHas('facility', fn ($facilities) => $facilities->where('status_fasilitas', '!=', 'inactive'))
+            ->count();
         $facilitiesInRepairCount = Facility::where('status_fasilitas', 'in_repair')->count();
 
         $pendingReservations = Reservation::query()
             ->with(['user:id,name', 'facility:id,nama_fasilitas,lokasi'])
+            ->whereHas('facility', fn ($facilities) => $facilities->where('status_fasilitas', '!=', 'inactive'))
             ->where('status_reservasi', 'pending')
             ->latest('created_at')
             ->limit(5)

@@ -17,6 +17,7 @@ class FacilityController extends Controller
         ]);
 
         $facilitiesQuery = Facility::query()
+            ->visibleToNonAdmins()
             ->when($filters['search'] ?? null, function ($facilities, string $search): void {
                 $search = trim($search);
                 $facilities->where(function ($query) use ($search): void {
@@ -39,6 +40,7 @@ class FacilityController extends Controller
         $tipeList = Facility::query()
             ->whereNotNull('tipe')
             ->where('tipe', '!=', '')
+            ->where('status_fasilitas', '!=', 'inactive')
             ->distinct()
             ->orderBy('tipe')
             ->pluck('tipe');

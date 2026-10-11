@@ -71,7 +71,7 @@
 }
 .nav-link:hover,
 .nav-link:focus-visible {
-    background: #edf0f7;
+    background: #f5f5f5;
     outline: none;
 }
 .nav-link.is-active {
@@ -81,7 +81,7 @@
 }
 .nav-link.is-active:hover,
 .nav-link.is-active:focus-visible {
-    background: #10285d;
+    background: #001348;
 }
 .login-link {
     display: inline-flex;
@@ -206,7 +206,7 @@
     }
     .mobile-nav-panel a:hover,
     .mobile-nav-panel a:focus-visible {
-        background: #edf0f7;
+        background: #f5f5f5;
         outline: none;
     }
 }

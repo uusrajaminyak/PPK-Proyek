@@ -28,7 +28,7 @@
                 <article class="step-card">
                     <div class="step-icon"><span class="step-icon-circle" aria-hidden="true"></span><img src="{{ asset('images/landing/icon-search.svg') }}" alt="" aria-hidden="true"></div>
                     <h3>Cari Fasilitas</h3>
-                    <p>Telusuri ruang kelas, aula, laboratorium, dan lapangan berdasarkan tipe, lokasi, atau kapasitas.</p>
+                    <p>Telusuri ruang kelas, aula, laboratorium, dan lapangan berdasarkan tipe atau status.</p>
                 </article>
                 <article class="step-card">
                     <div class="step-icon"><span class="step-icon-circle" aria-hidden="true"></span><img src="{{ asset('images/landing/icon-calendar.svg') }}" alt="" aria-hidden="true"></div>

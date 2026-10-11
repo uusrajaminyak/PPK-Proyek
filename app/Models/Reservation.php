@@ -38,6 +38,7 @@ class Reservation extends Model
             'approved' => 'bg-green-100 text-green-800',
             'cancelled_by_user' => 'bg-gray-100 text-gray-700',
             'cancelled_by_officer' => 'bg-red-100 text-red-800',
+            'cancelled_by_staff' => 'bg-gray-100 text-gray-700',
             default => 'bg-gray-100 text-gray-800',
         };
     }
@@ -49,6 +50,7 @@ class Reservation extends Model
             'approved' => 'Disetujui',
             'cancelled_by_user' => 'Dibatalkan Pengguna',
             'cancelled_by_officer' => 'Dibatalkan Petugas',
+            'cancelled_by_staff' => 'Dibatalkan Petugas',
             default => 'Tidak Diketahui',
         };
     }
@@ -64,6 +66,11 @@ class Reservation extends Model
 
         // FR-04: Allow cancellation up to 24 hours (or 2 hours based on your team's updated logic) before start_time
         return now()->diffInHours($this->start_time, false) >= 2;
+    }
+
+    public function canBeCancelledByOfficer(): bool
+    {
+        return $this->status_reservasi === 'approved' && $this->end_time->isFuture();
     }
 
     // ==========================================

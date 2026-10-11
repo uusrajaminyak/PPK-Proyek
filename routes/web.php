@@ -52,6 +52,7 @@ Route::prefix('officer')->name('officer.')->group(function () {
     Route::get('/reservations/history', [OfficerReservationController::class, 'history'])->middleware('auth')->name('reservations.history');
     Route::get('/reservations/{reservation}', [OfficerReservationController::class, 'show'])->middleware('auth')->name('reservations.show');
     Route::patch('/reservations/{reservation}/status', [OfficerReservationController::class, 'updateStatus'])->middleware('auth')->name('reservations.update-status');
+    Route::patch('/reservations/{reservation}/cancel', [OfficerReservationController::class, 'cancelApproved'])->middleware('auth')->name('reservations.cancel');
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [OfficerReportController::class, 'index'])->middleware('auth')->name('index');

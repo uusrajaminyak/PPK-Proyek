@@ -77,6 +77,7 @@
                                     'approved' => ['Disetujui', 'is-approved'],
                                     'pending' => ['Menunggu', 'is-pending'],
                                     'cancelled_by_user' => ['Dibatalkan', 'is-cancelled'],
+                                    'cancelled_by_staff' => ['Dibatalkan', 'is-cancelled'],
                                     'cancelled_by_officer' => ['Ditolak', 'is-rejected'],
                                     default => ['—', ''],
                                 };

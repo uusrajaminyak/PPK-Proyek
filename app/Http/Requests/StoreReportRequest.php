@@ -23,7 +23,7 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'facility_id' => ['required', 'exists:facilities,id'],
+            'facility_id' => ['required', 'exists:facilities,id', 'exists:facilities,id,status_fasilitas,active'],
             'kategori_laporan' => ['required', 'in:Kerusakan/Kendala Fasilitas,Kebersihan Fasilitas,Gangguan Internet'],
             'deskripsi' => ['required', 'string', 'min:10', 'max:2000'],
             'fotos' => ['nullable', 'array', 'max:5'],

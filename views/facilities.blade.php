@@ -9,12 +9,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
-<body>
+<body class="facilities-browse-page">
+    <img class="page-watermark" src="{{ asset('images/landing/undip-watermark.png') }}" alt="" aria-hidden="true">
     @include('partials.navbar')
     <main class="facilities-page">
-        <div class="facilities-watermark" aria-hidden="true">
-            <img src="{{ asset('images/landing/undip-blue-watermark.png') }}" alt="">
-        </div>
         <section class="facilities-content" aria-labelledby="facilities-title" data-ajax-list>
             <div class="facilities-intro">
                 <h1 id="facilities-title">Jelajah Fasilitas</h1>
@@ -36,7 +34,6 @@
                             <option value="">Status</option>
                             <option value="active" @selected(($filters['status'] ?? '') === 'active')>Tersedia</option>
                             <option value="in_repair" @selected(($filters['status'] ?? '') === 'in_repair')>Dalam Perbaikan</option>
-                            <option value="inactive" @selected(($filters['status'] ?? '') === 'inactive')>Tidak Tersedia</option>
                         </select>
                         <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                     </label>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReportStatusRequest extends FormRequest
@@ -11,13 +12,19 @@ class UpdateReportStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $user = $this->user();
+
+        if ($user === null || (! $user->isAdmin() && ! $user->isPetugas())) {
+            return false;
+        }
+
+        return $this->input('update_facility_status') !== 'inactive' || $user->isAdmin();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

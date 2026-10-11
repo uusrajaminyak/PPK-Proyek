@@ -3,7 +3,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f5f6f9;
+    background-color: var(--page-gray);
     position: relative;
     overflow-x: hidden;
 }
@@ -39,7 +39,7 @@
 }
 .back-link:hover {
     border-color: #001348;
-    background: #f5f6f9;
+    background: #f5f5f5;
 }
 
 /* Galeri */
@@ -250,7 +250,7 @@
     cursor: pointer;
 }
 .btn-submit-reservation.active:hover {
-    background: #0a1e55;
+    background: #001348;
 }
 
 /* Jadwal Matriks */
@@ -334,7 +334,7 @@
     color: #ffffff;
 }
 .slot-btn.available:hover {
-    background: #1e3a8a;
+    background: #001348;
     transform: translateY(-1px);
 }
 .slot-btn.available.is-view-only,
@@ -406,7 +406,7 @@
     transform: rotate(180deg);
 }
 .nav-month-btn:hover:not(:disabled), .nav-day-btn:hover:not(:disabled) {
-    background: #1e3a8a;
+    background: #001348;
     transform: translateY(-1px);
 }
 .nav-month-btn:disabled, .nav-day-btn:disabled {
@@ -456,9 +456,9 @@
     border-radius: 14px;
 }
 .timetable th.is-today {
-    background: #e0e7ff;
+    background: #f5f5f5;
     border-radius: 6px;
-    color: #1e3a8a;
+    color: #001348;
 }
 .timetable th.is-past {
     color: #94a3b8;
@@ -586,7 +586,7 @@
     transition: all 0.15s;
 }
 .btn-modal-submit:hover:not(:disabled) {
-    background: #1e3a8a;
+    background: #001348;
 }
 .btn-modal-submit:disabled {
     background: #94a3b8;

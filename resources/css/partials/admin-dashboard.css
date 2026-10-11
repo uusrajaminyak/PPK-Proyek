@@ -63,13 +63,13 @@
 .admin-export-link,
 .admin-detail-link { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; padding: 0 14px; border-radius: 6px; background: #001348; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .admin-export-link:hover,
-.admin-detail-link:hover { background: #10285d; }
+.admin-detail-link:hover { background: #001348; }
 .admin-export-link img { width: 18px; height: 18px; }
 .admin-recap-panels { display: grid; min-height: 0; flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .admin-recap-panel { display: flex; min-width: 0; min-height: 0; flex-direction: column; padding: 16px; border: 1.5px solid #d0d2d8; border-radius: 10px; background: #fff; }
 .admin-recap-panel h3 { flex: 0 0 auto; margin: 0 0 12px; font-size: 19px; font-weight: 700; letter-spacing: -.035em; }
 .admin-recap-list { display: grid; min-height: 0; flex: 1; align-content: start; gap: 14px; overflow: auto; padding: 2px 2px 10px; }
-.admin-recap-row { display: grid; min-width: 0; grid-template-columns: minmax(100px, 34%) minmax(40px, 1fr) 36px; align-items: center; gap: 12px; color: #243451; font-size: 13px; }
+.admin-recap-row { display: grid; min-width: 0; grid-template-columns: minmax(100px, 34%) minmax(40px, 1fr) 36px; align-items: center; gap: 12px; color: #001348; font-size: 13px; }
 .admin-recap-row-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-recap-track { height: 9px; overflow: hidden; border-radius: 999px; background: #e6e8ed; }
 .admin-recap-track.is-empty { background: transparent; }

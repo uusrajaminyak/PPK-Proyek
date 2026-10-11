@@ -114,7 +114,9 @@
                                     <option value="keep">Tidak mengubah status saat ini</option>
                                     <option value="in_repair">Dalam Perbaikan</option>
                                     <option value="active">Aktif</option>
-                                    <option value="inactive">Tidak Tersedia</option>
+                                    @if (auth()->user()->isAdmin())
+                                        <option value="inactive">Tidak Tersedia</option>
+                                    @endif
                                 </select>
                                 <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                             </span>

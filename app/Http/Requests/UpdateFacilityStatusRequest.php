@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFacilityStatusRequest extends FormRequest
@@ -11,13 +12,16 @@ class UpdateFacilityStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $user = $this->user();
+
+        return $user !== null
+            && ($user->isAdmin() || ($user->isPetugas() && $this->input('status_fasilitas') !== 'inactive'));
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -47,8 +51,7 @@ class UpdateFacilityStatusRequest extends FormRequest
     {
         return [
             'status_fasilitas.required' => 'Status fasilitas wajib dipilih.',
-            'status_fasilitas.in' => 'Status fasilitas harus Aktif, Dalam Perbaikan, atau Tidak Tersedia.',
+            'status_fasilitas.in' => 'Status fasilitas harus Aktif, Dalam Perbaikan, atau Nonaktif.',
         ];
     }
 }
-

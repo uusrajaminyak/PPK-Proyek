@@ -21,7 +21,9 @@ class ReportController extends Controller
         $reporterId = Auth::id() ?? User::where('role', 'pengguna')->first()?->id ?? 1;
 
         // Base query for user's reports
-        $query = Report::with('facility')->where('reporter_id', $reporterId);
+        $query = Report::with('facility')
+            ->where('reporter_id', $reporterId)
+            ->whereHas('facility', fn ($facilities) => $facilities->visibleToNonAdmins());
 
         // Calculate count per status for filter tabs
         $counts = [
@@ -48,7 +50,7 @@ class ReportController extends Controller
      */
     public function create(): View
     {
-        $facilities = Facility::where('status_fasilitas', '!=', 'inactive')
+        $facilities = Facility::query()->visibleToNonAdmins()
             ->orderBy('nama_fasilitas')
             ->get();
 
@@ -89,6 +91,6 @@ class ReportController extends Controller
             'status_laporan' => 'baru',
         ]);
 
-        return redirect()->route('reports.index')->with('success', 'Laporan kerusakan berhasil dikirim! Petugas akan segera memverifikasi laporan Anda.');
+        return redirect()->route('reports.create')->with('success', 'Laporan berhasil dibuat. Petugas akan segera menindaklanjutinya.');
     }
 }
