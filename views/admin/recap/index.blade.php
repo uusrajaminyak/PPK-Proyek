@@ -3,12 +3,12 @@
 @section('header_title', 'Rekap')
 
 @section('content')
-<div class="admin-recap-page">
+<div class="admin-recap-page" data-ajax-list>
     <form id="recap-filter-form" action="{{ route('admin.recap.index') }}" method="GET" class="recap-toolbar">
         <div class="recap-period-filters" aria-label="Periode rekap">
             <label class="recap-select">
                 <span class="sr-only">Bulan</span>
-                <select name="month" onchange="this.form.submit()">
+                <select name="month" onchange="this.form.requestSubmit()">
                     @foreach($months as $num => $name)
                         <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
                     @endforeach
@@ -17,7 +17,7 @@
             </label>
             <label class="recap-select recap-year-select">
                 <span class="sr-only">Tahun</span>
-                <select name="year" onchange="this.form.submit()">
+                <select name="year" onchange="this.form.requestSubmit()">
                     @foreach($years as $yr)
                         <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
                     @endforeach

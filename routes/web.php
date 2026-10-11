@@ -14,6 +14,7 @@ use App\Http\Controllers\Officer\ReportController as OfficerReportController;
 use App\Http\Controllers\Officer\ReservationController as OfficerReservationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Middleware\RedirectStaffToDashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,8 +23,12 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::view('/', 'landing')->name('home');
-Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities.index');
+Route::middleware(RedirectStaffToDashboard::class)->group(function () {
+    Route::view('/', 'landing')->name('home');
+    Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities.index');
+    Route::get('/facilities/{facility}/reservation', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/facilities/{facility}/schedule-data', [ReservationController::class, 'getScheduleData'])->name('reservations.schedule');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -114,8 +119,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-    Route::get('/facilities/{facility}/reservation', [ReservationController::class, 'create'])->name('reservations.create');
-    Route::get('/facilities/{facility}/schedule-data', [ReservationController::class, 'getScheduleData'])->name('reservations.schedule');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::post('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');

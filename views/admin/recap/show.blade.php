@@ -4,7 +4,7 @@
 @section('header_title', 'Rekap')
 
 @section('content')
-    <section class="admin-recap-detail-page" aria-labelledby="recap-detail-title">
+    <section class="admin-recap-detail-page" aria-labelledby="recap-detail-title" data-ajax-list>
         <div class="recap-detail-toolbar">
             <a class="recap-detail-back" href="{{ route('admin.recap.index', ['month' => $selectedMonth, 'year' => $selectedYear]) }}">
                 <img src="{{ asset('images/officer/return.svg') }}" alt="" aria-hidden="true">
@@ -14,7 +14,7 @@
             <form action="{{ route('admin.recap.facility', $facilityId) }}" method="GET" class="recap-detail-period" aria-label="Periode rekap">
                 <label class="recap-select">
                     <span class="sr-only">Bulan</span>
-                    <select name="month" onchange="this.form.submit()">
+                <select name="month" onchange="this.form.requestSubmit()">
                         @foreach ($months as $num => $name)
                             <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
                         @endforeach
@@ -23,7 +23,7 @@
                 </label>
                 <label class="recap-select recap-year-select">
                     <span class="sr-only">Tahun</span>
-                    <select name="year" onchange="this.form.submit()">
+                <select name="year" onchange="this.form.requestSubmit()">
                         @foreach ($years as $year)
                             <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
                         @endforeach

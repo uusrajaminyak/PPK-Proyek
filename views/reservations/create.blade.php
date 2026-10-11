@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $facility->nama_fasilitas }} - Fasilita UNDIP</title>
+    <title>{{ $facility->nama_fasilitas }} - Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
@@ -17,11 +17,8 @@
 
     {{-- Main Content --}}
     <main class="detail-main">
-        <a class="back-link" href="{{ route('facilities.index') }}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5M12 5l-7 7 7 7"/>
-            </svg>
-            Kembali
+        <a class="back-link" href="{{ route('facilities.index') }}" aria-label="Kembali ke Jelajah Fasilitas" title="Kembali">
+            <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
         </a>
 
         {{-- Galeri Foto --}}
@@ -47,8 +44,14 @@
             <div class="facility-info">
                 <h1>{{ $facility->nama_fasilitas }}</h1>
                 <div class="facility-meta">
-                    <span>📍 {{ $facility->lokasi }}</span>
-                    <span>👥 Kapasitas {{ number_format($facility->kapasitas) }} orang</span>
+                    <span>
+                        <img src="{{ asset('images/facilities/icon-location.svg') }}" alt="" aria-hidden="true">
+                        {{ $facility->lokasi ?: 'Lokasi belum tersedia' }}
+                    </span>
+                    <span>
+                        <img src="{{ asset('images/facilities/icon-capacity.svg') }}" alt="" aria-hidden="true">
+                        Kapasitas {{ number_format($facility->kapasitas) }} orang
+                    </span>
                 </div>
                 <div class="facility-description">
                     <h3>Fasilitas</h3>
@@ -58,43 +61,54 @@
                 </div>
             </div>
 
-            <div class="reservation-card">
+            <div class="reservation-card {{ $canReserve ? '' : 'is-unavailable' }}">
                 <h2>Reservasi</h2>
 
-                @if ($errors->any())
-                    <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:0.65rem 0.9rem;margin-bottom:1rem;font-size:0.8rem;color:#991b1b;">
-                        @foreach ($errors->all() as $error)
-                            <p style="margin:0;">{{ $error }}</p>
-                        @endforeach
+                @if (!$canReserve)
+                    <div class="reservation-unavailable-message" role="status">
+                        @if (!auth()->check())
+                            <p>Anda harus login untuk membuat reservasi.</p>
+                            <a href="{{ route('login') }}">Masuk ke akun</a>
+                        @else
+                            <p>Reservasi tidak tersedia karena fasilitas sedang berstatus {{ strtolower($facility->getStatusLabel()) }}.</p>
+                        @endif
                     </div>
-                @endif
-
-                <form action="{{ route('reservations.store') }}" method="POST" id="reservationForm">
-                    @csrf
-                    <input type="hidden" name="facility_id" value="{{ $facility->id }}">
-
-                    <div class="form-group">
-                        <label class="form-label">Tanggal &amp; Waktu Reservasi</label>
-                        <div class="date-time-inputs">
-                            <input type="text" name="tanggal_display" id="inputTanggalDisplay" class="input-date" placeholder="DD/BB/TTTT" readonly required>
-                            <input type="hidden" name="tanggal" id="inputTanggalReal" required>
-                            <input type="text" name="slot_start" id="inputSlotStart" class="input-time" placeholder="07:00" readonly required>
-                            <span class="time-separator">&rarr;</span>
-                            <input type="text" name="slot_end" id="inputSlotEnd" class="input-time" placeholder="07:30" readonly required>
+                @else
+                    @if ($errors->any())
+                        <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:0.65rem 0.9rem;margin-bottom:1rem;font-size:0.8rem;color:#991b1b;">
+                            @foreach ($errors->all() as $error)
+                                <p style="margin:0;">{{ $error }}</p>
+                            @endforeach
                         </div>
-                        <small class="input-helper">(Anda dapat mengecek jadwal yang tersedia di bawah)</small>
-                    </div>
+                    @endif
 
-                    <div class="form-group">
-                        <label class="form-label" for="tujuan_penggunaan">Tujuan Penggunaan</label>
-                        <input type="text" name="tujuan_penggunaan" id="tujuan_penggunaan" class="input-purpose"
-                               placeholder="Contoh: Rapat Bulanan BEM" required oninput="validateForm()">
-                    </div>
+                    <form action="{{ route('reservations.store') }}" method="POST" id="reservationForm">
+                        @csrf
+                        <input type="hidden" name="facility_id" value="{{ $facility->id }}">
 
-                    <button type="button" id="btnSubmitReservation" class="btn-submit-reservation" onclick="openConfirmModal()" disabled>
-                        Buat Reservasi
-                    </button>
-                </form>
+                        <div class="form-group">
+                            <label class="form-label">Tanggal &amp; Waktu Reservasi</label>
+                            <div class="date-time-inputs">
+                                <input type="text" name="tanggal_display" id="inputTanggalDisplay" class="input-date" placeholder="DD/BB/TTTT" readonly required>
+                                <input type="hidden" name="tanggal" id="inputTanggalReal" required>
+                                <input type="text" name="slot_start" id="inputSlotStart" class="input-time" placeholder="07:00" readonly required>
+                                <span class="time-separator">&rarr;</span>
+                                <input type="text" name="slot_end" id="inputSlotEnd" class="input-time" placeholder="07:30" readonly required>
+                            </div>
+                            <small class="input-helper">(Anda dapat mengecek jadwal yang tersedia di bawah)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="tujuan_penggunaan">Tujuan Penggunaan</label>
+                            <input type="text" name="tujuan_penggunaan" id="tujuan_penggunaan" class="input-purpose"
+                                   placeholder="Contoh: Rapat Bulanan BEM" required oninput="validateForm()">
+                        </div>
+
+                        <button type="button" id="btnSubmitReservation" class="btn-submit-reservation" onclick="openConfirmModal()" disabled>
+                            Buat Reservasi
+                        </button>
+                    </form>
+                @endif
             </div>
         </div>
 
@@ -105,16 +119,24 @@
             <div class="schedule-nav">
                 {{-- Selector Bulan (Fast Jump) --}}
                 <div class="month-selector">
-                    <button type="button" class="nav-month-btn" id="btnPrevMonth" onclick="navigateSchedule('prev_month')" title="Bulan Sebelumnya" disabled>&larr;</button>
+                    <button type="button" class="nav-month-btn" id="btnPrevMonth" onclick="navigateSchedule('prev_month')" title="Bulan Sebelumnya" disabled>
+                        <img class="is-previous" src="{{ asset('images/facilities/icon-arrow2 right.svg') }}" alt="" aria-hidden="true">
+                    </button>
                     <span class="current-month-text" id="displayMonthText">Memuat...</span>
-                    <button type="button" class="nav-month-btn" id="btnNextMonth" onclick="navigateSchedule('next_month')" title="Bulan Selanjutnya">&rarr;</button>
+                    <button type="button" class="nav-month-btn" id="btnNextMonth" onclick="navigateSchedule('next_month')" title="Bulan Selanjutnya">
+                        <img src="{{ asset('images/facilities/icon-arrow2 right.svg') }}" alt="" aria-hidden="true">
+                    </button>
                 </div>
 
                 {{-- Slider Hari (Precision Step) --}}
                 <div class="day-slider-nav">
-                    <button type="button" class="nav-day-btn" id="btnPrevDays" onclick="navigateSchedule('prev_days')" title="Hari Sebelumnya" disabled>&lsaquo;</button>
+                    <button type="button" class="nav-day-btn" id="btnPrevDays" onclick="navigateSchedule('prev_days')" title="Hari Sebelumnya" disabled>
+                        <img class="is-previous" src="{{ asset('images/facilities/icon-arrow2 right.svg') }}" alt="" aria-hidden="true">
+                    </button>
                     <span class="day-slider-label" id="displayDaysRange">Memuat hari...</span>
-                    <button type="button" class="nav-day-btn" id="btnNextDays" onclick="navigateSchedule('next_days')" title="Hari Selanjutnya">&rsaquo;</button>
+                    <button type="button" class="nav-day-btn" id="btnNextDays" onclick="navigateSchedule('next_days')" title="Hari Selanjutnya">
+                        <img src="{{ asset('images/facilities/icon-arrow2 right.svg') }}" alt="" aria-hidden="true">
+                    </button>
                 </div>
             </div>
 
@@ -174,11 +196,12 @@
 
     {{-- Footer --}}
     <footer class="site-footer">
-        <p>Fasilita UNDIP &mdash; Sistem Reservasi &amp; Pelaporan Fasilitas Kampus Universitas Diponegoro &copy; 2026</p>
+        <p>Fasilita FSM &mdash; Sistem Reservasi &amp; Pelaporan Fasilitas Fakultas Sains dan Matematika &copy; 2026</p>
     </footer>
 
     {{-- Script Interaktivitas Jadwal & AJAX --}}
     <script>
+        const CAN_RESERVE = @json($canReserve);
         const FACILITY_ID = {{ $facility->id }};
         const SCHEDULE_URL = "{{ route('reservations.schedule', $facility->id) }}";
 
@@ -287,7 +310,11 @@
                     } else if (isSelected) {
                         bodyHtml += '<td><button type="button" class="slot-btn available selected" data-date-ymd="' + day.date_ymd + '" data-date-dmy="' + day.date_dmy + '" data-start="' + startTime + '" data-end="' + nextTime + '" onclick="selectSlot(this)">Dipilih</button></td>';
                     } else {
-                        bodyHtml += '<td><button type="button" class="slot-btn available" data-date-ymd="' + day.date_ymd + '" data-date-dmy="' + day.date_dmy + '" data-start="' + startTime + '" data-end="' + nextTime + '" onclick="selectSlot(this)">Tersedia</button></td>';
+                        if (CAN_RESERVE) {
+                            bodyHtml += '<td><button type="button" class="slot-btn available" data-date-ymd="' + day.date_ymd + '" data-date-dmy="' + day.date_dmy + '" data-start="' + startTime + '" data-end="' + nextTime + '" onclick="selectSlot(this)">Tersedia</button></td>';
+                        } else {
+                            bodyHtml += '<td><button type="button" class="slot-btn available is-view-only" disabled aria-disabled="true">Tersedia</button></td>';
+                        }
                     }
                 });
 
@@ -311,7 +338,9 @@
             }
         }
 
-                function selectSlot(button) {
+        function selectSlot(button) {
+            if (!CAN_RESERVE) return;
+
             const dateYmd = button.getAttribute('data-date-ymd');
             const dateDmy = button.getAttribute('data-date-dmy');
             const startTime = button.getAttribute('data-start');

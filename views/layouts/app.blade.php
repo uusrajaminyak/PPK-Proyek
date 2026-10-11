@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'Sistem Reservasi Fasilitas Kampus') }} @yield('title')</title>
+    <title>{{ config('app.name', 'Fasilita FSM') }} @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -19,7 +19,7 @@
                         <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
                         </svg>
-                        <span class="text-xl font-bold text-gray-900">FasilitasKampus</span>
+                        <span class="text-xl font-bold text-gray-900">Fasilita FSM</span>
                     </a>
                 </div>
 
@@ -198,8 +198,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-white font-semibold mb-4">FasilitasKampus</h3>
-                    <p class="text-sm">Sistem Reservasi & Pelaporan Fasilitas Kampus</p>
+                    <h3 class="text-white font-semibold mb-4">Fasilita FSM</h3>
+                    <p class="text-sm">Sistem Reservasi & Pelaporan Fasilitas Fakultas Sains dan Matematika</p>
                 </div>
                 <div>
                     <h4 class="text-white font-medium mb-3">Link Cepat</h4>
@@ -216,13 +216,13 @@
                 <div>
                     <h4 class="text-white font-medium mb-3">Kontak</h4>
                     <ul class="space-y-2 text-sm">
-                        <li>Email: fasilitas@kampus.ac.id</li>
-                        <li>Telp: (021) 1234-5678</li>
+                        <li>Fakultas Sains dan Matematika</li>
+                        <li>Universitas Diponegoro</li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-                &copy; {{ date('Y') }} Sistem Reservasi Fasilitas Kampus. All rights reserved.
+                &copy; {{ date('Y') }} Fasilita FSM — Sistem Reservasi dan Pelaporan Fasilitas Fakultas Sains dan Matematika.
             </div>
         </div>
     </footer>

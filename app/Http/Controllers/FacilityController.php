@@ -9,38 +9,40 @@ class FacilityController extends Controller
 {
     public function index(Request $request)
     {
-        $filters = $request->only(['nama', 'tipe', 'lokasi', 'kapasitas_min']);
-        
-        // Hapus filter kosong
-        $filters = array_filter($filters, fn($v) => $v !== '' && $v !== null);
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:active,in_repair,inactive'],
+            'tipe' => ['nullable', 'string', 'max:100'],
+            'urut' => ['nullable', 'in:terbaru,terlama'],
+        ]);
 
-        $facilitiesQuery = Facility::query();
+        $facilitiesQuery = Facility::query()
+            ->when($filters['search'] ?? null, function ($facilities, string $search): void {
+                $search = trim($search);
+                $facilities->where(function ($query) use ($search): void {
+                    $query->where('nama_fasilitas', 'like', "%{$search}%")
+                        ->orWhere('lokasi', 'like', "%{$search}%")
+                        ->orWhere('tipe', 'like', "%{$search}%");
+                });
+            })
+            ->when($filters['status'] ?? null, fn ($facilities, string $status) => $facilities->where('status_fasilitas', $status))
+            ->when($filters['tipe'] ?? null, fn ($facilities, string $type) => $facilities->where('tipe', $type));
 
-        if (! empty($filters['nama'])) {
-            $facilitiesQuery->where('nama_fasilitas', 'like', "%{$filters['nama']}%");
-        }
-
-        if (! empty($filters['tipe'])) {
-            $facilitiesQuery->where('tipe', $filters['tipe']);
-        }
-
-        if (! empty($filters['lokasi'])) {
-            $facilitiesQuery->where('lokasi', 'like', "%{$filters['lokasi']}%");
-        }
-
-        if (! empty($filters['kapasitas_min'])) {
-            $facilitiesQuery->where('kapasitas', '>=', $filters['kapasitas_min']);
-        }
-
+        $sortDirection = ($filters['urut'] ?? 'terbaru') === 'terlama' ? 'asc' : 'desc';
         $facilities = $facilitiesQuery
-            ->orderBy('nama_fasilitas')
-            ->paginate(12)
+            ->orderBy('created_at', $sortDirection)
+            ->orderBy('id', $sortDirection)
+            ->paginate(6)
             ->withQueryString();
 
         // Data untuk dropdown filter
-        $tipeList = Facility::distinct()->pluck('tipe')->filter()->sort()->values();
-        $lokasiList = Facility::distinct()->pluck('lokasi')->filter()->sort()->values();
+        $tipeList = Facility::query()
+            ->whereNotNull('tipe')
+            ->where('tipe', '!=', '')
+            ->distinct()
+            ->orderBy('tipe')
+            ->pluck('tipe');
 
-        return view('facilities', compact('facilities', 'filters', 'tipeList', 'lokasiList'));
+        return view('facilities', compact('facilities', 'filters', 'tipeList'));
     }
 }

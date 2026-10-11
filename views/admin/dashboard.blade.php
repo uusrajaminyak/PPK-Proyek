@@ -3,7 +3,7 @@
 @section('header_title', 'Dasbor')
 
 @section('content')
-<div class="admin-dashboard-content">
+<div class="admin-dashboard-content" data-ajax-list>
     <section class="admin-summary" aria-label="Ringkasan administrasi">
         <article class="admin-summary-card">
             <h2>Totalitas Fasilitas</h2>
@@ -39,7 +39,7 @@
                 <h2 id="admin-recap-title">Rekap</h2>
                 <div class="admin-recap-filters">
                     <label class="admin-recap-filter">
-                        <select name="month" aria-label="Bulan rekap" onchange="this.form.submit()">
+                        <select name="month" aria-label="Bulan rekap" onchange="this.form.requestSubmit()">
                             @foreach($months as $num => $name)
                                 <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
                             @endforeach
@@ -47,7 +47,7 @@
                         <img src="{{ asset('images/admin/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                     </label>
                     <label class="admin-recap-filter">
-                        <select name="year" aria-label="Tahun rekap" onchange="this.form.submit()">
+                        <select name="year" aria-label="Tahun rekap" onchange="this.form.requestSubmit()">
                             @foreach($years as $yr)
                                 <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
                             @endforeach

@@ -1,4 +1,4 @@
-# Fasilita FSM — Sistem Reservasi & Pelaporan Fasilitas Kampus Universitas Diponegoro
+# Fasilita FSM — Sistem Reservasi & Pelaporan Fasilitas Fakultas Sains dan Matematika
 
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Laravel Version](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
@@ -6,7 +6,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15.0-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-Fasilita FSM adalah aplikasi berbasis web yang dirancang khusus untuk Fakultas Sains dan Matematika Universitas Diponegoro. Platform ini menyediakan manajemen terpusat untuk peminjaman/reservasi fasilitas (ruang kelas, aula, laboratorium, alat, dan lapangan) serta pelaporan kerusakan fasilitas kampus secara real-time.
+Fasilita FSM adalah aplikasi berbasis web untuk mengelola peminjaman atau reservasi dan pelaporan kerusakan fasilitas milik Fakultas Sains dan Matematika (FSM), Universitas Diponegoro. Cakupan layanan ini terbatas pada fasilitas di lingkungan FSM, seperti ruang kelas, aula, laboratorium, peralatan, dan lapangan fakultas.
 
 ---
 
