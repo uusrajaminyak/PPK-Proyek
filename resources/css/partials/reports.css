@@ -156,6 +156,11 @@
     display: flex;
     align-items: center;
 }
+.report-select-arrow img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%);
+}
 
 /* Textarea Deskripsi */
 .report-textarea {

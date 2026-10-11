@@ -8,7 +8,7 @@
         <img src="{{ asset('images/landing/undip-blue-watermark.png') }}" alt="">
     </div>
 
-    <div class="officer-reservations-page">
+    <div class="officer-reservations-page" data-ajax-list>
         @if (session('success'))
             <div class="officer-report-alert is-success" role="status">{{ session('success') }}</div>
         @endif
@@ -25,7 +25,7 @@
 
             <label class="officer-reservation-filter">
                 <span class="sr-only">Filter status laporan</span>
-                <select name="status" onchange="this.form.submit()">
+                <select name="status" onchange="this.form.requestSubmit()">
                     <option value="">Status</option>
                     <option value="baru" @selected(($filters['status'] ?? '') === 'baru')>Baru</option>
                     <option value="diproses" @selected(($filters['status'] ?? '') === 'diproses')>Diproses</option>
@@ -37,7 +37,7 @@
 
             <label class="officer-reservation-filter">
                 <span class="sr-only">Filter jenis laporan</span>
-                <select name="jenis" onchange="this.form.submit()">
+                <select name="jenis" onchange="this.form.requestSubmit()">
                     <option value="">Jenis</option>
                     <option value="Kerusakan/Kendala Fasilitas" @selected(($filters['jenis'] ?? '') === 'Kerusakan/Kendala Fasilitas')>Kerusakan/Kendala Fasilitas</option>
                     <option value="Kebersihan Fasilitas" @selected(($filters['jenis'] ?? '') === 'Kebersihan Fasilitas')>Kebersihan Fasilitas</option>
@@ -49,20 +49,20 @@
             <div class="officer-reservation-date">
                 <label class="officer-reservation-date-field">
                     <span class="sr-only">Tanggal mulai</span>
-                    <input type="date" name="tanggal_mulai" value="{{ $filters['tanggal_mulai'] ?? '' }}" onchange="this.form.submit()">
+                    <input type="date" name="tanggal_mulai" value="{{ $filters['tanggal_mulai'] ?? '' }}" onchange="this.form.requestSubmit()">
                     <img src="{{ asset('images/officer/calendar.svg') }}" alt="" aria-hidden="true">
                 </label>
                 <span aria-hidden="true">–</span>
                 <label class="officer-reservation-date-field">
                     <span class="sr-only">Tanggal selesai</span>
-                    <input type="date" name="tanggal_selesai" value="{{ $filters['tanggal_selesai'] ?? '' }}" onchange="this.form.submit()">
+                    <input type="date" name="tanggal_selesai" value="{{ $filters['tanggal_selesai'] ?? '' }}" onchange="this.form.requestSubmit()">
                     <img src="{{ asset('images/officer/calendar.svg') }}" alt="" aria-hidden="true">
                 </label>
             </div>
 
             <label class="officer-reservation-filter officer-reservation-sort">
                 <span class="sr-only">Urutkan laporan</span>
-                <select name="urut" onchange="this.form.submit()">
+                <select name="urut" onchange="this.form.requestSubmit()">
                     <option value="terbaru" @selected(($filters['urut'] ?? 'terbaru') === 'terbaru')>Terbaru</option>
                     <option value="terlama" @selected(($filters['urut'] ?? '') === 'terlama')>Terlama</option>
                 </select>

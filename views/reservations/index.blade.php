@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f5f5">
-    <title>Reservasi Saya — Fasilita UNDIP</title>
+    <title>Reservasi Saya — Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
@@ -17,7 +17,7 @@
     @include('partials.navbar')
 
     {{-- Main Container --}}
-    <main class="reservation-main">
+    <main class="reservation-main" data-ajax-list>
         <h1 class="page-title">Reservasi Saya</h1>
 
         <div class="table-container-wrapper">

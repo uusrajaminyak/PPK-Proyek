@@ -13,8 +13,11 @@ class OfficerReportStatusTest extends TestCase
     use RefreshDatabase;
 
     private User $petugas;
+
     private User $userA;
+
     private User $userB;
+
     private Facility $facility;
 
     protected function setUp(): void
@@ -157,7 +160,7 @@ class OfficerReportStatusTest extends TestCase
         $response = $this->actingAs($this->petugas)
             ->patch(route('officer.reports.update', $report->id), [
                 'status_laporan' => 'selesai',
-                'catatan_resolusi' => 'Unit MCB dan stop kontak telah diganti baru oleh teknisi PLN kampus.',
+                'catatan_resolusi' => 'Unit MCB dan stop kontak telah diganti baru oleh teknisi FSM.',
             ]);
 
         $response->assertRedirect();
@@ -166,7 +169,7 @@ class OfficerReportStatusTest extends TestCase
         $this->assertDatabaseHas('reports', [
             'id' => $report->id,
             'status_laporan' => 'selesai',
-            'catatan_resolusi' => 'Unit MCB dan stop kontak telah diganti baru oleh teknisi PLN kampus.',
+            'catatan_resolusi' => 'Unit MCB dan stop kontak telah diganti baru oleh teknisi FSM.',
         ]);
     }
 
@@ -183,7 +186,7 @@ class OfficerReportStatusTest extends TestCase
         $response = $this->actingAs($this->petugas)
             ->patch(route('officer.reports.update', $report->id), [
                 'status_laporan' => 'ditolak',
-                'catatan_resolusi' => 'Laporan ditolak karena kendala ada pada perangkat pribadi pelapor, bukan fasilitas kampus.',
+                'catatan_resolusi' => 'Laporan ditolak karena kendala ada pada perangkat pribadi pelapor, bukan fasilitas FSM.',
             ]);
 
         $response->assertRedirect();
@@ -192,7 +195,7 @@ class OfficerReportStatusTest extends TestCase
         $this->assertDatabaseHas('reports', [
             'id' => $report->id,
             'status_laporan' => 'ditolak',
-            'catatan_resolusi' => 'Laporan ditolak karena kendala ada pada perangkat pribadi pelapor, bukan fasilitas kampus.',
+            'catatan_resolusi' => 'Laporan ditolak karena kendala ada pada perangkat pribadi pelapor, bukan fasilitas FSM.',
         ]);
     }
 
@@ -223,4 +226,3 @@ class OfficerReportStatusTest extends TestCase
         $response->assertDontSee('Laporan sudah beres.');
     }
 }
-

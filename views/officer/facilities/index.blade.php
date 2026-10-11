@@ -10,7 +10,7 @@
         <img src="{{ asset('images/landing/undip-blue-watermark.png') }}" alt="">
     </div>
 
-    <div class="officer-facilities-page">
+    <div class="officer-facilities-page" data-ajax-list>
         @if (session('success'))
             <div class="officer-report-alert is-success" role="status">{{ session('success') }}</div>
         @endif
@@ -30,7 +30,7 @@
             <div class="officer-facility-filter-controls">
                 <label class="officer-facility-select">
                     <span class="sr-only">Filter status fasilitas</span>
-                    <select name="status" onchange="this.form.submit()">
+                    <select name="status" onchange="this.form.requestSubmit()">
                         <option value="">Status</option>
                         <option value="active" @selected(($filters['status'] ?? '') === 'active')>Tersedia</option>
                         <option value="in_repair" @selected(($filters['status'] ?? '') === 'in_repair')>Dalam Perbaikan</option>
@@ -41,7 +41,7 @@
 
                 <label class="officer-facility-select">
                     <span class="sr-only">Filter tipe fasilitas</span>
-                    <select name="tipe" onchange="this.form.submit()">
+                    <select name="tipe" onchange="this.form.requestSubmit()">
                         <option value="">Tipe</option>
                         @foreach ($facilityTypes as $facilityType)
                             <option value="{{ $facilityType }}" @selected(($filters['tipe'] ?? '') === $facilityType)>{{ $facilityType }}</option>
@@ -52,7 +52,7 @@
 
                 <label class="officer-facility-select officer-facility-sort">
                     <span class="sr-only">Urutkan fasilitas</span>
-                    <select name="urut" onchange="this.form.submit()">
+                    <select name="urut" onchange="this.form.requestSubmit()">
                         <option value="terbaru" @selected(($filters['urut'] ?? 'terbaru') === 'terbaru')>Terbaru</option>
                         <option value="terlama" @selected(($filters['urut'] ?? '') === 'terlama')>Terlama</option>
                     </select>

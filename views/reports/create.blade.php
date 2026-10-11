@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f5f5">
-    <title>Lapor Kendala/Kerusakan Fasilitas - Fasilita UNDIP</title>
+    <title>Lapor Kendala/Kerusakan Fasilitas - Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
@@ -21,7 +21,7 @@
         {{-- Header Judul --}}
         <div class="report-header">
             <h1 class="report-title">Lapor Kendala/Kerusakan Fasilitas</h1>
-            <p class="report-subtitle">Laporkan kendala atau kerusakan fasilitas kampus Universitas Diponegoro untuk penanganan cepat oleh petugas.</p>
+            <p class="report-subtitle">Laporkan kendala atau kerusakan fasilitas Fakultas Sains dan Matematika agar segera ditangani petugas.</p>
         </div>
 
         {{-- Card Form --}}
@@ -36,7 +36,24 @@
 
             <form action="{{ route('reports.store') }}" method="POST" enctype="multipart/form-data" class="report-form" id="reportForm">
                 @csrf
-                <input type="hidden" name="kategori_laporan" value="Fasilitas Umum">
+
+                {{-- Jenis Laporan --}}
+                <div class="report-form-group">
+                    <label class="report-label" for="kategori_laporan">
+                        Jenis Laporan<span class="required-mark">*</span>
+                    </label>
+                    <div class="report-select-wrapper">
+                        <select name="kategori_laporan" id="kategori_laporan" class="report-select" required>
+                            <option value="">Pilih jenis laporan</option>
+                            <option value="Kerusakan/Kendala Fasilitas" @selected(old('kategori_laporan') === 'Kerusakan/Kendala Fasilitas')>Kerusakan/Kendala Fasilitas</option>
+                            <option value="Kebersihan Fasilitas" @selected(old('kategori_laporan') === 'Kebersihan Fasilitas')>Kebersihan Fasilitas</option>
+                            <option value="Gangguan Internet" @selected(old('kategori_laporan') === 'Gangguan Internet')>Gangguan Internet</option>
+                        </select>
+                        <div class="report-select-arrow">
+                            <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                        </div>
+                    </div>
+                </div>
 
                 {{-- Tanggal --}}
                 <div class="report-form-group">
@@ -94,9 +111,7 @@
                             @endforeach
                         </select>
                         <div class="report-select-arrow">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
+                            <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                         </div>
                     </div>
                 </div>

@@ -45,7 +45,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi Gedung / Ruangan *</label>
-                        <input type="text" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Gedung Widya Puraya Lt. 2, Kampus Tembalang" required
+                        <input type="text" name="lokasi" value="{{ old('lokasi') }}" placeholder="Contoh: Gedung E FSM, Lantai 2" required
                             class="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400">
                     </div>
                     <div>

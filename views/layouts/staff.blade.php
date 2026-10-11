@@ -29,8 +29,8 @@
                             SF
                         </div>
                         <div>
-                            <span class="font-bold text-slate-900 tracking-tight text-lg">SewaFasilitas</span>
-                            <span class="text-xs block text-slate-500 font-medium">Universitas & Fasilitas Kampus</span>
+                            <span class="font-bold text-slate-900 tracking-tight text-lg">Fasilita FSM</span>
+                            <span class="text-xs block text-slate-500 font-medium">Fasilitas Fakultas Sains dan Matematika</span>
                         </div>
                     </a>
                 </div>
@@ -135,7 +135,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
         <div class="max-w-6xl mx-auto px-4">
-            <p>&copy; {{ date('Y') }} Sistem Informasi Sewa Fasilitas Kampus. Sesuai Dokumen SRS PPK.</p>
+            <p>&copy; {{ date('Y') }} Fasilita FSM — Sistem Informasi Reservasi dan Pelaporan Fasilitas Fakultas Sains dan Matematika.</p>
         </div>
     </footer>
 

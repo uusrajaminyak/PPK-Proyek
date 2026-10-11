@@ -123,8 +123,8 @@
     <!-- Official Report Header -->
     <div class="header">
         <div>
-            <h1 class="title">LAPORAN REKAP FASILITAS KAMPUS</h1>
-            <p class="subtitle">Fakultas Sains dan Matematika (FSM) - Universitas Diponegoro</p>
+            <h1 class="title">LAPORAN REKAP FASILITAS FSM</h1>
+            <p class="subtitle">Fakultas Sains dan Matematika (FSM), Universitas Diponegoro</p>
         </div>
     </div>
 
@@ -179,7 +179,7 @@
     </table>
 
     <div class="footer">
-        Dokumen ini dihasilkan secara otomatis oleh Sistem Informasi Fasilitas FSM UNDIP.
+        Dokumen ini dihasilkan secara otomatis oleh Fasilita FSM, sistem informasi fasilitas Fakultas Sains dan Matematika.
     </div>
 
     <script>

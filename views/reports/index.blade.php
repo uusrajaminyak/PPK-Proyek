@@ -3,7 +3,7 @@
 @section('title', 'Riwayat & Status Laporan Kerusakan - Sewa Fasilitas')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-6" data-ajax-list>
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="mb-1">
@@ -24,7 +24,7 @@
 
     <!-- Filter Tabs by Status -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200">
-        <a href="{{ route('reports.index') }}" 
+        <a href="{{ route('reports.index') }}" data-ajax-filter-link
             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ empty($status) ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
             <span>Semua</span>
             <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ empty($status) ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-600' }}">
@@ -32,7 +32,7 @@
             </span>
         </a>
 
-        <a href="{{ route('reports.index', ['status' => 'baru']) }}" 
+        <a href="{{ route('reports.index', ['status' => 'baru']) }}" data-ajax-filter-link
             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $status === 'baru' ? 'bg-sky-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
             <span class="w-2 h-2 rounded-full bg-sky-400"></span>
             <span>Baru</span>
@@ -41,7 +41,7 @@
             </span>
         </a>
 
-        <a href="{{ route('reports.index', ['status' => 'diproses']) }}" 
+        <a href="{{ route('reports.index', ['status' => 'diproses']) }}" data-ajax-filter-link
             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $status === 'diproses' ? 'bg-amber-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span>
             <span>Diproses</span>
@@ -50,7 +50,7 @@
             </span>
         </a>
 
-        <a href="{{ route('reports.index', ['status' => 'selesai']) }}" 
+        <a href="{{ route('reports.index', ['status' => 'selesai']) }}" data-ajax-filter-link
             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $status === 'selesai' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span>Selesai</span>
@@ -59,7 +59,7 @@
             </span>
         </a>
 
-        <a href="{{ route('reports.index', ['status' => 'ditolak']) }}" 
+        <a href="{{ route('reports.index', ['status' => 'ditolak']) }}" data-ajax-filter-link
             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $status === 'ditolak' ? 'bg-rose-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
             <span class="w-2 h-2 rounded-full bg-rose-400"></span>
             <span>Ditolak</span>
@@ -214,7 +214,7 @@
                 @if(!empty($status))
                     Anda tidak memiliki laporan kerusakan pada kategori status ini. Coba pilih filter "Semua".
                 @else
-                    Anda belum pernah mengajukan laporan kerusakan fasilitas. Jika menemukan kendala fasilitas kampus, silakan ajukan laporan.
+                    Anda belum pernah mengajukan laporan kerusakan fasilitas. Jika menemukan kendala pada fasilitas FSM, silakan ajukan laporan.
                 @endif
             </p>
             <a href="{{ route('reports.create') }}" 

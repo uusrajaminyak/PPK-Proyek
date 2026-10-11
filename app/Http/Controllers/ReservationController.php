@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Auth;
 class ReservationController extends Controller
 {
     private int $slotDuration = 30;
+
     private string $operatingStart = '07:00';
+
     private string $operatingEnd = '20:00';
 
     public function create(Request $request, Facility $facility)
     {
-        if ($facility->status_fasilitas !== 'active') {
-            return redirect()->route('home')->with('errors', collect(['Fasilitas sedang tidak aktif atau dalam perbaikan.']));
-        }
+        $canReserve = Auth::check() && $facility->status_fasilitas === 'active';
 
         $timeOptions = $this->getTimeOptions();
 
@@ -28,7 +28,7 @@ class ReservationController extends Controller
 
         // Tentukan rentang Senin s/d Minggu berdasarkan offset
         $startOfWeek = now()->startOfWeek()->addWeeks($weekOffset);
-        $endOfWeek   = $startOfWeek->copy()->endOfWeek();
+        $endOfWeek = $startOfWeek->copy()->endOfWeek();
 
         // Susun 7 hari dalam minggu tersebut
         $weekDays = [];
@@ -37,8 +37,8 @@ class ReservationController extends Controller
             $weekDays[] = [
                 'date_ymd' => $day->format('Y-m-d'),
                 'date_dmy' => $day->format('d/m/Y'),
-                'label'    => $day->isoFormat('ddd, D MMM'),
-                'is_past'  => $day->isPast() && !$day->isToday(),
+                'label' => $day->isoFormat('ddd, D MMM'),
+                'is_past' => $day->isPast() && ! $day->isToday(),
             ];
         }
 
@@ -51,6 +51,7 @@ class ReservationController extends Controller
 
         return view('reservations.create', compact(
             'facility',
+            'canReserve',
             'timeOptions',
             'bookedReservations',
             'weekOffset',
@@ -58,7 +59,6 @@ class ReservationController extends Controller
             'weekDays'
         ));
     }
-
 
     public function getScheduleData(Request $request, Facility $facility)
     {
@@ -89,9 +89,9 @@ class ReservationController extends Controller
                 'date_ymd' => $day->format('Y-m-d'),
                 'date_dmy' => $day->format('d/m/Y'),
                 'day_name' => $day->isoFormat('dddd'),
-                'day_num'  => $day->format('d'),
-                'label'    => $day->isoFormat('ddd, D MMM'),
-                'is_past'  => $day->lt($today),
+                'day_num' => $day->format('d'),
+                'label' => $day->isoFormat('ddd, D MMM'),
+                'is_past' => $day->lt($today),
                 'is_today' => $day->isToday(),
             ];
         }
@@ -104,13 +104,13 @@ class ReservationController extends Controller
             ->map(function ($r) {
                 return [
                     'start' => $r->start_time->format('Y-m-d H:i'),
-                    'end'   => $r->end_time->format('Y-m-d H:i'),
+                    'end' => $r->end_time->format('Y-m-d H:i'),
                 ];
             });
 
         // Gunakan hari ke-4 dari rentang hari aktif untuk menentukan bulan yang sedang dilihat
         $targetMonth = $startDate->copy()->addDays(3);
-        $monthLabel  = $targetMonth->isoFormat('MMMM Y');
+        $monthLabel = $targetMonth->isoFormat('MMMM Y');
 
         // Navigasi bulan: Langsung lompat ke tanggal 1 di bulan berikutnya / sebelumnya
         $nextMonthDate = $targetMonth->copy()->addMonth()->startOfMonth();
@@ -121,22 +121,22 @@ class ReservationController extends Controller
             $prevMonthDate = $thisWeekMonday->copy();
         }
 
-        $canPrevDays  = $startDate->gt($thisWeekMonday);
+        $canPrevDays = $startDate->gt($thisWeekMonday);
         $canPrevMonth = $targetMonth->copy()->startOfMonth()->gt($currentMonthStart);
 
         return response()->json([
-            'month_label'       => $monthLabel,
-            'current_month_ym'  => $targetMonth->format('Y-m'),
-            'start_date'        => $startDate->format('Y-m-d'),
-            'prev_week_date'    => $startDate->copy()->subDays(7)->format('Y-m-d'),
-            'next_week_date'    => $startDate->copy()->addDays(7)->format('Y-m-d'),
-            'prev_month_date'   => $prevMonthDate->format('Y-m-d'),
-            'next_month_date'   => $nextMonthDate->format('Y-m-d'),
-            'can_prev_days'     => $canPrevDays,
-            'can_prev_month'    => $canPrevMonth,
-            'week_days'         => $weekDays,
-            'time_options'      => $this->getTimeOptions(),
-            'booked'            => $bookedReservations,
+            'month_label' => $monthLabel,
+            'current_month_ym' => $targetMonth->format('Y-m'),
+            'start_date' => $startDate->format('Y-m-d'),
+            'prev_week_date' => $startDate->copy()->subDays(7)->format('Y-m-d'),
+            'next_week_date' => $startDate->copy()->addDays(7)->format('Y-m-d'),
+            'prev_month_date' => $prevMonthDate->format('Y-m-d'),
+            'next_month_date' => $nextMonthDate->format('Y-m-d'),
+            'can_prev_days' => $canPrevDays,
+            'can_prev_month' => $canPrevMonth,
+            'week_days' => $weekDays,
+            'time_options' => $this->getTimeOptions(),
+            'booked' => $bookedReservations,
         ]);
     }
 
@@ -158,8 +158,8 @@ class ReservationController extends Controller
             return back()->withErrors(['facility_id' => 'Fasilitas tidak tersedia.'])->withInput();
         }
 
-        $start = Carbon::parse($request->tanggal . ' ' . $request->slot_start);
-        $end = Carbon::parse($request->tanggal . ' ' . $request->slot_end);
+        $start = Carbon::parse($request->tanggal.' '.$request->slot_start);
+        $end = Carbon::parse($request->tanggal.' '.$request->slot_end);
 
         if ($start->isPast()) {
             return back()->withErrors(['slot_start' => 'Tidak bisa memilih waktu yang sudah lewat.'])->withInput();
@@ -176,7 +176,7 @@ class ReservationController extends Controller
             ->where(function ($query) use ($start, $end) {
                 $query->where(function ($q) use ($start, $end) {
                     $q->where('start_time', '<', $end)
-                      ->where('end_time', '>', $start);
+                        ->where('end_time', '>', $start);
                 });
             })
             ->exists();
@@ -213,7 +213,7 @@ class ReservationController extends Controller
             abort(403, 'Aksi tidak diizinkan.');
         }
 
-        if (!$reservation->canBeCancelled()) {
+        if (! $reservation->canBeCancelled()) {
             return back()->withErrors(['cancel' => 'Reservasi hanya bisa dibatalkan maksimal 24 jam sebelum jadwal (H-1) dan berstatus pending.']);
         }
 

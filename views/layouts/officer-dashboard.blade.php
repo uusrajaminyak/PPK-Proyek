@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#001348">
-    <title>@yield('title', 'Dasbor Petugas') — Fasilita UNDIP</title>
+    <title>@yield('title', 'Dasbor Petugas') — Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>
 <body class="officer-dashboard-page @yield('body_class')">
     <div class="officer-app-frame">
         <header class="officer-topbar">
-            <a href="{{ route('officer.dashboard') }}" class="officer-brand" aria-label="Fasilita UNDIP">
+            <a href="{{ route('officer.dashboard') }}" class="officer-brand" aria-label="Fasilita FSM">
                 <img src="{{ asset('images/undip-logo.png') }}" alt="" aria-hidden="true">
                 <span>@yield('brand_label', 'Fasilita FSM')</span><span class="officer-brand-divider" aria-hidden="true"></span>
             </a>

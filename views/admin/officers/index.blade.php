@@ -4,7 +4,7 @@
 @section('header_title', 'Kelola Petugas')
 
 @section('content')
-    <div class="admin-users-page admin-officers-page">
+    <div class="admin-users-page admin-officers-page" data-ajax-list>
         <form class="officer-facility-filterbar" action="{{ route('admin.officers.index') }}" method="GET">
             <label class="officer-facility-search">
                 <span class="sr-only">Cari petugas</span>
@@ -17,7 +17,7 @@
             <div class="officer-facility-filter-controls">
                 <label class="officer-facility-select">
                     <span class="sr-only">Filter kategori akun</span>
-                    <select name="kategori" onchange="this.form.submit()">
+                    <select name="kategori" onchange="this.form.requestSubmit()">
                         <option value="">Kategori</option>
                         <option value="Petugas" @selected(request('kategori') === 'Petugas')>Petugas</option>
                         <option value="Admin" @selected(request('kategori') === 'Admin')>Admin</option>
@@ -27,7 +27,7 @@
 
                 <label class="officer-facility-select">
                     <span class="sr-only">Filter status petugas</span>
-                    <select name="status" onchange="this.form.submit()">
+                    <select name="status" onchange="this.form.requestSubmit()">
                         <option value="">Status</option>
                         <option value="verified" @selected(request('status') === 'verified')>Aktif</option>
                         <option value="suspended" @selected(request('status') === 'suspended')>Nonaktif</option>

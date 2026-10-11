@@ -11,10 +11,10 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function showLogin()
+    public function showLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return $this->redirectAuthenticatedUser();
         }
 
         return view('auth.login');
@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function showStaffLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return $this->redirectAuthenticatedUser();
         }
 
         return view('auth.staff-login');
@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function showRegister(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return $this->redirectAuthenticatedUser();
         }
 
         return view('auth.register');
@@ -64,10 +64,10 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home')->with('success', 'Akun berhasil dibuat! Selamat datang di Fasilita UNDIP.');
+        return redirect()->route('home')->with('success', 'Akun berhasil dibuat! Selamat datang di Fasilita FSM.');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -87,7 +87,8 @@ class AuthController extends Controller
                 ]);
             }
 
-            return redirect()->intended(route('home'))->with('success', 'Selamat datang, '.$user->name.'!');
+            return redirect()->intended(route($this->dashboardRouteForAuthenticatedUser()))
+                ->with('success', 'Selamat datang, '.$user->name.'!');
         }
 
         throw ValidationException::withMessages([
@@ -95,7 +96,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function loginStaff(Request $request)
+    public function loginStaff(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -125,17 +126,37 @@ class AuthController extends Controller
             ]);
         }
 
-        $destination = $user->isAdmin() ? 'admin.dashboard' : 'officer.dashboard';
+        $destination = $this->dashboardRouteForAuthenticatedUser();
 
         return redirect()->route($destination)->with('success', 'Selamat datang, '.$user->name.'!');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('home')->with('success', 'Berhasil logout.');
+    }
+
+    private function redirectAuthenticatedUser(): RedirectResponse
+    {
+        return redirect()->route($this->dashboardRouteForAuthenticatedUser());
+    }
+
+    private function dashboardRouteForAuthenticatedUser(): string
+    {
+        $user = Auth::user();
+
+        if ($user?->isAdmin()) {
+            return 'admin.dashboard';
+        }
+
+        if ($user?->isPetugas()) {
+            return 'officer.dashboard';
+        }
+
+        return 'home';
     }
 }

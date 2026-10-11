@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Monitoring Reservasi Kampus')
+@section('title', 'Monitoring Reservasi FSM')
 @section('breadcrumb', 'Admin / Reservasi')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-6" data-ajax-list>
 
     <!-- Top Filter Bar -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -18,7 +18,7 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <select name="fasilitas" onchange="this.form.submit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
+                <select name="fasilitas" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
                     <option value="Semua">Fasilitas: Semua</option>
                     @foreach($facilities as $fac)
                     <option value="{{ $fac->id }}" {{ request('fasilitas') == $fac->id ? 'selected' : '' }}>
@@ -27,7 +27,7 @@
                     @endforeach
                 </select>
 
-                <select name="status" onchange="this.form.submit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
+                <select name="status" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
                     <option value="Semua" {{ request('status') == 'Semua' ? 'selected' : '' }}>Status: Semua</option>
                     <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
                     <option value="disetujui" {{ request('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
@@ -36,7 +36,7 @@
                 </select>
 
                 <!-- Dropdown Waktu (Fungsional) -->
-                <select name="waktu" onchange="this.form.submit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
+                <select name="waktu" onchange="this.form.requestSubmit()" class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 min-w-[140px]">
                     <option value="terbaru" {{ request('waktu') == 'terbaru' ? 'selected' : '' }}>Waktu: Terbaru</option>
                     <option value="terlama" {{ request('waktu') == 'terlama' ? 'selected' : '' }}>Waktu: Terlama</option>
                 </select>

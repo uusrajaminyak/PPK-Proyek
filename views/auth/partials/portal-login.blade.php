@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f7f7f8">
-    <meta name="description" content="Masuk ke akun Fasilita UNDIP untuk reservasi dan pelaporan fasilitas kampus.">
-    <title>{{ $portalTitle }} — Fasilita UNDIP</title>
+    <meta name="description" content="Masuk ke akun Fasilita FSM untuk reservasi dan pelaporan fasilitas Fakultas Sains dan Matematika.">
+    <title>{{ $portalTitle }} — Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
 </head>

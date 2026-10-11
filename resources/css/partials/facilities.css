@@ -47,105 +47,16 @@
     letter-spacing: -0.025em;
     line-height: 1.42;
 }
-.facility-search {
-    display: flex;
-    width: min(812px, 100%);
-    min-height: 60px;
-    align-items: center;
-    justify-content: space-between;
+.facility-browse-filterbar {
+    width: min(1162px, 100%);
     margin: 35px auto 0;
-    padding: 0 23px 0 29px;
-    border: 1px solid #c7c7cc;
-    border-radius: 39px;
-    background: #fff;
-    color: #8e8e93;
-    font-size: 20px;
-    letter-spacing: -0.02em;
 }
-.facility-search img {
-    display: block;
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) saturate(100%) invert(7%) sepia(39%) saturate(6976%)
-        hue-rotate(221deg) brightness(76%) contrast(115%);
-}
-.facility-filters {
-    display: flex;
-    width: max-content;
-    max-width: 100%;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 30px auto 0;
-}
-.facility-filter {
-    display: flex;
-    height: 40px;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: 10px;
-    padding: 0 12px;
-    overflow: hidden;
-    border: 1px solid #c7c7cc;
-    border-radius: 6px;
-    background: #fff;
-    color: #8e8e93;
-    font-size: 15px;
-    letter-spacing: -0.02em;
+.facility-filter-reset {
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: underline;
     white-space: nowrap;
-}
-.facility-filter img,
-.filter-arrow {
-    display: block;
-    width: 24px;
-    height: 24px;
-    flex: 0 0 24px;
-    filter: brightness(0) saturate(100%) invert(7%) sepia(39%) saturate(6976%)
-        hue-rotate(221deg) brightness(76%) contrast(115%);
-}
-.facility-filter-type {
-    width: 167px;
-    justify-content: center;
-}
-.facility-filter-type img {
-    width: 18px;
-    height: 18px;
-    flex-basis: 18px;
-    margin-left: auto;
-}
-.facility-filter-location {
-    width: 148px;
-}
-.facility-filter-location .filter-chevron {
-    width: 16px;
-    height: 16px;
-    flex-basis: 16px;
-    margin-left: auto;
-}
-.facility-filter-date {
-    width: 156px;
-}
-.facility-filter-time {
-    width: 110px;
-}
-.filter-arrow {
-    width: 24px;
-    height: 24px;
-}
-.filter-submit {
-    display: grid;
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-    place-items: center;
-    border-radius: 6px;
-    background: var(--navy);
-}
-.filter-submit img {
-    display: block;
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1);
 }
 .facility-grid {
     display: grid;
@@ -164,23 +75,14 @@
     background: #fff;
 }
 .facility-card-image {
+    position: relative;
     height: 220px;
     background: linear-gradient(135deg, #e2e4e8 0%, #cdd1d8 48%, #e7e9ec 100%);
 }
-.facility-status {
+.facility-card > .officer-facility-card-status {
     position: absolute;
-    top: 13px;
-    right: 13px;
-    display: grid;
-    min-width: 56px;
-    height: 16px;
-    place-items: center;
-    border-radius: 8px;
-    background: #fff;
-    color: var(--navy);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    top: 8px;
+    right: 8px;
 }
 .facility-card-content {
     padding: 25px 25px 0;
@@ -219,32 +121,25 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    padding: 0 16px;
-    height: 36px;
+    min-width: 60px;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 0;
     border-radius: 6px;
     background: var(--navy);
     color: #fff;
-    font-size: 14px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: -0.02em;
     text-decoration: none;
     white-space: nowrap;
 }
-.facility-card-button.is-repair {
-    background: #d97706;
-    cursor: not-allowed;
-}
-.status-repair {
-    background: #ffead3;
-    color: #9a3412;
+.facility-card-button:hover {
+    background: #10285d;
 }
 
 @media (max-width: 1100px) {
-    .facility-filters {
-        width: min(812px, 100%);
-        flex-wrap: wrap;
-    }
     .facility-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -261,13 +156,6 @@
         margin-top: 22px;
         font-size: 16px;
     }
-    .facility-search {
-        margin-top: 28px;
-    }
-    .facility-filters {
-        gap: 8px;
-        margin-top: 22px;
-    }
     .facility-grid {
         margin-top: 26px;
     }
@@ -282,26 +170,6 @@
     .facilities-intro p {
         margin-top: 20px;
         font-size: 14px;
-    }
-    .facility-search {
-        min-height: 52px;
-        margin-top: 24px;
-        padding-right: 18px;
-        padding-left: 20px;
-        font-size: 16px;
-    }
-    .facility-filters {
-        justify-content: flex-start;
-    }
-    .facility-filter-type,
-    .facility-filter-location {
-        width: calc(50% - 4px);
-    }
-    .facility-filter-date {
-        width: calc(54% - 4px);
-    }
-    .facility-filter-time {
-        width: calc(34% - 4px);
     }
     .facility-grid {
         grid-template-columns: minmax(0, 400px);
