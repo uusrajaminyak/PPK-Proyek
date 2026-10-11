@@ -27,6 +27,7 @@ class User extends Authenticatable
         'no_telepon',
         'fakultas',
         'program_studi',
+        'angkatan',
         'role',
         'status_akun',
     ];
@@ -56,7 +57,7 @@ class User extends Authenticatable
         ];
     }
 
-    /** 
+    /**
      * Reports submitted by this user.
      */
     public function reports(): HasMany

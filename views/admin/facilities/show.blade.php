@@ -1,122 +1,92 @@
 @extends('layouts.admin')
 
+@section('title', 'Detail Fasilitas')
 @section('header_title', 'Kelola Fasilitas')
 
 @section('content')
-<!-- Embed Plus Jakarta Sans Typography -->
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @php
+        $imagePath = $facility->foto_path ?? $facility->foto ?? null;
+        $imageUrl = $imagePath
+            ? (\Illuminate\Support\Str::startsWith($imagePath, ['http://', 'https://']) ? $imagePath : asset('storage/' . $imagePath))
+            : null;
+        $facilityCode = str_pad((string) $facility->id, 8, '0', STR_PAD_LEFT);
+    @endphp
 
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-</style>
+    <div class="officer-facility-detail-page">
+        <section class="officer-facility-detail-gallery" aria-label="Foto fasilitas">
+            <a class="officer-facility-detail-back" href="{{ route('admin.facilities.index') }}">
+                <img src="{{ asset('images/officer/return.svg') }}" alt="" aria-hidden="true"> Kembali
+            </a>
 
-<!-- Master Outer Card Wrapper (Scroll-free flex container) -->
-<div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-6 shadow-sm flex flex-col justify-between overflow-hidden font-jakarta text-[#001248] relative">
-
-    <!-- Top Action Bar: Left-Anchored Back Button & Horizontally Centered Title Block -->
-    <div class="relative flex items-center justify-center mb-4 shrink-0 min-h-[40px]">
-        <!-- Left-Anchored Back Navigation Button -->
-        <a href="{{ route('admin.facilities.index') }}" class="absolute left-0 inline-flex items-center space-x-2 text-xs font-bold text-[#001248] hover:text-[#001a66] transition-colors z-10">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            <span>Kembali ke Kelola Fasilitas</span>
-        </a>
-
-        <!-- Horizontally Centered Title Badge (Matching Target Mockup 1:1) -->
-        <div class="text-center">
-            <h2 class="text-2xl font-extrabold text-[#001248] tracking-tight">Detail Fasilitas</h2>
-            <p class="text-sm font-normal text-[#001248] uppercase tracking-wider mt-0.5">
-                FAC-{{ str_pad($facility->id, 4, '0', STR_PAD_LEFT) }}
-            </p>
-        </div>
-    </div>
-
-    <!-- Main Detail Content Grid (2-Column Split) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0 items-start overflow-y-auto pr-1">
-
-        <!-- Left Column: Dynamic Image Hero & Gallery Thumbnails (5 cols) -->
-        <div class="lg:col-span-5 flex flex-col space-y-3.5">
-            @php
-            // Resolve dynamic database image path or fallback placeholder
-            $dbImage = $facility->foto_path;
-            if ($dbImage && !str_starts_with($dbImage, 'http://') && !str_starts_with($dbImage, 'https://')) {
-            $imageUrl = asset('storage/' . $dbImage);
-            } else {
-            $imageUrl = $dbImage ?: 'https://images.unsplash.com/photo-1571260899304-425dea5cfd5b?auto=format&fit=crop&w=800&q=80';
-            }
-            @endphp
-
-            <!-- Main Hero Photo (Pulled directly from Database foto_path) -->
-            <div class="w-full h-64 sm:h-72 bg-gray-100 border border-gray-200 rounded-3xl overflow-hidden shadow-xs relative">
-                <img src="{{ $imageUrl }}"
-                    class="w-full h-full object-cover">
+            <div class="officer-facility-detail-main-photo">
+                @if ($imageUrl)
+                    <img src="{{ $imageUrl }}" alt="Foto {{ $facility->nama_fasilitas }}">
+                @endif
             </div>
 
-            <!-- Dynamic 3-Image Preview Gallery Row -->
-            <div class="grid grid-cols-3 gap-3">
-                <!-- Active Thumbnail 1 (Database Image) -->
-                <div class="h-20 bg-gray-100 border-2 border-[#001248] rounded-2xl overflow-hidden shadow-xs cursor-pointer">
-                    <img src="{{ $imageUrl }}" class="w-full h-full object-cover">
-                </div>
-                <!-- Thumbnail 2 -->
-                <div class="h-20 bg-gray-100 border border-gray-200 rounded-2xl overflow-hidden opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
-                    <img src="{{ $imageUrl }}" class="w-full h-full object-cover">
-                </div>
-                <!-- Thumbnail 3 -->
-                <div class="h-20 bg-gray-100 border border-gray-200 rounded-2xl overflow-hidden opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
-                    <img src="{{ $imageUrl }}" class="w-full h-full object-cover">
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Column: Dynamic Facility Metadata & Description (7 cols) -->
-        <div class="lg:col-span-7 flex flex-col justify-between h-full pt-1">
-            <div class="space-y-4">
-                <!-- Facility Title -->
-                <div>
-                    <h1 class="text-3xl font-bold text-[#001248] tracking-tight leading-tight">
-                        {{ $facility->nama_fasilitas }}
-                    </h1>
-                </div>
-
-                <!-- Location Pin & Capacity Metadata -->
-                <div class="space-y-2 pt-1">
-                    <!-- Location -->
-                    <div class="flex items-center space-x-2.5 text-xs font-normal text-[#001248]">
-                        <svg class="w-4 h-4 text-[#001248] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span>{{ $facility->lokasi }}</span>
+            <div class="officer-facility-detail-thumbnails" aria-hidden="true">
+                @for ($thumbnail = 0; $thumbnail < 3; $thumbnail++)
+                    <div class="officer-facility-detail-thumbnail {{ $thumbnail === 0 && $imageUrl ? 'has-image' : '' }}">
+                        @if ($thumbnail === 0 && $imageUrl)
+                            <img src="{{ $imageUrl }}" alt="">
+                        @endif
                     </div>
+                @endfor
+            </div>
+        </section>
 
-                    <!-- Capacity -->
-                    <div class="flex items-center space-x-2.5 text-xs font-normal text-[#001248]">
-                        <svg class="w-4 h-4 text-[#001248] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        <span>Kapasitas {{ $facility->kapasitas }} orang</span>
-                    </div>
-                </div>
+        <div class="officer-detail-divider" aria-hidden="true"></div>
 
-                <!-- Description & Amenities Header -->
-                <div>
-                    <h3 class="text-3xl font-bold text-[#001248] mb-2">Fasilitas</h3>
-                    <p class="text-sm font-normal text-[#001248] leading-relaxed text-justify">
-                        {{ $facility->deskripsi ?? 'Tidak ada deskripsi tambahan untuk fasilitas ini.' }}
-                    </p>
+        <section class="officer-facility-detail-information" aria-labelledby="admin-facility-detail-title">
+            @if (session('success'))
+                <div class="officer-detail-alert is-success" role="status">{{ session('success') }}</div>
+            @endif
+            @if ($errors->any())
+                <div class="officer-detail-alert is-error" role="alert">{{ $errors->first() }}</div>
+            @endif
+
+            <header class="officer-facility-detail-heading">
+                <h2 id="admin-facility-detail-title">Detail Fasilitas</h2>
+                <p>FAC-{{ substr($facilityCode, 0, 4) }}-{{ substr($facilityCode, 4, 4) }}</p>
+            </header>
+
+            <div class="officer-facility-detail-summary">
+                <h3>{{ $facility->nama_fasilitas }}</h3>
+                <div class="officer-facility-detail-meta">
+                    <span>
+                        <img src="{{ asset('images/facilities/icon-location.svg') }}" alt="" aria-hidden="true">
+                        {{ $facility->lokasi ?: 'Lokasi belum tersedia' }}
+                    </span>
+                    <span>
+                        <img src="{{ asset('images/officer/3-users.svg') }}" alt="" aria-hidden="true">
+                        Kapasitas {{ $facility->kapasitas ?: '—' }} orang
+                    </span>
                 </div>
             </div>
-        </div>
 
+            <section class="officer-facility-description" aria-labelledby="admin-facility-description-title">
+                <h3 id="admin-facility-description-title">Fasilitas</h3>
+                <p>{{ $facility->deskripsi ?: 'Belum ada deskripsi untuk fasilitas ini.' }}</p>
+            </section>
+
+            <section class="officer-facility-operational-status" aria-labelledby="admin-facility-status-title">
+                <h3 id="admin-facility-status-title">Status Fasilitas</h3>
+                <form class="officer-facility-status-form" action="{{ route('officer.facilities.update-status', $facility) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <label class="officer-facility-status-select">
+                        <span class="sr-only">Status fasilitas</span>
+                        <select name="status_fasilitas" onchange="this.form.submit()">
+                            <option value="active" @selected($facility->status_fasilitas === 'active')>Aktif</option>
+                            <option value="in_repair" @selected($facility->status_fasilitas === 'in_repair')>Dalam Perbaikan</option>
+                            <option value="inactive" @selected($facility->status_fasilitas === 'inactive')>Tidak Tersedia</option>
+                        </select>
+                        <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                    </label>
+                </form>
+            </section>
+
+            <a class="officer-facility-detail-button admin-facility-edit-link" href="{{ route('admin.facilities.edit', $facility) }}" aria-label="Edit {{ $facility->nama_fasilitas }}">Edit</a>
+        </section>
     </div>
-
-</div>
 @endsection

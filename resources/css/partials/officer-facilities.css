@@ -35,14 +35,16 @@
 .officer-facility-empty h2 { margin: 0; color: #001348; font-size: 18px; }
 .officer-facility-empty p { margin: 6px 0 0; color: #657087; font-size: 13px; }
 
-.officer-facility-pagination { flex: 0 0 auto; }
-.officer-facility-pagination .officer-pagination { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
-.officer-facility-pagination .officer-pagination-summary { grid-column: 1; grid-row: 1; color: #8a91a0; font-size: 11px; }
-.officer-facility-pagination .officer-pagination-controls { grid-column: 2; grid-row: 1; gap: 6px; }
+.officer-facility-pagination { display: block; flex: 0 0 auto; padding: 12px 0 2px; color: #001348; font-size: 13px; }
+.officer-facility-pagination .officer-pagination { display: flex; min-width: 0; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.officer-facility-pagination .officer-pagination-summary { margin: 0; color: #536078; font-size: 13px; }
+.officer-facility-pagination .officer-pagination-summary strong { color: #001348; font-weight: 700; }
+.officer-facility-pagination .officer-pagination-controls { display: flex; align-items: center; gap: 8px; }
 .officer-facility-pagination .officer-pagination-page,
-.officer-facility-pagination .officer-pagination-arrow { min-width: 35px; min-height: 35px; border-radius: 6px; font-size: 13px; }
-.officer-facility-pagination .officer-pagination-arrow { width: 35px; }
-.officer-facility-pagination .officer-pagination-arrow img { width: 16px; height: 16px; }
+.officer-facility-pagination .officer-pagination-arrow,
+.officer-facility-pagination .officer-pagination-ellipsis { min-width: 40px; min-height: 40px; padding: 0 10px; border-radius: 7px; font-size: 14px; }
+.officer-facility-pagination .officer-pagination-arrow { width: 40px; padding: 0; }
+.officer-facility-pagination .officer-pagination-arrow img { width: 18px; height: 18px; }
 
 .officer-facility-detail-page { display: grid; min-width: 0; min-height: 0; flex: 1; grid-template-columns: minmax(0, .9fr) 1px minmax(0, 1.1fr); gap: 24px; }
 .officer-facility-detail-gallery { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; padding-left: 20px; }
@@ -74,6 +76,60 @@
 .officer-facility-status-select.is-disabled { opacity: .58; }
 .officer-facility-status-select select:disabled { cursor: not-allowed; }
 .officer-facility-detail-information .officer-detail-alert { width: 100%; margin: 0 0 14px; }
+
+.admin-facility-edit-link { margin-top: 14px; }
+.admin-facility-edit-page { display: grid; min-width: 0; min-height: 0; flex: 1; grid-template-columns: minmax(0, .9fr) 1px minmax(0, 1.1fr); gap: 24px; color: #001348; }
+.admin-facility-edit-gallery { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; padding: 24px 0 24px 20px; }
+.admin-facility-edit-gallery .officer-facility-detail-main-photo,
+.admin-facility-edit-gallery .officer-facility-detail-thumbnails { width: min(100%, 400px); }
+.admin-facility-upload-button { min-height: 40px; margin-top: 16px; padding: 0 20px; font-size: 14px; cursor: pointer; }
+.admin-facility-photo-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+.admin-facility-photo-input:focus-visible + .admin-facility-upload-hint { outline: 2px solid #001348; outline-offset: 3px; }
+.admin-facility-upload-hint { margin: 8px 0 0; color: #737b8b; font-size: 12px; text-align: center; }
+.admin-facility-edit-information { display: flex; min-width: 0; flex-direction: column; justify-content: center; padding: 18px 20px; }
+.admin-facility-edit-information > h2 { margin: 0 0 24px; font-size: 26px; font-weight: 700; letter-spacing: -.035em; }
+.admin-facility-edit-form { display: grid; gap: 17px; }
+.admin-facility-field { display: grid; min-width: 0; gap: 7px; color: #001348; font-size: 14px; font-weight: 600; }
+.admin-facility-field > span:first-child b { color: #e04444; }
+.admin-facility-field input,
+.admin-facility-field textarea,
+.admin-facility-edit-select select { width: 100%; min-width: 0; min-height: 42px; padding: 10px 13px; border: 1px solid #d2d5dd; border-radius: 8px; background: #fff; color: #001348; font: inherit; font-size: 13px; font-weight: 400; }
+.admin-facility-field input:focus,
+.admin-facility-field textarea:focus,
+.admin-facility-edit-select select:focus { border-color: #001348; outline: 1px solid #001348; }
+.admin-facility-field input::placeholder,
+.admin-facility-field textarea::placeholder { color: #9298a5; }
+.admin-facility-edit-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.admin-facility-field textarea { min-height: 118px; resize: none; }
+.admin-facility-edit-select { position: relative; display: block; }
+.admin-facility-edit-select select { appearance: none; padding-right: 42px; cursor: pointer; }
+.admin-facility-edit-select img { position: absolute; top: 50%; right: 14px; width: 15px; height: 15px; transform: translateY(-50%); filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
+.admin-facility-edit-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 3px; }
+.admin-facility-edit-actions .officer-facility-detail-button { min-height: 40px; padding: 0 18px; font-size: 13px; }
+.admin-facility-cancel-button { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; padding: 0 18px; border: 1px solid #001348; border-radius: 6px; background: #fff; color: #001348; font-size: 13px; font-weight: 600; text-decoration: none; }
+.admin-facility-edit-information .officer-detail-alert { margin: 0 0 16px; }
+.admin-facility-edit-information .officer-detail-alert ul { margin: 0; padding-left: 18px; }
+
+@media (max-width: 900px) {
+    .admin-facility-edit-page { gap: 18px; }
+    .admin-facility-edit-gallery { padding-left: 12px; }
+    .admin-facility-edit-information { padding: 16px 12px; }
+}
+
+@media (max-width: 760px) {
+    .admin-facility-edit-page { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .admin-facility-edit-gallery { padding: 12px; }
+    .admin-facility-edit-gallery .officer-facility-detail-main-photo,
+    .admin-facility-edit-gallery .officer-facility-detail-thumbnails { width: min(100%, 400px); }
+    .admin-facility-edit-information { padding: 0 12px 18px; }
+}
+
+@media (max-width: 560px) {
+    .admin-facility-edit-row { grid-template-columns: minmax(0, 1fr); }
+    .admin-facility-edit-information > h2 { margin-bottom: 18px; font-size: 23px; }
+    .admin-facility-edit-actions { justify-content: stretch; }
+    .admin-facility-edit-actions > * { flex: 1 1 0; }
+}
 
 @media (max-width: 1050px) {
     .officer-facility-card-grid { grid-template-columns: repeat(3, minmax(0, 280px)); }

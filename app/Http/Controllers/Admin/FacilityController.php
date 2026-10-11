@@ -4,48 +4,51 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Facility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class FacilityController extends Controller
 {
     /**
      * Display a dynamic listing of facilities with real-time search, filter, and sort capabilities.
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
-        $query = Facility::query();
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:active,in_repair,inactive'],
+            'tipe' => ['nullable', 'string', 'max:100'],
+            'urut' => ['nullable', 'in:terbaru,terlama'],
+        ]);
 
-        // 1. Search Filter (Case-insensitive ILIKE for PostgreSQL)
-        if ($request->filled('search')) {
-            $search = trim($request->search);
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_fasilitas', 'ilike', "%{$search}%")
-                    ->orWhere('lokasi', 'ilike', "%{$search}%");
-            });
-        }
+        $facilitiesQuery = Facility::query()
+            ->when($filters['search'] ?? null, function ($facilities, string $search): void {
+                $search = trim($search);
+                $facilities->where(function ($query) use ($search): void {
+                    $query->where('nama_fasilitas', 'like', "%{$search}%")
+                        ->orWhere('lokasi', 'like', "%{$search}%")
+                        ->orWhere('tipe', 'like', "%{$search}%");
+                });
+            })
+            ->when($filters['status'] ?? null, fn ($facilities, string $status) => $facilities->where('status_fasilitas', $status))
+            ->when($filters['tipe'] ?? null, fn ($facilities, string $type) => $facilities->where('tipe', $type));
 
-        // 2. Status Filter (Queries physical PostgreSQL column: status_fasilitas)
-        if ($request->filled('status') && in_array($request->status, ['aktif', 'nonaktif'])) {
-            if ($request->status === 'aktif') {
-                $query->where('status_fasilitas', 'active');
-            } else {
-                $query->whereIn('status_fasilitas', ['inactive', 'in_repair']);
-            }
-        }
+        $sortDirection = ($filters['urut'] ?? 'terbaru') === 'terlama' ? 'asc' : 'desc';
+        $facilities = $facilitiesQuery
+            ->orderBy('created_at', $sortDirection)
+            ->orderBy('id', $sortDirection)
+            ->paginate(10)
+            ->withQueryString();
 
-        // 3. Category Filter (Queries physical PostgreSQL column: tipe)
-        if ($request->filled('kategori') && $request->kategori !== '') {
-            $query->where('tipe', $request->kategori);
-        }
+        $facilityTypes = Facility::query()
+            ->whereNotNull('tipe')
+            ->where('tipe', '!=', '')
+            ->distinct()
+            ->orderBy('tipe')
+            ->pluck('tipe');
 
-        // 4. Sort Direction Toggle (Default ASC)
-        $sortDir = strtolower($request->get('sort', 'asc')) === 'desc' ? 'desc' : 'asc';
-        $query->orderBy('nama_fasilitas', $sortDir);
-
-        // Paginate 6 items per page with preserved query parameters
-        $facilities = $query->paginate(6)->withQueryString();
-
-        return view('admin.facilities.index', compact('facilities', 'sortDir'));
+        return view('admin.facilities.index', compact('facilities', 'facilityTypes', 'filters'));
     }
 
     /**
@@ -54,6 +57,7 @@ class FacilityController extends Controller
     public function show($id)
     {
         $facility = Facility::findOrFail($id);
+
         return view('admin.facilities.show', compact('facility'));
     }
 
@@ -63,6 +67,7 @@ class FacilityController extends Controller
     public function create()
     {
         $kategoriOptions = ['Ruang Kelas', 'Aula', 'Laboratorium', 'Lapangan', 'Ruang Rapat'];
+
         return view('admin.facilities.create', compact('kategoriOptions'));
     }
 
@@ -73,11 +78,11 @@ class FacilityController extends Controller
     {
         $validated = $request->validate([
             'nama_fasilitas' => ['required', 'string', 'max:255'],
-            'kategori'       => ['required', 'string', 'max:255'],
-            'lokasi'         => ['required', 'string', 'max:255'],
-            'kapasitas'      => ['nullable', 'integer', 'min:0'],
-            'deskripsi'      => ['nullable', 'string'],
-            'foto'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'kategori' => ['required', 'string', 'max:255'],
+            'lokasi' => ['required', 'string', 'max:255'],
+            'kapasitas' => ['nullable', 'integer', 'min:0'],
+            'deskripsi' => ['nullable', 'string'],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         $fotoPath = null;
@@ -88,12 +93,12 @@ class FacilityController extends Controller
         $status = $request->has('is_active') || $request->input('status_fasilitas') === 'active' ? 'active' : 'inactive';
 
         Facility::create([
-            'nama_fasilitas'   => $validated['nama_fasilitas'],
-            'tipe'             => $validated['kategori'],
-            'lokasi'           => $validated['lokasi'],
-            'kapasitas'        => $validated['kapasitas'] ?? 0,
-            'deskripsi'        => $validated['deskripsi'] ?? null,
-            'foto_path'        => $fotoPath,
+            'nama_fasilitas' => $validated['nama_fasilitas'],
+            'tipe' => $validated['kategori'],
+            'lokasi' => $validated['lokasi'],
+            'kapasitas' => $validated['kapasitas'] ?? 0,
+            'deskripsi' => $validated['deskripsi'] ?? null,
+            'foto_path' => $fotoPath,
             'status_fasilitas' => $status,
         ]);
 
@@ -103,28 +108,28 @@ class FacilityController extends Controller
     /**
      * Show form for editing an existing facility.
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $facility = Facility::findOrFail($id);
-        $kategoriOptions = ['Ruang Kelas', 'Aula', 'Laboratorium', 'Lapangan', 'Ruang Rapat'];
 
-        return view('admin.facilities.edit', compact('facility', 'kategoriOptions'));
+        return view('admin.facilities.edit', compact('facility'));
     }
 
     /**
      * Update an existing facility in PostgreSQL storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
         $facility = Facility::findOrFail($id);
 
         $validated = $request->validate([
             'nama_fasilitas' => ['required', 'string', 'max:255'],
-            'kategori'       => ['required', 'string', 'max:255'],
-            'lokasi'         => ['required', 'string', 'max:255'],
-            'kapasitas'      => ['nullable', 'integer', 'min:0'],
-            'deskripsi'      => ['nullable', 'string'],
-            'foto'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'kategori' => ['required', 'string', 'max:255'],
+            'lokasi' => ['required', 'string', 'max:255'],
+            'kapasitas' => ['required', 'integer', 'min:0'],
+            'deskripsi' => ['required', 'string'],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'status_fasilitas' => ['sometimes', 'required', 'in:active,in_repair,inactive'],
         ]);
 
         $fotoPath = $facility->foto_path;
@@ -132,19 +137,19 @@ class FacilityController extends Controller
             $fotoPath = $request->file('foto')->store('facilities', 'public');
         }
 
-        $status = $request->has('is_active') || $request->input('status_fasilitas') === 'active' ? 'active' : 'inactive';
+        $status = $validated['status_fasilitas'] ?? $facility->status_fasilitas;
 
         $facility->update([
-            'nama_fasilitas'   => $validated['nama_fasilitas'],
-            'tipe'             => $validated['kategori'],
-            'lokasi'           => $validated['lokasi'],
-            'kapasitas'        => $validated['kapasitas'] ?? 0,
-            'deskripsi'        => $validated['deskripsi'] ?? null,
-            'foto_path'        => $fotoPath,
+            'nama_fasilitas' => $validated['nama_fasilitas'],
+            'tipe' => $validated['kategori'],
+            'lokasi' => $validated['lokasi'],
+            'kapasitas' => $validated['kapasitas'] ?? 0,
+            'deskripsi' => $validated['deskripsi'] ?? null,
+            'foto_path' => $fotoPath,
             'status_fasilitas' => $status,
         ]);
 
-        return redirect()->route('admin.facilities.index')->with('success', 'Data fasilitas berhasil diperbarui.');
+        return redirect()->route('admin.facilities.show', $facility)->with('success', 'Data fasilitas berhasil diperbarui.');
     }
 
     /**

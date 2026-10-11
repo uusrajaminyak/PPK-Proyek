@@ -82,6 +82,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/officers', [AdminOfficerController::class, 'index'])->name('officers.index');
     Route::get('/officers/create', [AdminOfficerController::class, 'create'])->name('officers.create');
     Route::post('/officers', [AdminOfficerController::class, 'store'])->name('officers.store');
+    Route::get('/officers/{officer}', [AdminOfficerController::class, 'show'])->name('officers.show');
+    Route::patch('/officers/{officer}/status', [AdminOfficerController::class, 'updateStatus'])->name('officers.update-status');
+    Route::post('/officers/{officer}/reset-password', [AdminOfficerController::class, 'resetPassword'])->name('officers.reset-password');
 
     // Kelola Reservasi
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
@@ -89,6 +92,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Rekap & Ekspor Laporan (FR-17)
     Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
     Route::get('/recap/export', [RecapController::class, 'export'])->name('recap.export');
+    Route::get('/recap/facilities/{facility}', [RecapController::class, 'showFacility'])->name('recap.facility');
 });
 
 /*

@@ -1,264 +1,91 @@
 @extends('layouts.admin')
 
-@section('header_title', 'Detail Pengguna')
+@section('title', 'Detail Pengguna')
+@section('header_title', 'Kelola Pengguna')
 
 @section('content')
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    <section class="admin-officer-detail-page" aria-labelledby="admin-user-detail-title">
+        <a class="officer-facility-detail-back" href="{{ route('admin.users.index') }}">
+            <img src="{{ asset('images/officer/return.svg') }}" alt="" aria-hidden="true">
+            Kembali
+        </a>
 
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-</style>
-
-<!-- Master Content Outer Container (Zero-Scroll Flex Structure) -->
-<div id="users-show-container" class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-2.5 shadow-sm flex flex-col justify-between overflow-hidden font-jakarta text-[#001248]">
-
-    <div class="max-w-6xl mx-auto w-full h-full flex flex-col justify-between space-y-2 overflow-hidden">
-
-        <!-- Navigation Header -->
-        <div class="flex items-center justify-between pb-1.5 border-b border-gray-100 shrink-0">
-            <div>
-                <h2 class="text-sm font-extrabold text-[#001248]">Detail Akun & Riwayat Pengguna</h2>
-                <p class="text-[11px] text-[#001248]/60 font-medium">Informasi profil lengkap, status verifikasi, dan aktivitas penggunaan fasilitas.</p>
-            </div>
-            <a href="{{ route('admin.users.index') }}" class="text-xs font-semibold text-gray-500 hover:text-[#001248] transition-colors flex items-center space-x-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                <span>Kembali ke Daftar</span>
-            </a>
-        </div>
-
-        <!-- Success Alert Banner -->
         @if (session('success'))
-        <div class="p-2 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs font-semibold flex items-center justify-between shrink-0">
-            <div class="flex items-center space-x-2">
-                <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <span>{{ session('success') }}</span>
-            </div>
-        </div>
+            <div class="officer-detail-alert is-success admin-officer-detail-alert" role="status">{{ session('success') }}</div>
         @endif
 
-        <!-- Main Dashboard Split Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-2.5 flex-1 min-h-0 overflow-hidden">
+        <div class="admin-officer-detail-card admin-user-detail-card">
+            <h2 id="admin-user-detail-title">Detail Pengguna</h2>
 
-            <!-- Left Profile Card (1 Column) -->
-            <div class="bg-white border border-[#001248]/20 rounded-lg p-2.5 flex flex-col justify-between space-y-2 shadow-none overflow-hidden h-full">
-                <div class="space-y-2 overflow-hidden">
-                    <!-- Avatar Header -->
-                    <div class="flex flex-col items-center text-center pb-2 border-b border-gray-100 shrink-0">
-                        <div class="w-12 h-12 rounded-full bg-[#001248] text-white font-extrabold text-base flex items-center justify-center shadow-none mb-1">
-                            {{ strtoupper(substr($user->name, 0, 2)) }}
-                        </div>
-                        <h3 class="text-sm font-extrabold text-[#001248] leading-tight truncate w-full">{{ $user->name }}</h3>
-                        <p class="text-[11px] text-gray-500 font-medium truncate w-full">{{ $user->email }}</p>
+            <div class="admin-officer-detail-avatar" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1.5" />
+                    <circle cx="24" cy="17" r="7" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M11 38c1.7-6.1 6.4-9.5 13-9.5s11.3 3.4 13 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
 
-                        <!-- Role & Status Pills -->
-                        <div class="flex items-center space-x-1.5 mt-1">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold text-[#001248]">
-                                {{ ucfirst($user->role) }}
-                            </span>
-                            @if($user->status_akun === 'verified' || $user->status_akun === 'active')
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold text-emerald-800">
-                                Aktif
-                            </span>
-                            @elseif($user->status_akun === 'pending')
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold text-amber-800">
-                                Menunggu
-                            </span>
-                            @else
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold text-red-800">
-                                Nonaktif
-                            </span>
-                            @endif
-                        </div>
-                    </div>
+            <h3>{{ $user->name }}</h3>
+            <p class="admin-officer-detail-email">{{ $user->email }}</p>
 
-                    <!-- Metadata List -->
-                    <div class="space-y-1 text-xs overflow-hidden">
-                        <div class="flex justify-between py-0.5 border-b border-gray-50">
-                            <span class="text-gray-400 font-medium text-[11px]">NIM / NIP / ID</span>
-                            <span class="font-bold text-[#001248] text-[11px]">{{ $user->nomor_identitas ?? '-' }}</span>
-                        </div>
-                        <div class="flex justify-between py-0.5 border-b border-gray-50">
-                            <span class="text-gray-400 font-medium text-[11px]">Kategori</span>
-                            <span class="font-bold text-[#001248] text-[11px]">{{ $user->kategori ?? '-' }}</span>
-                        </div>
-                        <div class="flex justify-between py-0.5 border-b border-gray-50">
-                            <span class="text-gray-400 font-medium text-[11px]">No. Telepon</span>
-                            <span class="font-bold text-[#001248] text-[11px]">{{ $user->no_telepon ?? '-' }}</span>
-                        </div>
-                        <div class="flex justify-between py-0.5 border-b border-gray-50">
-                            <span class="text-gray-400 font-medium text-[11px]">Fakultas</span>
-                            <span class="font-bold text-[#001248] text-right max-w-40 truncate text-[11px]">{{ $user->fakultas ?? 'FSM' }}</span>
-                        </div>
-                        <div class="flex justify-between py-0.5 border-b border-gray-50">
-                            <span class="text-gray-400 font-medium text-[11px]">Program Studi</span>
-                            <span class="font-bold text-[#001248] text-right max-w-40 truncate text-[11px]">{{ $user->program_studi ?? '-' }}</span>
-                        </div>
-                        <div class="flex justify-between py-0.5">
-                            <span class="text-gray-400 font-medium text-[11px]">Terdaftar Sejak</span>
-                            <span class="font-bold text-[#001248] text-[11px]">{{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}</span>
-                        </div>
-                    </div>
+            <dl class="admin-officer-detail-data">
+                <div>
+                    <dt>NIM/NIP/ID</dt>
+                    <dd>{{ $user->nomor_identitas ?: '—' }}</dd>
                 </div>
+                <div>
+                    <dt>Kategori</dt>
+                    <dd>{{ $user->kategori ?: '—' }}</dd>
+                </div>
+                <div>
+                    <dt>No. WhatsApp</dt>
+                    <dd>{{ $user->no_telepon ?: '—' }}</dd>
+                </div>
+                <div>
+                    <dt>Program Studi</dt>
+                    <dd>{{ $user->program_studi ?: '—' }}</dd>
+                </div>
+                <div>
+                    <dt>Terdaftar Sejak</dt>
+                    <dd>{{ $user->created_at?->format('d M Y') ?? '—' }}</dd>
+                </div>
+            </dl>
 
-                <!-- Admin Actions Toolbar -->
-                <div class="pt-2 border-t border-gray-100 space-y-1.5 shrink-0">
-                    <h4 class="text-[11px] font-extrabold text-[#001248]">Tindakan Administrator</h4>
-
-                    @if($user->status_akun === 'pending')
+            <div class="admin-officer-detail-actions admin-user-detail-actions {{ $user->status_akun === 'pending' ? 'is-pending' : '' }}">
+                @if ($user->status_akun === 'pending')
                     <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status_akun" value="verified">
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1 px-2 rounded text-xs transition-colors shadow-none">
-                            Verifikasi Akun Ini
-                        </button>
+                        <button class="is-activate" type="submit">Verifikasi Akun</button>
                     </form>
                     <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status_akun" value="rejected">
-                        <button type="submit" class="w-full bg-white border border-red-300 text-red-600 hover:bg-red-50 font-bold py-1 px-2 rounded text-xs transition-colors shadow-none mt-1">
-                            Tolak Registrasi
-                        </button>
+                        <button class="is-suspend" type="submit">Tolak Registrasi</button>
                     </form>
-                    @elseif($user->status_akun === 'verified' || $user->status_akun === 'active')
+                @elseif (in_array($user->status_akun, ['verified', 'active'], true))
                     <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status_akun" value="suspended">
-                        <button type="submit" class="w-full bg-white border border-red-300 text-red-600 hover:bg-red-50 font-bold py-1 px-2 rounded text-xs transition-colors shadow-none">
-                            Bekukan / Suspend Akun
-                        </button>
+                        <button class="is-suspend" type="submit">Suspend Akun</button>
                     </form>
-                    @else
+                @else
                     <form action="{{ route('admin.users.update-status', $user->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status_akun" value="verified">
-                        <button type="submit" class="w-full bg-[#001248] hover:bg-[#001a66] text-white font-bold py-1 px-2 rounded text-xs transition-colors shadow-none">
-                            Aktifkan Kembali Akun
-                        </button>
+                        <button class="is-activate" type="submit">Aktifkan Akun</button>
                     </form>
-                    @endif
+                @endif
 
-                    <!-- Reset Password Form -->
-                    <form action="{{ route('admin.users.reset-password', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mereset password akun ini?');">
-                        @csrf
-                        <button type="submit" class="w-full bg-white border border-gray-300 text-[#001248] hover:border-[#001248] font-bold py-1 px-2 rounded text-xs transition-colors shadow-none flex items-center justify-center space-x-1.5">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                            </svg>
-                            <span>Reset Password</span>
-                        </button>
-                    </form>
-                </div>
+                <form action="{{ route('admin.users.reset-password', $user->id) }}" method="POST" onsubmit="return confirm('Reset password akun ini?');">
+                    @csrf
+                    <button class="is-reset" type="submit">Reset Password</button>
+                </form>
             </div>
-
-            <!-- Right Activity Section (2 Columns) -->
-            <div class="lg:col-span-2 flex flex-col justify-between space-y-2.5 h-full overflow-hidden">
-
-                <!-- 1. Reservation History Card -->
-                <div class="flex-1 bg-white border border-[#001248]/20 rounded-lg p-2.5 shadow-none overflow-hidden flex flex-col justify-between min-h-0">
-                    <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-gray-100 shrink-0">
-                        <h3 class="text-[11px] font-extrabold text-[#001248] uppercase tracking-wider">Riwayat Reservasi Fasilitas</h3>
-                        <span class="text-[10px] font-bold text-gray-400">Total: {{ $reservations->total() }}</span>
-                    </div>
-
-                    <div class="overflow-hidden flex-1">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="text-[10px] font-extrabold text-[#001248] border-b border-gray-200">
-                                    <th class="py-1 px-2">Fasilitas</th>
-                                    <th class="py-1 px-2">Waktu Penggunaan</th>
-                                    <th class="py-1 px-2">Tujuan</th>
-                                    <th class="py-1 px-2 text-right">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 text-xs text-[#001248] font-normal leading-tight">
-                                @forelse($reservations as $res)
-                                <tr>
-                                    <td class="py-1 px-2 font-semibold text-xs">{{ $res->facility->nama_fasilitas ?? 'Fasilitas #' . $res->facility_id }}</td>
-                                    <td class="py-1 px-2 text-[11px] text-gray-600">
-                                        {{ $res->start_time ? Carbon\Carbon::parse($res->start_time)->format('d M Y, H:i') : '-' }}
-                                    </td>
-                                    <td class="py-1 px-2 text-[11px] text-gray-500 max-w-37.5 truncate">{{ $res->tujuan_penggunaan ?? '-' }}</td>
-                                    <td class="py-1 px-2 text-right text-[11px]">
-                                        @if($res->status_reservasi === 'approved')
-                                        <span class="text-emerald-700 font-semibold">Disetujui</span>
-                                        @elseif($res->status_reservasi === 'pending')
-                                        <span class="text-amber-700 font-semibold">Menunggu</span>
-                                        @else
-                                        <span class="text-red-700 font-semibold">Ditolak / Dibatalkan</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="4" class="py-3 text-center text-gray-400 text-xs font-normal">Belum ada riwayat reservasi fasilitas.</td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- 2. Damage Report History Card -->
-                <div class="flex-1 bg-white border border-[#001248]/20 rounded-lg p-2.5 shadow-none overflow-hidden flex flex-col justify-between min-h-0">
-                    <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-gray-100 shrink-0">
-                        <h3 class="text-[11px] font-extrabold text-[#001248] uppercase tracking-wider">Riwayat Laporan Kerusakan</h3>
-                        <span class="text-[10px] font-bold text-gray-400">Total: {{ $reports->total() }}</span>
-                    </div>
-
-                    <div class="overflow-hidden flex-1">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="text-[10px] font-extrabold text-[#001248] border-b border-gray-200">
-                                    <th class="py-1 px-2">Fasilitas</th>
-                                    <th class="py-1 px-2">Kategori</th>
-                                    <th class="py-1 px-2">Deskripsi</th>
-                                    <th class="py-1 px-2 text-right">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 text-xs text-[#001248] font-normal leading-tight">
-                                @forelse($reports as $rep)
-                                <tr>
-                                    <td class="py-1 px-2 font-semibold text-xs">{{ $rep->facility->nama_fasilitas ?? 'Fasilitas #' . $rep->facility_id }}</td>
-                                    <td class="py-1 px-2 text-[11px] text-gray-600">{{ $rep->kategori_laporan ?? 'Umum' }}</td>
-                                    <td class="py-1 px-2 text-[11px] text-gray-500 max-w-45 truncate">{{ $rep->deskripsi ?? '-' }}</td>
-                                    <td class="py-1 px-2 text-right text-[11px]">
-                                        @if($rep->status_laporan === 'selesai')
-                                        <span class="text-emerald-700 font-semibold">Selesai</span>
-                                        @elseif($rep->status_laporan === 'diproses')
-                                        <span class="text-amber-700 font-semibold">Diproses</span>
-                                        @else
-                                        <span class="text-blue-700 font-semibold">Baru</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="4" class="py-3 text-center text-gray-400 text-xs font-normal">Belum ada riwayat laporan kerusakan.</td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
-
-    </div>
-
-</div>
+    </section>
 @endsection

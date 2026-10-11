@@ -6,6 +6,9 @@
 @import './partials/reservations.css';
 @import './partials/auth.css';
 @import './partials/officer-dashboard.css';
+@import './partials/admin-dashboard.css';
+@import './partials/admin-recap.css';
+@import './partials/admin-users.css';
 @import './partials/officer-reservations-management.css';
 @import './partials/officer-reservation-detail.css';
 @import './partials/officer-reports.css';

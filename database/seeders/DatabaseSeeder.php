@@ -69,7 +69,13 @@ class DatabaseSeeder extends Seeder
             ];
 
             foreach ($reservationCases as $reservationCase) {
+<<<<<<< HEAD
                 $startTime = $today->copy()->addDays($reservationCase['day_offset'])->setTime(9, 0);
+=======
+                $startTime = $today->copy()
+                    ->addDays($reservationCase['day_offset'])
+                    ->setTime(9, 0);
+>>>>>>> 01e6821a7b8eaed7b622641cc7c830f65e84e3dd
 
                 Reservation::firstOrCreate(
                     [
@@ -86,7 +92,10 @@ class DatabaseSeeder extends Seeder
                 );
             }
 
+<<<<<<< HEAD
             $reportCategory = $categories[$index % count($categories)];
+=======
+>>>>>>> 01e6821a7b8eaed7b622641cc7c830f65e84e3dd
             $reportStatus = $reportStatuses[$index % count($reportStatuses)];
 
             Report::firstOrCreate(
@@ -96,7 +105,11 @@ class DatabaseSeeder extends Seeder
                     'deskripsi' => 'Laporan kendala fasilitas - '.$facility->nama_fasilitas,
                 ],
                 [
+<<<<<<< HEAD
                     'kategori_laporan' => $reportCategory,
+=======
+                    'kategori_laporan' => $categories[$index % count($categories)],
+>>>>>>> 01e6821a7b8eaed7b622641cc7c830f65e84e3dd
                     'status_laporan' => $reportStatus,
                     'foto_paths' => [],
                     'catatan_resolusi' => in_array($reportStatus, ['selesai', 'ditolak'], true)

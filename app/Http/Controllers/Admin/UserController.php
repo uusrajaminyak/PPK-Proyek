@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Http\Requests\Admin\StoreUserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->where('role', 'pengguna');
 
         // 1. Case-insensitive Search (Name, NIM/NIP/ID, or Email)
         if ($request->filled('search')) {
@@ -31,17 +31,7 @@ class UserController extends Controller
         // 2. Category / Role Filter
         if ($request->filled('kategori') && $request->kategori !== 'Semua') {
             $kat = $request->kategori;
-            if ($kat === 'Admin') {
-                $query->where(function ($q) {
-                    $q->where('kategori', 'Admin')->orWhere('role', 'admin');
-                });
-            } elseif ($kat === 'Petugas') {
-                $query->where(function ($q) {
-                    $q->where('kategori', 'Petugas')->orWhere('role', 'petugas');
-                });
-            } else {
-                $query->where('kategori', $kat);
-            }
+            $query->where('kategori', $kat);
         }
 
         // 3. Status Filter
@@ -62,19 +52,13 @@ class UserController extends Controller
     }
 
     /**
-     * Display detailed profile and activity history for a specific user.
+     * Display a user's profile details.
      */
     public function show($id)
     {
         $user = User::findOrFail($id);
 
-        // Eager load reservations with facility metadata
-        $reservations = $user->reservations()->with('facility')->latest()->paginate(5, ['*'], 'reservations_page');
-
-        // Eager load damage reports with facility metadata
-        $reports = $user->reports()->with('facility')->latest()->paginate(5, ['*'], 'reports_page');
-
-        return view('admin.users.show', compact('user', 'reservations', 'reports'));
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -91,10 +75,10 @@ class UserController extends Controller
         $user->update(['status_akun' => $validated['status_akun']]);
 
         $statusLabel = match ($validated['status_akun']) {
-            'verified'  => 'diverifikasi dan diaktifkan',
+            'verified' => 'diverifikasi dan diaktifkan',
             'suspended' => 'dinonaktifkan (Suspended)',
-            'rejected'  => 'ditolak',
-            default     => 'diubah',
+            'rejected' => 'ditolak',
+            default => 'diubah',
         };
 
         return redirect()->back()->with('success', "Status akun '{$user->name}' berhasil {$statusLabel}.");
@@ -117,15 +101,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $kategoriOptions = ['Mahasiswa', 'Dosen', 'Petugas', 'Admin'];
-
-        $fakultasOptions = [
-            'Fakultas Sains dan Matematika (FSM)',
-            'Fakultas Teknik (FT)',
-            'Fakultas Kedokteran (FK)',
-            'Fakultas Ekonomika dan Bisnis (FEB)',
-            'Fakultas Hukum (FH)',
-        ];
+        $kategoriOptions = ['Mahasiswa', 'Dosen', 'Staf'];
 
         $prodiOptions = [
             'Informatika',
@@ -139,32 +115,31 @@ class UserController extends Controller
             'Kedokteran Umum',
         ];
 
-        return view('admin.users.create', compact('kategoriOptions', 'fakultasOptions', 'prodiOptions'));
+        $angkatanOptions = range((int) now()->year, 2000);
+
+        return view('admin.users.create', compact('kategoriOptions', 'prodiOptions', 'angkatanOptions'));
     }
 
     public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
 
-        $role = match ($validated['kategori']) {
-            'Admin'   => 'admin',
-            'Petugas' => 'petugas',
-            default   => 'pengguna',
-        };
-
         $generatedPassword = Str::random(10);
 
+        $nama = trim($validated['nama_depan'].' '.$validated['nama_belakang']);
+
         $user = User::create([
-            'name'            => $validated['nama'],
+            'name' => $nama,
             'nomor_identitas' => $validated['nomor_identitas'],
-            'kategori'        => $validated['kategori'],
-            'email'           => $validated['email'],
-            'no_telepon'      => $validated['no_telepon'],
-            'fakultas'        => $validated['fakultas'] ?? 'Fakultas Sains dan Matematika (FSM)',
-            'program_studi'   => $validated['program_studi'] ?? null,
-            'password'        => Hash::make($generatedPassword),
-            'status_akun'     => $request->has('status_aktif') ? 'verified' : 'pending',
-            'role'            => $role,
+            'kategori' => $validated['kategori'],
+            'email' => $validated['email'],
+            'no_telepon' => $validated['no_telepon'],
+            'fakultas' => $validated['fakultas'] ?? 'Fakultas Sains dan Matematika (FSM)',
+            'program_studi' => $validated['program_studi'] ?? null,
+            'angkatan' => $validated['angkatan'] ?? null,
+            'password' => Hash::make($generatedPassword),
+            'status_akun' => $request->has('status_aktif') ? 'verified' : 'pending',
+            'role' => 'pengguna',
         ]);
 
         return redirect()->route('admin.users.index')->with('success', "Akun pengguna '{$user->name}' berhasil ditambahkan. Password sementara: {$generatedPassword}");

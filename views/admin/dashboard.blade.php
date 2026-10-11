@@ -3,161 +3,126 @@
 @section('header_title', 'Dasbor')
 
 @section('content')
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+<div class="admin-dashboard-content">
+    <section class="admin-summary" aria-label="Ringkasan administrasi">
+        <article class="admin-summary-card">
+            <h2>Totalitas Fasilitas</h2>
+            <div class="admin-summary-breakdown">
+                <p><span>Aktif</span><strong>{{ $aktif }}</strong></p>
+                <p><span>Dalam Perbaikan</span><strong>{{ $perbaikan }}</strong></p>
+            </div>
+        </article>
+        <article class="admin-summary-card">
+            <h2>Reservasi Menunggu</h2>
+            <p class="admin-summary-value"><strong>{{ $reservasiMenunggu }}</strong><span>reservasi</span></p>
+        </article>
+        <article class="admin-summary-card">
+            <h2>Laporan Kerusakan</h2>
+            <div class="admin-summary-breakdown">
+                <p><span>Baru</span><strong>{{ $statusLaporan['baru'] }}</strong></p>
+                <p><span>Diproses</span><strong>{{ $statusLaporan['diproses'] }}</strong></p>
+            </div>
+        </article>
+        <article class="admin-summary-card">
+            <h2>Total Pengguna</h2>
+            <p class="admin-summary-value"><strong>{{ $totalPengguna }}</strong><span>pengguna</span></p>
+        </article>
+        <article class="admin-summary-card">
+            <h2>Total Petugas</h2>
+            <p class="admin-summary-value"><strong>{{ $totalPetugas }}</strong><span>petugas</span></p>
+        </article>
+    </section>
 
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-</style>
-
-<!-- Master Content Outer Container -->
-<div class="w-full h-full bg-white/70 border border-gray-200 rounded-lg p-3 shadow-sm flex flex-col justify-between overflow-hidden font-jakarta text-[#001248]">
-
-    <!-- Metrics Top & Bottom Grid Container -->
-    <div class="space-y-2 shrink-0">
-        <!-- Metrics Grid Top Row -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-            <!-- Card 1: Totalitas Fasilitas -->
-            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
-                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Totalitas Fasilitas</h3>
-                <div class="space-y-0.5 text-[11px]">
-                    <div class="flex justify-between items-center font-medium">
-                        <span class="text-[#001248] font-normal">Aktif:</span>
-                        <span class="text-[#001248] font-normal">{{ $aktif }}</span>
-                    </div>
-                    <div class="flex justify-between items-center font-medium">
-                        <span class="text-[#001248] font-normal">Dalam Perbaikan:</span>
-                        <span class="text-[#001248] font-normal">{{ $perbaikan }}</span>
-                    </div>
+    <section class="admin-recap" aria-labelledby="admin-recap-title">
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="admin-recap-header">
+            <div class="admin-recap-title-controls">
+                <h2 id="admin-recap-title">Rekap</h2>
+                <div class="admin-recap-filters">
+                    <label class="admin-recap-filter">
+                        <select name="month" aria-label="Bulan rekap" onchange="this.form.submit()">
+                            @foreach($months as $num => $name)
+                                <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
+                            @endforeach
+                        </select>
+                        <img src="{{ asset('images/admin/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                    </label>
+                    <label class="admin-recap-filter">
+                        <select name="year" aria-label="Tahun rekap" onchange="this.form.submit()">
+                            @foreach($years as $yr)
+                                <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
+                            @endforeach
+                        </select>
+                        <img src="{{ asset('images/admin/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                    </label>
                 </div>
             </div>
-
-            <!-- Card 2: Reservasi Pending -->
-            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
-                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Reservasi Pending</h3>
-                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $reservasiMenunggu }}</span>
-            </div>
-
-            <!-- Card 3: Laporan Kerusakan -->
-            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
-                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Laporan Kerusakan</h3>
-                <div class="space-y-0.5 text-[11px]">
-                    <div class="flex justify-between items-center font-medium">
-                        <span class="text-[#001248] font-normal">Baru:</span>
-                        <span class="text-[#001248] font-normal">{{ $statusLaporan['baru'] }}</span>
-                    </div>
-                    <div class="flex justify-between items-center font-medium">
-                        <span class="text-[#001248] font-normal">Diproses:</span>
-                        <span class="text-[#001248] font-normal">{{ $statusLaporan['diproses'] }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Metrics Grid Bottom Row -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <!-- Card 4: Total Pengguna -->
-            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
-                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Total Pengguna</h3>
-                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $totalPengguna }}</span>
-            </div>
-
-            <!-- Card 5: Total Petugas -->
-            <div class="bg-white rounded-lg p-2.5 border border-gray-200 flex flex-col justify-between shadow-none">
-                <h3 class="text-lg font-extrabold text-[#001248] mb-1">Total Petugas</h3>
-                <span class="text-3xl font-extrabold text-[#001248] tracking-tight">{{ $totalPetugas }}</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Rekap Visualization Section -->
-    <div class="bg-white rounded-lg p-3 border border-gray-200 flex-1 flex flex-col justify-between mt-2 min-h-0 shadow-none">
-
-        <!-- Rekap Header Controls -->
-        <form action="{{ route('admin.dashboard') }}" method="GET" class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2 shrink-0">
-            <div class="flex items-center space-x-2">
-                <h2 class="text-3xl font-bold text-[#001248] mr-1">Rekap</h2>
-
-                <select name="month" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
-                    @foreach($months as $num => $name)
-                    <option value="{{ $num }}" {{ $selectedMonth == $num ? 'selected' : '' }}>{{ $name }}</option>
+            <div class="admin-recap-actions">
+                <input type="hidden" name="format" id="admin-dashboard-export-format" value="CSV">
+                <div class="admin-export-formats" role="group" aria-label="Pilih format ekspor">
+                    @foreach(['CSV', 'XLSX', 'PDF'] as $format)
+                        <button type="button" class="admin-dashboard-format-option {{ $format === 'CSV' ? 'is-selected' : '' }}" data-format="{{ $format }}" aria-pressed="{{ $format === 'CSV' ? 'true' : 'false' }}" onclick="setAdminDashboardFormat('{{ $format }}')">{{ $format }}</button>
                     @endforeach
-                </select>
-
-                <select name="year" onchange="this.form.submit()" class="border border-gray-300 rounded px-2.5 py-1 text-xs font-normal text-[#001248] focus:ring-[#001248] focus:border-[#001248] bg-white cursor-pointer">
-                    @foreach($years as $yr)
-                    <option value="{{ $yr }}" {{ $selectedYear == $yr ? 'selected' : '' }}>{{ $yr }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="flex items-center space-x-2">
-                <!-- Export Format Controls -->
-                <div class="flex bg-gray-100 rounded p-0.5 border border-gray-200">
-                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-[#001248] bg-white rounded shadow-xs">CSV</button>
-                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">XLSX</button>
-                    <button type="button" class="px-2.5 py-0.5 text-[10px] font-bold text-gray-400 hover:text-[#001248] rounded">PDF</button>
                 </div>
-
-                <a href="{{ route('admin.recap.export', ['month' => $selectedMonth, 'year' => $selectedYear, 'format' => 'CSV']) }}" class="bg-[#001248] hover:bg-[#001a66] text-white px-3 py-1 rounded text-xs font-normal flex items-center transition-colors shadow-none shrink-0">
-                    <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
+                <a id="admin-dashboard-export-link" href="{{ route('admin.recap.export', ['month' => $selectedMonth, 'year' => $selectedYear, 'format' => 'CSV']) }}" class="admin-export-link">
+                    <img src="{{ asset('images/admin/export.svg') }}" alt="" aria-hidden="true">
                     <span>Ekspor</span>
                 </a>
             </div>
         </form>
 
-        <!-- Rekap Panels Side-by-Side -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 flex-1 min-h-0">
-
-            <!-- Okupansi Fasilitas Card -->
-            <div class="border border-gray-200 rounded-xl p-2.5 flex flex-col justify-between bg-white min-h-0 shadow-none">
-                <h3 class="text-xl font-semibold text-[#001248] mb-1.5 shrink-0">Okupansi Fasilitas</h3>
-                <div class="space-y-1 flex-1 overflow-hidden">
+        <div class="admin-recap-panels">
+            <article class="admin-recap-panel">
+                <h3>Okupansi Fasilitas</h3>
+                <div class="admin-recap-list">
                     @forelse($occupancyData as $item)
-                    <div class="flex items-center text-[11px] font-medium text-[#001248]">
-                        <span class="w-24 truncate mr-2 text-[#001248] font-normal">{{ $item['name'] }}</span>
-                        <div class="flex-1 h-1.5">
-                            <div class="h-1.5 bg-gray-400 rounded-full transition-all duration-500" style="width: {{ max($item['pct'], 8) }}%;"></div>
+                        <div class="admin-recap-row">
+                            <span class="admin-recap-row-name" title="{{ $item['name'] }}">{{ $item['name'] }}</span>
+                            <span class="admin-recap-track {{ (int) $item['val'] === 0 ? 'is-empty' : '' }}"><span class="admin-recap-fill" style="display:block;width:{{ $item['val'] > 0 ? max($item['pct'], 8) : 0 }}%"></span></span>
+                            <span class="admin-recap-row-value">{{ $item['val'] }}</span>
                         </div>
-                        <span class="w-6 text-right ml-2 text-[#001248] font-normal">{{ $item['val'] }}</span>
-                    </div>
                     @empty
-                    <div class="text-xs text-gray-400 text-center py-2">Belum ada data okupansi.</div>
+                        <div class="admin-recap-empty">Belum ada data okupansi.</div>
                     @endforelse
                 </div>
-                <div class="mt-1 text-right shrink-0">
-                    <a href="{{ route('admin.recap.index') }}" class="inline-block bg-[#001248] text-white px-3 py-0.5 rounded text-xs font-semibold hover:bg-[#001a66] transition-colors shadow-none">Detail</a>
-                </div>
-            </div>
+                <footer class="admin-recap-panel-footer">
+                    <a href="{{ route('admin.recap.index') }}" class="admin-detail-link">Detail</a>
+                </footer>
+            </article>
 
-            <!-- Frekuensi Laporan Fasilitas Card -->
-            <div class="border border-gray-200 rounded-xl p-2.5 flex flex-col justify-between bg-white min-h-0 shadow-none">
-                <h3 class="text-xl font-semibold text-[#001248] mb-1.5 shrink-0">Frekuensi Laporan Fasilitas</h3>
-                <div class="space-y-1 flex-1 overflow-hidden">
+            <article class="admin-recap-panel">
+                <h3>Frekuensi Laporan Fasilitas</h3>
+                <div class="admin-recap-list">
                     @forelse($reportFrequencyData as $item)
-                    <div class="flex items-center text-[11px] font-medium text-[#001248]">
-                        <span class="w-24 truncate mr-2 text-[#001248] font-normal">{{ $item['name'] }}</span>
-                        <div class="flex-1 h-1.5">
-                            <div class="h-1.5 bg-gray-400 rounded-full transition-all duration-500" style="width: {{ max($item['pct'], 8) }}%;"></div>
+                        <div class="admin-recap-row">
+                            <span class="admin-recap-row-name" title="{{ $item['name'] }}">{{ $item['name'] }}</span>
+                            <span class="admin-recap-track {{ (int) $item['val'] === 0 ? 'is-empty' : '' }}"><span class="admin-recap-fill" style="display:block;width:{{ $item['val'] > 0 ? max($item['pct'], 8) : 0 }}%"></span></span>
+                            <span class="admin-recap-row-value">{{ $item['val'] }}</span>
                         </div>
-                        <span class="w-6 text-right ml-2 text-[#001248] font-normal">{{ $item['val'] }}</span>
-                    </div>
                     @empty
-                    <div class="text-xs text-gray-400 text-center py-2">Belum ada data laporan.</div>
+                        <div class="admin-recap-empty">Belum ada data laporan.</div>
                     @endforelse
                 </div>
-                <div class="mt-1 text-right shrink-0">
-                    <a href="{{ route('admin.recap.index') }}" class="inline-block bg-[#001248] text-white px-3 py-0.5 rounded text-xs font-semibold hover:bg-[#001a66] transition-colors shadow-none">Detail</a>
-                </div>
-            </div>
-
+                <footer class="admin-recap-panel-footer">
+                    <a href="{{ route('admin.recap.index') }}" class="admin-detail-link">Detail</a>
+                </footer>
+            </article>
         </div>
-    </div>
-
+    </section>
 </div>
+
+<script>
+    function setAdminDashboardFormat(format) {
+        document.getElementById('admin-dashboard-export-format').value = format;
+        document.querySelectorAll('.admin-dashboard-format-option').forEach((button) => {
+            const isSelected = button.dataset.format === format;
+            button.classList.toggle('is-selected', isSelected);
+            button.setAttribute('aria-pressed', String(isSelected));
+        });
+
+        const exportLink = document.getElementById('admin-dashboard-export-link');
+        const exportUrl = new URL(exportLink.href);
+        exportUrl.searchParams.set('format', format);
+        exportLink.href = exportUrl.toString();
+    }
+</script>
 @endsection

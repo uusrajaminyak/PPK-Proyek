@@ -1,0 +1,107 @@
+.admin-dashboard-content {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 14px;
+    color: #001348;
+}
+
+.admin-summary {
+    display: grid;
+    min-height: 155px;
+    flex: 0 0 155px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+}
+
+.admin-summary-card {
+    display: flex;
+    min-width: 0;
+    min-height: 94px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 12px;
+    text-align: center;
+}
+
+.admin-summary-card + .admin-summary-card { border-left: 1px solid #c7c9ce; }
+.admin-summary-card h2 { margin: 0; font-size: clamp(14px, 1.2vw, 20px); font-weight: 700; letter-spacing: -.035em; line-height: 1.2; }
+.admin-summary-value { display: flex; align-items: baseline; gap: 7px; margin: 0; white-space: nowrap; }
+.admin-summary-value strong { font-size: clamp(32px, 3.6vw, 48px); font-weight: 700; letter-spacing: -.055em; line-height: 1; }
+.admin-summary-value span { font-size: 15px; font-weight: 600; }
+.admin-summary-breakdown { display: grid; gap: 4px; width: 100%; max-width: 180px; font-size: 13px; text-align: left; }
+.admin-summary-breakdown p { display: flex; justify-content: space-between; gap: 8px; margin: 0; }
+.admin-summary-breakdown strong { font-weight: 700; }
+
+.admin-recap {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    padding: 20px 22px;
+    border: 1.5px solid #d0d2d8;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.admin-recap-header { display: flex; min-height: 42px; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.admin-recap-title-controls { display: flex; min-width: 0; align-items: center; gap: 12px; }
+.admin-recap-title-controls h2 { flex: 0 0 auto; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -.04em; }
+.admin-recap-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-recap-filter { position: relative; display: inline-flex; min-width: 118px; }
+.admin-recap-filter select { width: 100%; min-height: 38px; padding: 0 34px 0 12px; appearance: none; border: 1px solid #cdd0d8; border-radius: 6px; background: #fff; color: #001348; font: inherit; font-size: 14px; cursor: pointer; }
+.admin-recap-filter img { position: absolute; top: 50%; right: 10px; width: 16px; height: 16px; transform: translateY(-50%); filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); pointer-events: none; }
+.admin-recap-actions { display: flex; align-items: center; gap: 10px; }
+.admin-export-formats { display: flex; gap: 2px; padding: 3px; border: 1px solid #d0d2d8; border-radius: 7px; background: #f5f5f5; }
+.admin-export-formats button { min-height: 30px; padding: 0 10px; border: 0; border-radius: 5px; background: transparent; color: #657088; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; }
+.admin-export-formats button.is-selected { background: #fff; color: #001348; }
+.admin-export-link,
+.admin-detail-link { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; padding: 0 14px; border-radius: 6px; background: #001348; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.admin-export-link:hover,
+.admin-detail-link:hover { background: #10285d; }
+.admin-export-link img { width: 18px; height: 18px; }
+.admin-recap-panels { display: grid; min-height: 0; flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.admin-recap-panel { display: flex; min-width: 0; min-height: 0; flex-direction: column; padding: 16px; border: 1.5px solid #d0d2d8; border-radius: 10px; background: #fff; }
+.admin-recap-panel h3 { flex: 0 0 auto; margin: 0 0 12px; font-size: 19px; font-weight: 700; letter-spacing: -.035em; }
+.admin-recap-list { display: grid; min-height: 0; flex: 1; align-content: start; gap: 14px; overflow: auto; padding: 2px 2px 10px; }
+.admin-recap-row { display: grid; min-width: 0; grid-template-columns: minmax(100px, 34%) minmax(40px, 1fr) 36px; align-items: center; gap: 12px; color: #243451; font-size: 13px; }
+.admin-recap-row-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-recap-track { height: 9px; overflow: hidden; border-radius: 999px; background: #e6e8ed; }
+.admin-recap-track.is-empty { background: transparent; }
+.admin-recap-track.is-empty .admin-recap-fill { display: none !important; }
+.admin-recap-fill { height: 100%; min-width: 6px; border-radius: inherit; background: #001348; }
+.admin-recap-row-value { color: #001348; font-weight: 700; text-align: right; }
+.admin-recap-empty { display: grid; min-height: 100px; place-items: center; color: #657088; font-size: 14px; text-align: center; }
+.admin-recap-panel-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
+
+@media (max-width: 1100px) {
+    .admin-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); flex-basis: auto; }
+    .admin-summary-card { min-height: 120px; }
+    .admin-summary-card:nth-child(4) { border-left: 0; }
+}
+
+@media (max-width: 760px) {
+    .admin-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .admin-summary-card:nth-child(odd) { border-left: 0; }
+    .admin-summary-card:nth-child(4) { border-left: 1px solid #c7c9ce; }
+    .admin-recap { min-height: 680px; padding: 16px 12px; }
+    .admin-recap-header { align-items: flex-start; flex-direction: column; }
+    .admin-recap-title-controls { flex-wrap: wrap; }
+    .admin-recap-panels { grid-template-columns: minmax(0, 1fr); }
+    .admin-recap-panel { min-height: 260px; }
+}
+
+@media (max-width: 480px) {
+    .admin-summary-card { gap: 8px; padding: 0 7px; }
+    .admin-summary-card h2 { font-size: 13px; }
+    .admin-summary-value strong { font-size: 30px; }
+    .admin-summary-value span,
+    .admin-summary-breakdown { font-size: 12px; }
+    .admin-recap-actions { width: 100%; flex-wrap: wrap; }
+    .admin-recap-row { grid-template-columns: minmax(82px, 36%) minmax(30px, 1fr) 32px; gap: 8px; font-size: 12px; }
+}

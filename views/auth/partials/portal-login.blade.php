@@ -74,7 +74,7 @@
 
             <div class="login-links">
                 @if ($showRegistration)
-                    <p>Belum punya akun? <a href="#">Daftar Akun</a></p>
+                    <p>Belum punya akun? <a href="{{ route('register') }}">Daftar Akun</a></p>
                 @endif
                 <a href="{{ $alternatePortalUrl }}">{{ $alternatePortalLabel }}</a>
             </div>
