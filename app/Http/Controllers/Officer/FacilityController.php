@@ -26,6 +26,7 @@ class FacilityController extends Controller
         ]);
 
         $facilitiesQuery = Facility::query()
+            ->visibleToNonAdmins()
             ->when($filters['search'] ?? null, function ($facilities, string $search): void {
                 $search = trim($search);
                 $facilities->where(function ($query) use ($search): void {
@@ -45,6 +46,7 @@ class FacilityController extends Controller
             ->withQueryString();
 
         $facilityTypes = Facility::query()
+            ->visibleToNonAdmins()
             ->whereNotNull('tipe')
             ->where('tipe', '!=', '')
             ->distinct()
@@ -58,6 +60,7 @@ class FacilityController extends Controller
     public function show(Facility $facility): View
     {
         abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
+        abort_if($facility->status_fasilitas === 'inactive', 404);
 
         return view('officer.facilities.show', compact('facility'));
     }
@@ -68,6 +71,8 @@ class FacilityController extends Controller
     public function updateStatus(UpdateFacilityStatusRequest $request, Facility $facility): RedirectResponse
     {
         abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
+
+        abort_if($facility->status_fasilitas === 'inactive', 404);
 
         $validated = $request->validated();
         $newStatus = $validated['status_fasilitas'];
@@ -82,7 +87,7 @@ class FacilityController extends Controller
 
         $statusLabel = match ($newStatus) {
             'in_repair' => 'Dalam Perbaikan',
-            'inactive' => 'Tidak Tersedia',
+            'inactive' => 'Nonaktif',
             default => 'Aktif',
         };
         $message = "Status fasilitas \"{$facility->nama_fasilitas}\" berhasil diubah menjadi {$statusLabel}.";

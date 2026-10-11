@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Facility;
 use App\Models\Reservation;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ReservationController extends Controller
 {
@@ -18,6 +20,8 @@ class ReservationController extends Controller
 
     public function create(Request $request, Facility $facility)
     {
+        abort_if($facility->status_fasilitas === 'inactive', 404);
+
         $canReserve = Auth::check() && $facility->status_fasilitas === 'active';
 
         $timeOptions = $this->getTimeOptions();
@@ -62,6 +66,8 @@ class ReservationController extends Controller
 
     public function getScheduleData(Request $request, Facility $facility)
     {
+        abort_if($facility->status_fasilitas === 'inactive', 404);
+
         $today = now()->startOfDay();
         $currentMonthStart = now()->startOfMonth();
 
@@ -152,7 +158,9 @@ class ReservationController extends Controller
             'slot_end.after' => 'Jam selesai harus lebih akhir dari jam mulai.',
         ]);
 
-        $facility = Facility::findOrFail($request->facility_id);
+        $facility = Facility::query()
+            ->visibleToNonAdmins()
+            ->findOrFail($request->facility_id);
 
         if ($facility->status_fasilitas !== 'active') {
             return back()->withErrors(['facility_id' => 'Fasilitas tidak tersedia.'])->withInput();
@@ -197,14 +205,64 @@ class ReservationController extends Controller
         return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil diajukan! Menunggu persetujuan.');
     }
 
-    public function index()
+    public function index(Request $request): View
     {
-        $reservations = Reservation::where('user_id', Auth::id())
-            ->with('facility')
-            ->orderBy('start_time', 'desc')
-            ->paginate(10);
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:pending,approved,completed,cancelled,rejected'],
+            'tipe' => ['nullable', 'string', 'max:100'],
+            'tanggal_mulai' => ['nullable', 'date'],
+            'tanggal_selesai' => ['nullable', 'date'],
+            'urut' => ['nullable', 'in:terbaru,terlama'],
+        ]);
 
-        return view('reservations.index', compact('reservations'));
+        $query = Reservation::where('user_id', Auth::id())
+            ->whereHas('facility', fn (Builder $facilities) => $facilities->visibleToNonAdmins())
+            ->with('facility')
+            ->when($filters['search'] ?? null, function (Builder $reservations, string $search): void {
+                $search = trim($search);
+                $hasFormattedId = preg_match('/^RSV-\d{8}-(\d+)$/i', $search, $idMatch) === 1;
+                $reservationId = $hasFormattedId
+                    ? (int) $idMatch[1]
+                    : (ctype_digit($search) ? (int) $search : null);
+
+                $reservations->where(function (Builder $reservationQuery) use ($search, $reservationId): void {
+                    $reservationQuery
+                        ->where('tujuan_penggunaan', 'like', "%{$search}%")
+                        ->orWhereHas('facility', fn (Builder $facilities) => $facilities->where('nama_fasilitas', 'like', "%{$search}%"));
+
+                    if ($reservationId !== null) {
+                        $reservationQuery->orWhere('id', $reservationId);
+                    }
+                });
+            })
+            ->when($filters['status'] ?? null, function (Builder $reservations, string $status): void {
+                match ($status) {
+                    'pending' => $reservations->where('status_reservasi', 'pending'),
+                    'approved' => $reservations->where('status_reservasi', 'approved')->where('end_time', '>', now()),
+                    'completed' => $reservations->where('status_reservasi', 'approved')->where('end_time', '<=', now()),
+                    'cancelled' => $reservations->whereIn('status_reservasi', ['cancelled_by_user', 'cancelled_by_staff']),
+                    'rejected' => $reservations->where('status_reservasi', 'cancelled_by_officer'),
+                };
+            })
+            ->when($filters['tipe'] ?? null, fn (Builder $reservations, string $type) => $reservations->whereHas('facility', fn (Builder $facilities) => $facilities->where('tipe', $type)))
+            ->when($filters['tanggal_mulai'] ?? null, fn (Builder $reservations, string $date) => $reservations->whereDate('start_time', '>=', $date))
+            ->when($filters['tanggal_selesai'] ?? null, fn (Builder $reservations, string $date) => $reservations->whereDate('start_time', '<=', $date));
+
+        $sortDirection = ($filters['urut'] ?? 'terbaru') === 'terlama' ? 'asc' : 'desc';
+        $reservations = $query
+            ->orderBy('start_time', $sortDirection)
+            ->paginate(10)
+            ->withQueryString();
+
+        $facilityTypes = Facility::query()
+            ->visibleToNonAdmins()
+            ->whereNotNull('tipe')
+            ->distinct()
+            ->orderBy('tipe')
+            ->pluck('tipe');
+
+        return view('reservations.index', compact('reservations', 'facilityTypes', 'filters'));
     }
 
     public function cancel(Request $request, Reservation $reservation)

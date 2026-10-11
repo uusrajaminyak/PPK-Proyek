@@ -3,7 +3,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f5f6f9;
+    background-color: var(--page-gray);
     position: relative;
     overflow-x: hidden;
 }
@@ -46,6 +46,54 @@
     border-radius: 20px;
     padding: 2.5rem 2.25rem;
     box-shadow: 0 6px 25px rgba(0, 19, 72, 0.04);
+}
+
+.report-success-state {
+    display: flex;
+    min-height: 280px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.report-success-icon {
+    display: grid;
+    width: 64px;
+    height: 64px;
+    place-items: center;
+    border-radius: 50%;
+    background: #e8f5ee;
+    color: #23824a;
+}
+
+.report-success-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.report-success-state h2 {
+    margin: 18px 0 0;
+    color: #001348;
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.report-success-state p {
+    max-width: 440px;
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.report-success-home {
+    display: inline-flex;
+    width: min(100%, 280px);
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    text-decoration: none;
 }
 
 .report-form {
@@ -265,7 +313,7 @@
 }
 
 .btn-submit-report:hover {
-    background: #0a1e55;
+    background: #001348;
     transform: translateY(-1px);
 }
 

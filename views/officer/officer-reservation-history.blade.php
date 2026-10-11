@@ -21,7 +21,7 @@
                 <select name="status" onchange="this.form.requestSubmit()">
                     <option value="">Status</option>
                     <option value="completed" @selected(($filters['status'] ?? '') === 'completed')>Selesai</option>
-                    <option value="cancelled" @selected(($filters['status'] ?? '') === 'cancelled')>Dibatalkan</option>
+                        <option value="cancelled" @selected(($filters['status'] ?? '') === 'cancelled')>Dibatalkan</option>
                     <option value="rejected" @selected(($filters['status'] ?? '') === 'rejected')>Ditolak</option>
                 </select>
                 <img class="officer-reservation-dropdown-icon" src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
@@ -104,6 +104,7 @@
                                         [$statusLabel, $statusClass] = match ($reservation->status_reservasi) {
                                             'approved' => ['Selesai', 'is-completed'],
                                             'cancelled_by_user' => ['Dibatalkan', 'is-cancelled'],
+                                            'cancelled_by_staff' => ['Dibatalkan', 'is-cancelled'],
                                             'cancelled_by_officer' => ['Ditolak', 'is-rejected'],
                                             default => ['Tidak diketahui', 'is-cancelled'],
                                         };

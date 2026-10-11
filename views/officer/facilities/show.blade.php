@@ -90,7 +90,6 @@
                         <select name="status_fasilitas" onchange="this.form.submit()">
                             <option value="active" @selected($facility->status_fasilitas === 'active')>Aktif</option>
                             <option value="in_repair" @selected($facility->status_fasilitas === 'in_repair')>Dalam Perbaikan</option>
-                            <option value="inactive" @selected($facility->status_fasilitas === 'inactive')>Tidak Tersedia</option>
                         </select>
                         <img src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
                     </label>

@@ -13,6 +13,7 @@ class OfficerFacilityStatusTest extends TestCase
     use RefreshDatabase;
 
     private User $petugas;
+
     private Facility $facility;
 
     protected function setUp(): void
@@ -90,7 +91,7 @@ class OfficerFacilityStatusTest extends TestCase
                 'status_fasilitas' => 'inactive',
             ]);
 
-        $response->assertSessionHasErrors(['status_fasilitas']);
+        $response->assertForbidden();
 
         $responseInvalid = $this->actingAs($this->petugas)
             ->patch(route('officer.facilities.update-status', $this->facility->id), [
@@ -179,4 +180,3 @@ class OfficerFacilityStatusTest extends TestCase
         ]);
     }
 }
-

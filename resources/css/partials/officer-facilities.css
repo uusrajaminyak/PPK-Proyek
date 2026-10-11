@@ -30,7 +30,7 @@
 .officer-facility-card-copy p img { width: 13px; height: 13px; flex: 0 0 13px; object-fit: contain; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
 .officer-facility-card-copy p span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .officer-facility-detail-button { display: inline-flex; min-width: 60px; min-height: 34px; flex: 0 0 auto; align-items: center; justify-content: center; padding: 0 12px; border: 0; border-radius: 6px; background: #001348; color: #fff; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; text-decoration: none; }
-.officer-facility-detail-button:hover { background: #10285d; }
+.officer-facility-detail-button:hover { background: #001348; }
 .officer-facility-empty { grid-column: 1 / -1; display: grid; min-height: 180px; align-content: center; justify-items: center; padding: 24px; border: 1px solid #d2d5dd; border-radius: 10px; background: #fff; text-align: center; }
 .officer-facility-empty h2 { margin: 0; color: #001348; font-size: 18px; }
 .officer-facility-empty p { margin: 6px 0 0; color: #657087; font-size: 13px; }
@@ -66,7 +66,7 @@
 .officer-facility-detail-meta img { width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; filter: brightness(0) saturate(100%) invert(7%) sepia(34%) saturate(3780%) hue-rotate(206deg) brightness(91%) contrast(103%); }
 .officer-facility-description { margin-top: 18px; }
 .officer-facility-description h3 { margin: 0 0 9px; font-size: 32px; font-weight: 700; letter-spacing: -.04em; }
-.officer-facility-description p { max-width: 440px; margin: 0; color: #162b50; font-size: 12px; line-height: 1.35; }
+.officer-facility-description p { max-width: 440px; margin: 0; color: #001348; font-size: 12px; line-height: 1.35; }
 .officer-facility-operational-status { margin-top: 18px; }
 .officer-facility-operational-status h3 { margin: 0 0 9px; font-size: 14px; font-weight: 700; text-transform: uppercase; }
 .officer-facility-status-form { margin: 0; }

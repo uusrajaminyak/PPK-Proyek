@@ -1,13 +1,17 @@
 document.addEventListener('click', (event) => {
-    const openButton = event.target.closest('[data-open-rejection-dialog]');
+    const openButton = event.target.closest('[data-open-rejection-dialog], [data-open-cancellation-dialog]');
     if (openButton) {
-        const dialog = document.querySelector('[data-rejection-dialog]');
+        const dialogSelector = openButton.matches('[data-open-cancellation-dialog]')
+            ? '[data-cancellation-dialog]'
+            : '[data-rejection-dialog]';
+        const dialog = document.querySelector(dialogSelector);
         dialog?.showModal();
         dialog?.querySelector('textarea')?.focus();
     }
 
-    if (event.target.closest('[data-close-rejection-dialog]')) {
-        document.querySelector('[data-rejection-dialog]')?.close();
+    const closeButton = event.target.closest('[data-close-rejection-dialog], [data-close-cancellation-dialog]');
+    if (closeButton) {
+        closeButton.closest('dialog')?.close();
     }
 });
 

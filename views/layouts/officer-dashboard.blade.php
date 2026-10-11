@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#001348">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <title>@yield('title', 'Dasbor Petugas') — Fasilita FSM</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts('plus-jakarta-sans')
@@ -28,10 +29,10 @@
         <div class="officer-workspace">
             <aside class="officer-sidebar" aria-label="Navigasi petugas">
                 <nav class="officer-nav-main">
-                    <a href="{{ route('officer.dashboard') }}" class="officer-nav-link {{ request()->routeIs('officer.dashboard') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'dashboard') ? 'is-active' : '' }}" @if (request()->routeIs('officer.dashboard') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'dashboard')) aria-current="page" @endif>
+                    <a href="{{ route('officer.dashboard') }}" class="officer-nav-link {{ request()->routeIs('officer.dashboard') ? 'is-active' : '' }}" @if (request()->routeIs('officer.dashboard')) aria-current="page" @endif>
                         <img src="{{ asset('images/officer/dashboard.svg') }}" alt="" aria-hidden="true"><span>Dasbor</span>
                     </a>
-                    <a href="{{ route('officer.reservations.index') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.index', 'officer.reservations.update-status') || (request()->routeIs('officer.reservations.show') && ! in_array(request()->query('from'), ['history', 'dashboard'], true)) ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.index', 'officer.reservations.update-status') || (request()->routeIs('officer.reservations.show') && ! in_array(request()->query('from'), ['history', 'dashboard'], true))) aria-current="page" @endif>
+                    <a href="{{ route('officer.reservations.index') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.index', 'officer.reservations.update-status') || (request()->routeIs('officer.reservations.show') && request()->query('from') !== 'history') ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.index', 'officer.reservations.update-status') || (request()->routeIs('officer.reservations.show') && request()->query('from') !== 'history')) aria-current="page" @endif>
                         <img src="{{ asset('images/officer/reservations.svg') }}" alt="" aria-hidden="true"><span>Kelola Reservasi</span>
                     </a>
                     <a href="{{ route('officer.reservations.history') }}" class="officer-nav-link {{ request()->routeIs('officer.reservations.history') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'history') ? 'is-active' : '' }}" @if (request()->routeIs('officer.reservations.history') || (request()->routeIs('officer.reservations.show') && request()->query('from') === 'history')) aria-current="page" @endif>

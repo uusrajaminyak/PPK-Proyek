@@ -14,6 +14,7 @@
             'approved' => $reservation->end_time->isPast() ? ['Selesai', 'is-completed'] : ['Disetujui', 'is-approved'],
             'cancelled_by_user' => ['Dibatalkan Pengguna', 'is-cancelled'],
             'cancelled_by_officer' => ['Ditolak', 'is-rejected'],
+            'cancelled_by_staff' => ['Dibatalkan Petugas', 'is-cancelled'],
             default => ['Tidak diketahui', 'is-cancelled'],
         };
     @endphp
@@ -92,10 +93,14 @@
                             <button class="officer-detail-action is-approve" type="submit">Setujui Reservasi</button>
                         </form>
                     </div>
-                @elseif ($reservation->status_reservasi === 'cancelled_by_officer')
+                @elseif ($reservation->canBeCancelledByOfficer())
+                    <div class="officer-detail-actions">
+                        <button class="officer-detail-action is-cancel" type="button" data-open-cancellation-dialog>Batalkan Reservasi</button>
+                    </div>
+                @elseif (in_array($reservation->status_reservasi, ['cancelled_by_officer', 'cancelled_by_staff'], true))
                     <div class="officer-detail-applicant-data officer-detail-rejection-data">
-                        <h3>Alasan Penolakan</h3>
-                        <p class="officer-detail-purpose">{{ $reservation->alasan_pembatalan ?: 'Tidak ada alasan penolakan yang dicantumkan.' }}</p>
+                        <h3>{{ $reservation->status_reservasi === 'cancelled_by_staff' ? 'Alasan Pembatalan' : 'Alasan Penolakan' }}</h3>
+                        <p class="officer-detail-purpose">{{ $reservation->alasan_pembatalan ?: 'Tidak ada alasan yang dicantumkan.' }}</p>
                     </div>
                 @endif
                 </div>
@@ -115,5 +120,23 @@
                 <button class="officer-rejection-submit" type="submit">Tolak Reservasi</button>
             </form>
         </dialog>
+
+        @if ($reservation->canBeCancelledByOfficer())
+            <dialog class="officer-rejection-dialog" aria-labelledby="officer-cancellation-title" data-cancellation-dialog>
+                <form method="POST" action="{{ route('officer.reservations.cancel', $reservation) }}">
+                    @csrf
+                    @method('PATCH')
+                    @if (request()->query('from') === 'dashboard')
+                        <input type="hidden" name="from" value="dashboard">
+                    @endif
+                    <button class="officer-rejection-close" type="button" aria-label="Tutup" data-close-cancellation-dialog>&times;</button>
+                    <h2 id="officer-cancellation-title">Alasan Mendesak Pembatalan</h2>
+                    <p>Reservasi ini sudah disetujui. Masukkan alasan mendesak sebelum membatalkannya.</p>
+                    <label class="sr-only" for="officer-cancellation-reason">Alasan mendesak pembatalan</label>
+                    <textarea id="officer-cancellation-reason" name="alasan_pembatalan" placeholder="Masukkan alasan mendesak pembatalan reservasi" maxlength="1000" required></textarea>
+                    <button class="officer-rejection-submit" type="submit">Batalkan Reservasi</button>
+                </form>
+            </dialog>
+        @endif
     </div>
 @endsection

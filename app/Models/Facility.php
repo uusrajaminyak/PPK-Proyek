@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -93,7 +94,7 @@ class Facility extends Model
         return match ($this->status_fasilitas) {
             'active' => 'Tersedia',
             'in_repair' => 'Dalam Perbaikan',
-            'inactive' => 'Tidak Tersedia',
+            'inactive' => 'Nonaktif',
             default => 'Tidak Diketahui',
         };
     }
@@ -101,6 +102,11 @@ class Facility extends Model
     public function isActive(): bool
     {
         return ($this->attributes['status_fasilitas'] ?? 'active') === 'active';
+    }
+
+    public function scopeVisibleToNonAdmins(Builder $query): Builder
+    {
+        return $query->where('status_fasilitas', '!=', 'inactive');
     }
 
     public function isInRepair(): bool

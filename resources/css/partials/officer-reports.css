@@ -44,7 +44,7 @@
 .officer-report-update .officer-report-select select { padding-right: 38px; appearance: none; }
 .officer-report-select img { position: absolute; top: 50%; right: 12px; width: 16px; height: 16px; transform: translateY(-50%); pointer-events: none; }
 .officer-report-update .officer-detail-action { justify-self: end; min-height: 42px; background: #001348; }
-.officer-report-update .officer-detail-action:hover { background: #10285d; }
+.officer-report-update .officer-detail-action:hover { background: #001348; }
 
 /* Detail laporan memakai struktur dua kolom yang sama dengan detail reservasi. */
 .officer-report-detail-page { min-height: 0; }
@@ -65,7 +65,7 @@
 .officer-report-detail-page .officer-detail-heading { position: relative; padding-right: 90px; }
 .officer-report-detail-page .officer-detail-heading .officer-report-status { position: absolute; top: 0; right: 0; }
 .officer-report-detail-update { margin-top: 22px; }
-.officer-report-resolution-note { display: grid; gap: 5px; margin: 18px 0 0; color: #243653; font-size: 15px; line-height: 1.5; }
+.officer-report-resolution-note { display: grid; gap: 5px; margin: 18px 0 0; color: #001348; font-size: 15px; line-height: 1.5; }
 .officer-report-resolution-note strong { color: #001348; font-size: 16px; }
 .officer-report-detail-update .officer-detail-action { justify-self: end; }
 

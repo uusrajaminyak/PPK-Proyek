@@ -10,7 +10,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #001248;
+            color: #001348;
             background: #ffffff;
             margin: 0;
             padding: 20px;
@@ -18,7 +18,7 @@
         }
 
         .header {
-            border-bottom: 2px solid #001248;
+            border-bottom: 2px solid #001348;
             padding-bottom: 12px;
             margin-bottom: 20px;
             display: flex;
@@ -29,7 +29,7 @@
         .title {
             font-size: 18px;
             font-weight: 800;
-            color: #001248;
+            color: #001348;
             margin: 0;
         }
 
@@ -55,7 +55,7 @@
 
         .meta-item span {
             font-weight: 700;
-            color: #001248;
+            color: #001348;
         }
 
         table {
@@ -65,7 +65,7 @@
         }
 
         th {
-            background-color: #001248;
+            background-color: #001348;
             color: #ffffff;
             font-weight: 700;
             text-align: left;
@@ -78,7 +78,7 @@
             padding: 8px 12px;
             border-bottom: 1px solid #e2e8f0;
             font-size: 11px;
-            color: #001248;
+            color: #001348;
         }
 
         tr:nth-child(even) {
@@ -115,7 +115,7 @@
 
     <!-- Toolbar for manual triggers -->
     <div class="no-print" style="margin-bottom: 15px; text-align: right;">
-        <button onclick="window.print()" style="background: #001248; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+        <button onclick="window.print()" style="background: #001348; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer;">
             Cetak / Simpan PDF
         </button>
     </div>

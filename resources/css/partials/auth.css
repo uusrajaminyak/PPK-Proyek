@@ -6,8 +6,8 @@
     min-height: 100vh;
     flex-direction: column;
     overflow: hidden;
-    background: #f7f7f8;
-    color: #07183f;
+    background: var(--page-gray);
+    color: #001348;
 }
 
 /* Masuk (Login) — kartu autentikasi dan form */
@@ -16,7 +16,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f0f0f0;
+    background-color: var(--page-gray);
     position: relative;
     overflow: hidden;
 }
@@ -45,7 +45,7 @@
 
 .login-title {
     margin: 0 0 1.15rem;
-    color: #07183f;
+    color: #001348;
     font-size: clamp(1.35rem, 2.3vw, 1.8rem);
     font-weight: 700;
     letter-spacing: -.045em;
@@ -71,7 +71,7 @@
 .login-card {
     width: min(100%, 450px);
     padding: 1.5rem 1.45rem 1.35rem;
-    border: 1px solid #263858;
+    border: 1px solid #001348;
     border-radius: 15px;
     background: #fff;
 }
@@ -80,7 +80,7 @@
 .login-field label {
     display: block;
     margin-bottom: .38rem;
-    color: #111d36;
+    color: #001348;
     font-size: .875rem;
     font-weight: 600;
 }
@@ -126,7 +126,7 @@
 }
 
 .login-input-wrap input::placeholder { color: #9a9da5; }
-.login-input-wrap input:focus { border-color: #07183f; box-shadow: 0 0 0 3px rgb(7 24 63 / 9%); }
+.login-input-wrap input:focus { border-color: #001348; box-shadow: 0 0 0 3px rgb(0 19 72 / 9%); }
 .login-input-wrap input.has-error { border-color: #dc3545; }
 .login-input-wrap input[type="password"],
 .login-input-wrap input[type="text"] { padding-right: 2.7rem; }
@@ -155,8 +155,8 @@
     color: #777d89;
     cursor: pointer;
 }
-.toggle-password:hover { color: #07183f; }
-.toggle-password:focus-visible { outline: 2px solid #07183f; outline-offset: 2px; }
+.toggle-password:hover { color: #001348; }
+.toggle-password:focus-visible { outline: 2px solid #001348; outline-offset: 2px; }
 .toggle-password img {
     display: block;
     width: 18px;
@@ -202,7 +202,7 @@
     align-items: center;
     gap: .45rem;
     margin: .05rem 0 1.35rem;
-    color: #27334a;
+    color: #001348;
     cursor: pointer;
     font-size: .875rem;
 }
@@ -210,7 +210,7 @@
     width: 16px;
     height: 16px;
     margin: 0;
-    accent-color: #07183f;
+    accent-color: #001348;
 }
 
 .login-remember-row input[type="checkbox"] {
@@ -229,7 +229,7 @@
     padding: .65rem 1rem;
     border: 0;
     border-radius: 6px;
-    background: #061747;
+    background: #001348;
     color: #fff;
     cursor: pointer;
     font: inherit;
@@ -237,9 +237,9 @@
     font-weight: 700;
     transition: background-color .18s ease, transform .12s ease;
 }
-.login-btn:hover { background: #10285d; }
+.login-btn:hover { background: #001348; }
 .login-btn:active { transform: translateY(1px); }
-.login-btn:focus-visible { outline: 3px solid rgb(7 24 63 / 25%); outline-offset: 3px; }
+.login-btn:focus-visible { outline: 3px solid rgb(0 19 72 / 25%); outline-offset: 3px; }
 .login-btn img { display: block; width: 16px; height: 16px; }
 
 .login-links {
@@ -255,7 +255,7 @@
     letter-spacing: 0.01em;
 }
 .login-btn:hover {
-    background: #0a1e55;
+    background: #001348;
 }
 .login-btn:active {
     transform: scale(0.98);
@@ -280,8 +280,8 @@
     text-align: center;
 }
 .login-links p { margin: 0; }
-.login-links a { color: #07183f; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
-.login-links a:hover { color: #294b89; }
+.login-links a { color: #001348; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.login-links a:hover { color: #001348; }
 
 .login-page > .site-footer { position: relative; z-index: 1; }
 
@@ -358,7 +358,7 @@
     letter-spacing: 0.01em;
 }
 .register-btn:hover {
-    background: #0a1e55;
+    background: #001348;
 }
 .register-btn:active {
     transform: scale(0.98);

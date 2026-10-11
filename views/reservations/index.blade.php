@@ -21,15 +21,60 @@
         <h1 class="page-title">Reservasi Saya</h1>
 
         <div class="table-container-wrapper">
-            {{-- Filter Bar --}}
-            <div class="filter-bar">
-                <button type="button" class="btn-filter" onclick="alert('Filter fitur segera hadir!')">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-                    </svg>
-                    <span>Filter</span>
-                </button>
-            </div>
+            <form class="officer-reservation-filters" method="GET" action="{{ route('reservations.index') }}">
+                <label class="officer-reservation-search">
+                    <span class="sr-only">Cari reservasi</span>
+                    <input type="search" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari riwayat reservasi...">
+                    <img src="{{ asset('images/officer/search.svg') }}" alt="" aria-hidden="true">
+                </label>
+
+                <label class="officer-reservation-filter">
+                    <span class="sr-only">Filter status reservasi</span>
+                    <select name="status" onchange="this.form.requestSubmit()">
+                        <option value="">Status</option>
+                        <option value="pending" @selected(($filters['status'] ?? '') === 'pending')>Menunggu</option>
+                        <option value="approved" @selected(($filters['status'] ?? '') === 'approved')>Disetujui</option>
+                        <option value="completed" @selected(($filters['status'] ?? '') === 'completed')>Selesai</option>
+                        <option value="cancelled" @selected(($filters['status'] ?? '') === 'cancelled')>Dibatalkan</option>
+                        <option value="rejected" @selected(($filters['status'] ?? '') === 'rejected')>Ditolak</option>
+                    </select>
+                    <img class="officer-reservation-dropdown-icon" src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                </label>
+
+                <label class="officer-reservation-filter">
+                    <span class="sr-only">Filter tipe fasilitas</span>
+                    <select name="tipe" onchange="this.form.requestSubmit()">
+                        <option value="">Tipe</option>
+                        @foreach ($facilityTypes as $facilityType)
+                            <option value="{{ $facilityType }}" @selected(($filters['tipe'] ?? '') === $facilityType)>{{ $facilityType }}</option>
+                        @endforeach
+                    </select>
+                    <img class="officer-reservation-dropdown-icon" src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                </label>
+
+                <div class="officer-reservation-date">
+                    <label class="officer-reservation-date-field">
+                        <span class="sr-only">Tanggal mulai</span>
+                        <input type="date" name="tanggal_mulai" value="{{ $filters['tanggal_mulai'] ?? '' }}" onchange="this.form.requestSubmit()">
+                        <img src="{{ asset('images/officer/calendar.svg') }}" alt="" aria-hidden="true">
+                    </label>
+                    <span aria-hidden="true">–</span>
+                    <label class="officer-reservation-date-field">
+                        <span class="sr-only">Tanggal selesai</span>
+                        <input type="date" name="tanggal_selesai" value="{{ $filters['tanggal_selesai'] ?? '' }}" onchange="this.form.requestSubmit()">
+                        <img src="{{ asset('images/officer/calendar.svg') }}" alt="" aria-hidden="true">
+                    </label>
+                </div>
+
+                <label class="officer-reservation-filter officer-reservation-sort">
+                    <span class="sr-only">Urutkan reservasi</span>
+                    <select name="urut" onchange="this.form.requestSubmit()">
+                        <option value="terbaru" @selected(($filters['urut'] ?? 'terbaru') === 'terbaru')>Terbaru</option>
+                        <option value="terlama" @selected(($filters['urut'] ?? '') === 'terlama')>Terlama</option>
+                    </select>
+                    <img class="officer-reservation-dropdown-icon" src="{{ asset('images/officer/arrow-dropdown.svg') }}" alt="" aria-hidden="true">
+                </label>
+            </form>
 
             {{-- Box Tabel --}}
             <div class="reservation-box">
@@ -44,6 +89,16 @@
 
                 <div class="reservation-list">
                     @forelse($reservations as $res)
+                        @php
+                            [$reservationStatusLabel, $reservationStatusClass] = match ($res->status_reservasi) {
+                                'pending' => ['Menunggu', 'pending'],
+                                'approved' => $res->end_time->isPast() ? ['Selesai', 'completed'] : ['Disetujui', 'approved'],
+                                'cancelled_by_user' => ['Dibatalkan Pengguna', 'cancelled_by_user'],
+                                'cancelled_by_staff' => ['Dibatalkan Petugas', 'cancelled_by_user'],
+                                'cancelled_by_officer' => ['Ditolak', 'cancelled_by_officer'],
+                                default => ['Tidak diketahui', 'cancelled'],
+                            };
+                        @endphp
                         <div class="reservation-card-row">
                             {{-- Thumbnail Foto Generic Ruang/Gedung --}}
                             <img class="res-thumb" src="{{ asset('images/landing/landing-hero.webp') }}" alt="Foto Fasilitas">
@@ -67,9 +122,7 @@
 
                             {{-- Status Badge --}}
                             <div class="col-status">
-                                <span class="badge-status badge-{{ $res->status_reservasi }}">
-                                    {{ $res->status_reservasi === 'pending' ? 'Waiting' : $res->getStatusLabel() }}
-                                </span>
+                                <span class="badge-status badge-{{ $reservationStatusClass }}">{{ $reservationStatusLabel }}</span>
                             </div>
 
                             {{-- Aksi --}}
@@ -86,7 +139,7 @@
                                         '{{ addslashes($res->facility->nama_fasilitas) }}',
                                         '{{ addslashes($res->facility->lokasi) }}',
                                         '{{ $res->start_time->format('d F Y, H:i') }} - {{ $res->end_time->format('H:i') }} WIB',
-                                        '{{ $res->status_reservasi === 'pending' ? 'Waiting' : $res->getStatusLabel() }}',
+                                        '{{ $reservationStatusLabel }}',
                                         '{{ addslashes($res->tujuan_penggunaan) }}'
                                     )">
                                     Detail

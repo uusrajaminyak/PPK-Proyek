@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 
+@section('title', 'Rekap')
 @section('header_title', 'Rekap')
 
 @section('content')

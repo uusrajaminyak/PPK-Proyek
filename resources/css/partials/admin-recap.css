@@ -86,7 +86,7 @@
     text-decoration: none;
     white-space: nowrap;
 }
-.recap-export-button:hover { background: #10285d; }
+.recap-export-button:hover { background: #001348; }
 .recap-export-button img { width: 15px; height: 15px; filter: brightness(0) invert(1); }
 
 .recap-analytics {
@@ -132,7 +132,7 @@
     font-weight: 600;
     text-decoration: none;
 }
-.recap-panel-footer a:hover { background: #10285d; }
+.recap-panel-footer a:hover { background: #001348; }
 
 .recap-table-panel {
     display: flex;

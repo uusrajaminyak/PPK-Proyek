@@ -31,7 +31,7 @@
 .officer-detail-applicant-data dt { color: #657087; font-size: 15px; }
 .officer-detail-schedule dd,
 .officer-detail-applicant-data dd { margin: 0; color: #001348; font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
-.officer-detail-purpose { margin: 0; color: #243653; font-size: 17px; line-height: 1.55; }
+.officer-detail-purpose { margin: 0; color: #001348; font-size: 17px; line-height: 1.55; }
 .officer-detail-divider { width: 1px; height: 100%; background: #d2d5dd; }
 .officer-detail-heading { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; margin: 2px 0 22px; text-align: left; }
 .officer-detail-heading .officer-reservation-status { position: absolute; top: 0; right: 0; }
@@ -49,6 +49,8 @@
 .officer-detail-action { min-height: 40px; padding: 0 18px; border: 0; border-radius: 7px; color: #fff; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; }
 .officer-detail-action.is-reject { background: #ed4145; }
 .officer-detail-action.is-reject:hover { background: #d93236; }
+.officer-detail-action.is-cancel { background: #ff383c; }
+.officer-detail-action.is-cancel:hover { background: #e52f33; }
 .officer-detail-action.is-approve { background: #28a95d; }
 .officer-detail-action.is-approve:hover { background: #208e4e; }
 .officer-detail-rejection-data { margin-top: 22px; }

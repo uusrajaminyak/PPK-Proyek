@@ -29,6 +29,7 @@ class ReportController extends Controller
 
         $reportsQuery = Report::query()
             ->with(['facility', 'reporter'])
+            ->whereHas('facility', fn ($facilities) => $facilities->visibleToNonAdmins())
             ->when($filters['search'] ?? null, function ($reports, string $search): void {
                 $search = trim($search);
                 $hasFormattedId = preg_match('/^LP-(\d+)$/i', $search, $idMatch) === 1;
@@ -80,6 +81,7 @@ class ReportController extends Controller
     public function show(Report $report): View
     {
         abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
+        abort_if($report->facility?->status_fasilitas === 'inactive', 404);
 
         $report->load(['facility', 'reporter']);
 
@@ -93,6 +95,7 @@ class ReportController extends Controller
     public function update(UpdateReportStatusRequest $request, Report $report): RedirectResponse
     {
         abort_unless(auth()->user()?->isPetugas() || auth()->user()?->isAdmin(), 403);
+        abort_if($report->facility?->status_fasilitas === 'inactive', 404);
 
         $validated = $request->validated();
 
@@ -112,7 +115,7 @@ class ReportController extends Controller
                 $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" dikembalikan ke status Aktif";
             } elseif ($validated['update_facility_status'] === 'inactive') {
                 $report->facility->markUnavailable();
-                $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" ditandai Tidak Tersedia";
+                $facilityMessage = " dan fasilitas \"{$report->facility->nama_fasilitas}\" ditandai Nonaktif";
             }
         }
 

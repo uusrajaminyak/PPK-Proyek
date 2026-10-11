@@ -14,7 +14,7 @@
             </p>
         </div>
         <a href="{{ route('reports.create') }}" 
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm transition-all shrink-0">
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#001348] hover:bg-[#001348] text-white font-semibold text-sm shadow-sm transition-all shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
@@ -25,18 +25,18 @@
     <!-- Filter Tabs by Status -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200">
         <a href="{{ route('reports.index') }}" data-ajax-filter-link
-            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ empty($status) ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ empty($status) ? 'bg-[#001348] text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
             <span>Semua</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ empty($status) ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-600' }}">
+            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ empty($status) ? 'bg-[#001348] text-white' : 'bg-slate-100 text-slate-600' }}">
                 {{ $counts['all'] }}
             </span>
         </a>
 
         <a href="{{ route('reports.index', ['status' => 'baru']) }}" data-ajax-filter-link
-            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $status === 'baru' ? 'bg-sky-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
-            <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $status === 'baru' ? 'bg-[#001348] text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
+            <span class="w-2 h-2 rounded-full bg-[#001348]"></span>
             <span>Baru</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $status === 'baru' ? 'bg-sky-700 text-white' : 'bg-slate-100 text-slate-600' }}">
+            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $status === 'baru' ? 'bg-[#001348] text-white' : 'bg-slate-100 text-slate-600' }}">
                 {{ $counts['baru'] }}
             </span>
         </a>
@@ -99,8 +99,8 @@
                         <!-- Status Badge Component -->
                         <div class="shrink-0">
                             @if($report->status_laporan === 'baru')
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-[#001348] border border-[#001348]">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white0 animate-pulse"></span>
                                     Baru (Menunggu Verifikasi)
                                 </span>
                             @elseif($report->status_laporan === 'diproses')
@@ -150,7 +150,7 @@
                                 @foreach($report->foto_paths as $foto)
                                     <button type="button" 
                                         onclick="openImageModal('{{ asset('storage/' . $foto) }}')"
-                                        class="group relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-slate-200 hover:border-indigo-500 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        class="group relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-slate-200 hover:border-[#001348] transition-all focus:outline-none focus:ring-2 focus:ring-[#001348]">
                                         <img src="{{ asset('storage/' . $foto) }}" 
                                             alt="Bukti foto kerusakan" 
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
@@ -198,7 +198,7 @@
     @else
         <!-- Empty State -->
         <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-xs">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 mx-auto flex items-center justify-center mb-4">
+            <div class="w-14 h-14 rounded-2xl bg-white text-[#001348] mx-auto flex items-center justify-center mb-4">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
@@ -218,7 +218,7 @@
                 @endif
             </p>
             <a href="{{ route('reports.create') }}" 
-                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-sm transition-all">
+                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#001348] hover:bg-[#001348] text-white font-semibold text-xs shadow-sm transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>

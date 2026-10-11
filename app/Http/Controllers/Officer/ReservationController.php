@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ReservationController extends Controller
@@ -30,6 +31,7 @@ class ReservationController extends Controller
                 'user:id,name,fakultas',
                 'facility:id,nama_fasilitas,tipe,lokasi',
             ])
+            ->whereHas('facility', fn (Builder $facilities) => $facilities->where('status_fasilitas', '!=', 'inactive'))
             ->where(function (Builder $reservations): void {
                 $reservations
                     ->where('status_reservasi', 'pending')
@@ -69,6 +71,7 @@ class ReservationController extends Controller
             ->withQueryString();
 
         $facilityTypes = Facility::query()
+            ->visibleToNonAdmins()
             ->whereNotNull('tipe')
             ->distinct()
             ->orderBy('tipe')
@@ -95,6 +98,7 @@ class ReservationController extends Controller
                 'user:id,name,fakultas',
                 'facility:id,nama_fasilitas,tipe,lokasi',
             ])
+            ->whereHas('facility', fn (Builder $facilities) => $facilities->where('status_fasilitas', '!=', 'inactive'))
             ->where(function ($historyQuery): void {
                 $historyQuery
                     ->where(function ($completedQuery): void {
@@ -103,6 +107,7 @@ class ReservationController extends Controller
                             ->where('end_time', '<=', now());
                     })
                     ->orWhere('status_reservasi', 'cancelled_by_user')
+                    ->orWhere('status_reservasi', 'cancelled_by_staff')
                     ->orWhere('status_reservasi', 'cancelled_by_officer');
             })
             ->when($filters['search'] ?? null, function ($reservations, string $search): void {
@@ -127,7 +132,7 @@ class ReservationController extends Controller
                 if ($status === 'completed') {
                     $reservations->where('status_reservasi', 'approved')->where('end_time', '<=', now());
                 } elseif ($status === 'cancelled') {
-                    $reservations->where('status_reservasi', 'cancelled_by_user');
+                    $reservations->whereIn('status_reservasi', ['cancelled_by_user', 'cancelled_by_staff']);
                 } else {
                     $reservations->where('status_reservasi', 'cancelled_by_officer');
                 }
@@ -154,6 +159,7 @@ class ReservationController extends Controller
     public function show(Reservation $reservation): View
     {
         abort_unless(auth()->user()->isPetugas() || auth()->user()->isAdmin(), 403);
+        abort_if($reservation->facility?->status_fasilitas === 'inactive', 404);
 
         $reservation->load(['user', 'facility']);
 
@@ -163,6 +169,7 @@ class ReservationController extends Controller
     public function updateStatus(Request $request, Reservation $reservation): RedirectResponse
     {
         abort_unless(auth()->user()->isPetugas() || auth()->user()->isAdmin(), 403);
+        abort_if($reservation->facility?->status_fasilitas === 'inactive', 404);
 
         $validated = $request->validate([
             'status_reservasi' => ['required', 'in:approved,cancelled_by_officer'],
@@ -197,5 +204,51 @@ class ReservationController extends Controller
         return redirect()
             ->route('officer.reservations.show', $detailRouteParameters)
             ->with('success', "Reservasi berhasil {$statusLabel}.");
+    }
+
+    public function cancelApproved(Request $request, Reservation $reservation): RedirectResponse
+    {
+        abort_unless(auth()->user()->isPetugas() || auth()->user()->isAdmin(), 403);
+        abort_if($reservation->facility?->status_fasilitas === 'inactive', 404);
+
+        $validated = $request->validate([
+            'alasan_pembatalan' => ['required', 'string', 'max:1000'],
+            'from' => ['nullable', 'in:dashboard'],
+        ], [
+            'alasan_pembatalan.required' => 'Masukkan alasan mendesak untuk membatalkan reservasi ini.',
+        ]);
+
+        $detailRouteParameters = array_filter([
+            'reservation' => $reservation,
+            'from' => $validated['from'] ?? null,
+        ]);
+
+        $cancelled = DB::transaction(function () use ($reservation, $validated): bool {
+            $lockedReservation = Reservation::query()
+                ->whereKey($reservation->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (! $lockedReservation->canBeCancelledByOfficer()) {
+                return false;
+            }
+
+            $lockedReservation->update([
+                'status_reservasi' => 'cancelled_by_staff',
+                'alasan_pembatalan' => $validated['alasan_pembatalan'],
+            ]);
+
+            return true;
+        });
+
+        if (! $cancelled) {
+            return redirect()
+                ->route('officer.reservations.show', $detailRouteParameters)
+                ->with('error', 'Reservasi hanya dapat dibatalkan petugas jika sudah disetujui dan jadwalnya belum berakhir.');
+        }
+
+        return redirect()
+            ->route('officer.reservations.show', $detailRouteParameters)
+            ->with('success', 'Reservasi berhasil dibatalkan oleh petugas.');
     }
 }
