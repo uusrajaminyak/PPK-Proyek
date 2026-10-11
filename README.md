@@ -34,46 +34,47 @@ Fasilita FSM adalah aplikasi berbasis web untuk mengelola peminjaman atau reserv
 
 ## System Requirements
 
-* **Docker & Docker Compose**
-
+```bash
+- Docker & Docker Compose
+```
 ---
 
 ## Panduan Instalasi
 
-* 1. Clone the Repository
+* Clone the Repository
 ```bash
 git clone https://github.com/uusrajaminyak/PPK-Proyek.git
 ```
 
-* 2. Copy the environment file
+* Copy the environment file
 ```bash
 cp .env.example .env
 ```
 
-* 3. Build the containers
+* Build the containers
 ```bash
 docker compose up -d --build
 ```
 
-* 4. Install the dependencies
+* Install the dependencies
 ```bash
 docker compose exec app composer install
 docker compose exec app npm install
 docker compose exec app npm run build
 ```
 
-* 5. Generate the application key
+* Generate the application key
 ```bash
 docker compose exec app php artisan key:generate
 ```
 
-* 6. Configure storage folder access and cache
+* Configure storage folder access and cache
 ```bash
 docker compose exec -u 0 app chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 docker compose exec -u 0 app chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 ```
 
-* 7. Database migration and links
+* Database migration and links
 ```bash
 docker compose exec app php artisan migrate:fresh --seed
 docker compose exec app php artisan storage:link
@@ -93,27 +94,28 @@ Email: admin@undip.ac.id
 Password: password
 Nama: Admin Utama
 NIP / Identitas: 19850912201012
-Kategori: Staf / Admin
+Kategori: Admin
 
 Role: Petugas / Staff (Akses Dashboard Petugas)
 Email: budi.santoso@staff.undip.ac.id
 Password: password
 Nama: Budi Santoso (PTG-001)
+Kategori: Petugas / Staff
 ```
 
 ## Daily Runs
 
-* 1. Activate the containers
+* Activate the containers
 ```bash
 docker compose up -d
 ```
 
-* 2. Access the localhost
+* Access the localhost
 ```bash
 localhost:8000
 ```
 
-* 3. Shutting down the containers
+* Shutting down the containers
 ```bash
 docker compose down
 ```
