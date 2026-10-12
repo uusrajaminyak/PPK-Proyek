@@ -143,7 +143,7 @@ class UserSeeder extends Seeder
                 'email'           => 'rizky.p@student.undip.ac.id',
                 'password'        => $password,
                 'role'            => 'pengguna',
-                'status_akun'     => 'pending',
+                'status_akun'     => 'verified',
                 'nomor_identitas' => '24020122120012',
                 'kategori'        => 'Mahasiswa',
                 'no_telepon'      => '085711223346',

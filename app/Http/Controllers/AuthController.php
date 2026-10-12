@@ -77,15 +77,16 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
+            /** @var \App\Models\User $user */
             $user = Auth::user();
 
-            // Cek status akun verified
-            if (! $user->isVerified()) {
+            // Pastikan hanya role pengguna yang bisa masuk lewat portal ini
+            if (! $user->isPengguna()) {
                 Auth::logout();
                 throw ValidationException::withMessages([
-                    'email' => 'Akun belum diverifikasi. Hubungi administrator.',
+                    'login_error' => 'Akun ini bukan akun pengguna. Silakan login melalui portal Petugas/Admin.',
                 ]);
-            }
+            }   
 
             return redirect()->intended(route($this->dashboardRouteForAuthenticatedUser()))
                 ->with('success', 'Selamat datang, '.$user->name.'!');
@@ -110,14 +111,9 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        $user = Auth::user();
 
-        if (! $user->isVerified()) {
-            Auth::logout();
-            throw ValidationException::withMessages([
-                'email' => 'Akun belum diverifikasi. Hubungi administrator.',
-            ]);
-        }
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
         if (! $user->isAdmin() && ! $user->isPetugas()) {
             Auth::logout();
@@ -147,6 +143,7 @@ class AuthController extends Controller
 
     private function dashboardRouteForAuthenticatedUser(): string
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
         if ($user?->isAdmin()) {
