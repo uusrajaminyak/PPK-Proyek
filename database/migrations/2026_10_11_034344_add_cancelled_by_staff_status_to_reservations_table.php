@@ -7,31 +7,52 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        // Remove the old constraint first, if it exists.
+        DB::statement(
+            'ALTER TABLE "reservations"
+             DROP CONSTRAINT IF EXISTS "reservations_status_reservasi_check"'
+        );
+
+        // Change type/default/nullability separately.
         Schema::table('reservations', function (Blueprint $table) {
-            $table->enum('status_reservasi', ['pending', 'approved', 'cancelled_by_user', 'cancelled_by_officer', 'cancelled_by_staff'])
+            $table->string('status_reservasi')
                 ->default('pending')
+                ->nullable(false)
                 ->change();
         });
+
+        // Add the updated PostgreSQL CHECK constraint separately.
+        DB::statement(
+            'ALTER TABLE "reservations"
+             ADD CONSTRAINT "reservations_status_reservasi_check"
+             CHECK ("status_reservasi" IN (
+                 \'pending\',
+                 \'approved\',
+                 \'cancelled_by_user\',
+                 \'cancelled_by_officer\',
+                 \'cancelled_by_staff\'
+             ))'
+        );
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        DB::table('reservations')
-            ->where('status_reservasi', 'cancelled_by_staff')
-            ->update(['status_reservasi' => 'cancelled_by_officer']);
+        DB::statement(
+            'ALTER TABLE "reservations"
+             DROP CONSTRAINT IF EXISTS "reservations_status_reservasi_check"'
+        );
 
-        Schema::table('reservations', function (Blueprint $table) {
-            $table->enum('status_reservasi', ['pending', 'approved', 'cancelled_by_user', 'cancelled_by_officer'])
-                ->default('pending')
-                ->change();
-        });
+        DB::statement(
+            'ALTER TABLE "reservations"
+             ADD CONSTRAINT "reservations_status_reservasi_check"
+             CHECK ("status_reservasi" IN (
+                 \'pending\',
+                 \'approved\',
+                 \'cancelled_by_user\',
+                 \'cancelled_by_officer\'
+             ))'
+        );
     }
 };

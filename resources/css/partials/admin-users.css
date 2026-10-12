@@ -28,6 +28,12 @@
 .admin-user-register-cancel { background: #fff; color: #001348; }
 .admin-user-register-errors { margin: 0 0 16px; padding: 12px 16px; border: 1px solid #fecaca; border-radius: 8px; background: #fef2f2; color: #b91c1c; font-size: 12px; }
 .admin-user-register-errors ul { margin: 0; padding-left: 18px; }
+.admin-facility-register-form { width: min(100%, 620px); }
+.admin-facility-field-full { grid-column: 1 / -1; }
+.admin-facility-register-form textarea { width: 100%; min-height: 110px; padding: 12px; border: 1px solid #d2d5dd; border-radius: 6px; background: #fff; color: #001348; font: inherit; font-size: 12px; resize: vertical; }
+.admin-facility-register-form textarea:focus { border-color: #001348; outline: 1px solid #001348; }
+.admin-facility-register-form input[type="file"] { width: 100%; padding: 10px; border: 1px solid #d2d5dd; border-radius: 6px; background: #fff; color: #001348; font-size: 12px; }
+.admin-facility-register-form small { color: #9298a5; font-size: 11px; font-weight: 400; }
 
 .admin-officer-detail-page { position: relative; display: flex; min-width: 0; min-height: 0; flex: 1; align-items: center; justify-content: center; overflow-y: auto; padding: 28px 20px; color: #001348; }
 .admin-officer-detail-page > .officer-facility-detail-back { top: 0; left: 0; }
@@ -65,9 +71,12 @@
 .admin-users-page .officer-facility-select { min-width: 105px; min-height: 38px; border-radius: 9px; }
 .admin-users-page .officer-facility-select select { min-width: 105px; height: 36px; padding: 0 32px 0 12px; font-size: 12px; text-align: left; }
 .admin-users-page .officer-facility-select > img { right: 10px; width: 14px; height: 14px; }
-.admin-users-page .admin-user-add-button { display: inline-flex; min-height: 40px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 8px; padding: 0 20px; border: 0; border-radius: 999px; background: #001348; color: #fff; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
-.admin-users-page .admin-user-add-button:hover { background: #001348; }
-.admin-users-page .admin-user-add-button img { display: block; width: 18px; height: 18px; flex: 0 0 18px; object-fit: contain; filter: brightness(0) invert(1); }
+.admin-users-page .admin-user-add-button,
+.officer-facilities-page .admin-user-add-button { display: inline-flex; min-height: 40px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 8px; padding: 0 20px; border: 0; border-radius: 999px; background: #001348; color: #fff; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.admin-users-page .admin-user-add-button:hover,
+.officer-facilities-page .admin-user-add-button:hover { background: #001348; }
+.admin-users-page .admin-user-add-button img,
+.officer-facilities-page .admin-user-add-button img { display: block; width: 18px; height: 18px; flex: 0 0 18px; object-fit: contain; filter: brightness(0) invert(1); }
 
 .admin-officers-page .officer-facility-filterbar { gap: 8px; }
 .admin-officers-page .officer-facility-search { min-height: 38px; flex: 1 1 290px; border-radius: 9px; }

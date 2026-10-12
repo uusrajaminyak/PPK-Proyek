@@ -31,8 +31,8 @@ class FacilityController extends Controller
                         ->orWhere('tipe', 'like', "%{$search}%");
                 });
             })
-            ->when($filters['status'] ?? null, fn ($facilities, string $status) => $facilities->where('status_fasilitas', $status))
-            ->when($filters['tipe'] ?? null, fn ($facilities, string $type) => $facilities->where('tipe', $type));
+            ->when($filters['status'] ?? null, fn($facilities, string $status) => $facilities->where('status_fasilitas', $status))
+            ->when($filters['tipe'] ?? null, fn($facilities, string $type) => $facilities->where('tipe', $type));
 
         $sortDirection = ($filters['urut'] ?? 'terbaru') === 'terlama' ? 'asc' : 'desc';
         $facilities = $facilitiesQuery
@@ -64,45 +64,53 @@ class FacilityController extends Controller
     /**
      * Show form for creating a new facility.
      */
-    public function create()
+    public function create(): View
     {
-        $kategoriOptions = ['Ruang Kelas', 'Aula', 'Laboratorium', 'Lapangan', 'Ruang Rapat'];
+        $tipeOptions = [
+            'Ruang Kelas',
+            'Aula',
+            'Laboratorium',
+            'Lapangan',
+            'Ruang Rapat',
+        ];
 
-        return view('admin.facilities.create', compact('kategoriOptions'));
+        return view('admin.facilities.create', compact('tipeOptions'));
     }
 
     /**
      * Store a newly created facility in PostgreSQL storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'nama_fasilitas' => ['required', 'string', 'max:255'],
-            'kategori' => ['required', 'string', 'max:255'],
+            'tipe' => ['required', 'string', 'max:255'],
             'lokasi' => ['required', 'string', 'max:255'],
-            'kapasitas' => ['nullable', 'integer', 'min:0'],
+            'kapasitas' => ['required', 'integer', 'min:0'],
             'deskripsi' => ['nullable', 'string'],
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'status_fasilitas' => ['required', 'in:active,inactive'],
         ]);
 
         $fotoPath = null;
+
         if ($request->hasFile('foto')) {
             $fotoPath = $request->file('foto')->store('facilities', 'public');
         }
 
-        $status = $request->has('is_active') || $request->input('status_fasilitas') === 'active' ? 'active' : 'inactive';
-
         Facility::create([
             'nama_fasilitas' => $validated['nama_fasilitas'],
-            'tipe' => $validated['kategori'],
+            'tipe' => $validated['tipe'],
             'lokasi' => $validated['lokasi'],
-            'kapasitas' => $validated['kapasitas'] ?? 0,
+            'kapasitas' => $validated['kapasitas'],
             'deskripsi' => $validated['deskripsi'] ?? null,
             'foto_path' => $fotoPath,
-            'status_fasilitas' => $status,
+            'status_fasilitas' => $validated['status_fasilitas'],
         ]);
 
-        return redirect()->route('admin.facilities.index')->with('success', 'Fasilitas baru berhasil ditambahkan.');
+        return redirect()
+            ->route('admin.facilities.index')
+            ->with('success', 'Fasilitas baru berhasil ditambahkan.');
     }
 
     /**
