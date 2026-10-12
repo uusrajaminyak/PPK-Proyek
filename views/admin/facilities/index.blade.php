@@ -73,6 +73,9 @@
 
         <article class="officer-facility-card">
             <div class="officer-facility-card-image">
+                @if ($facility->foto_url)
+                    <img src="{{ $facility->foto_url }}" alt="Foto {{ $facility->nama_fasilitas }}" loading="lazy">
+                @endif
                 <span class="officer-facility-card-status {{ $facilityStatusClass }}">{{ $facilityStatusLabel }}</span>
             </div>
 

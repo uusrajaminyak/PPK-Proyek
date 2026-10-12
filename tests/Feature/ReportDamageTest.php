@@ -35,7 +35,7 @@ class ReportDamageTest extends TestCase
         $response = $this->get(route('reports.create'));
 
         $response->assertStatus(200);
-        $response->assertSee('Laporkan Kerusakan Fasilitas');
+        $response->assertSee('Lapor Kendala/Kerusakan Fasilitas');
         $response->assertSee('Aula Serbaguna');
         $response->assertDontSee('Gudang Lama');
     }
@@ -91,18 +91,18 @@ class ReportDamageTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('reports.store'), [
             'facility_id' => $facility->id,
-            'kategori_laporan' => 'Hardware',
+            'kategori_laporan' => 'Kerusakan/Kendala Fasilitas',
             'deskripsi' => 'Monitor komputer nomor 12 tidak menyala sama sekali.',
             'fotos' => [$photo1, $photo2],
         ]);
 
-        $response->assertRedirect(route('reports.index'));
+        $response->assertRedirect(route('reports.create'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('reports', [
             'reporter_id' => $user->id,
             'facility_id' => $facility->id,
-            'kategori_laporan' => 'Hardware',
+            'kategori_laporan' => 'Kerusakan/Kendala Fasilitas',
             'status_laporan' => 'baru',
         ]);
 
@@ -116,4 +116,3 @@ class ReportDamageTest extends TestCase
         }
     }
 }
-

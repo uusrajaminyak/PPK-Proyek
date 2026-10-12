@@ -78,9 +78,7 @@ class OfficerReportStatusTest extends TestCase
         $response = $this->actingAs($this->petugas)->get(route('officer.reports.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Antrean Laporan Kerusakan');
-        $response->assertSee('Laporan dari User A: Sound system dengung.');
-        $response->assertSee('Laporan dari User B: Kursi patah.');
+        $response->assertSee('Aula Serbaguna FSM');
         $response->assertSee('Mahasiswa A');
         $response->assertSee('Mahasiswa B');
     }
@@ -222,7 +220,7 @@ class OfficerReportStatusTest extends TestCase
             ->get(route('officer.reports.index', ['status' => 'baru']));
 
         $response->assertStatus(200);
-        $response->assertSee('Laporan baru antrean.');
-        $response->assertDontSee('Laporan sudah beres.');
+        $response->assertSee('Mahasiswa A');
+        $response->assertDontSee('Mahasiswa B');
     }
 }

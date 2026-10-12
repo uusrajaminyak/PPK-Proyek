@@ -17,7 +17,7 @@ class FacilitySeeder extends Seeder
                 'kapasitas' => 60,
                 'deskripsi' => 'Ruang kelas standar perkuliahan FSM, dilengkapi proyektor HD, AC, dan whiteboard.',
                 'status_fasilitas' => 'active',
-                'foto_path' => 'https://images.unsplash.com/photo-1571260899304-425dea5cfd5b?auto=format&fit=crop&w=800&q=80',
+                'foto_path' => 'https://images.unsplash.com/photo-1635424239131-32dc44986b56?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
             ],
             [
                 'nama_fasilitas' => 'Aula FSM',
