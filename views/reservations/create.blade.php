@@ -22,19 +22,16 @@
         </a>
 
         {{-- Galeri Foto --}}
+        @php
+            $facilityImage = $facility->foto_url ?? asset('images/landing/landing-hero.webp');
+        @endphp
         <div class="gallery-container">
             <div class="hero-image-wrapper">
-                <img id="mainHeroImg" src="{{ asset('images/landing/landing-hero.webp') }}" alt="{{ $facility->nama_fasilitas }}">
+                <img id="mainHeroImg" src="{{ $facilityImage }}" alt="{{ $facility->nama_fasilitas }}">
             </div>
             <div class="thumbnail-gallery">
-                <div class="thumbnail-item active" onclick="switchHero(this, '{{ asset('images/landing/landing-hero.webp') }}')">
-                    <img src="{{ asset('images/landing/landing-hero.webp') }}" alt="">
-                </div>
-                <div class="thumbnail-item" onclick="switchHero(this, '{{ asset('images/landing/landing-hero.webp') }}')">
-                    <img src="{{ asset('images/landing/landing-hero.webp') }}" alt="">
-                </div>
-                <div class="thumbnail-item" onclick="switchHero(this, '{{ asset('images/landing/landing-hero.webp') }}')">
-                    <img src="{{ asset('images/landing/landing-hero.webp') }}" alt="">
+                <div class="thumbnail-item active" onclick="switchHero(this, '{{ $facilityImage }}')">
+                    <img src="{{ $facilityImage }}" alt="">
                 </div>
             </div>
         </div>

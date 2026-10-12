@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Facility extends Model
 {
@@ -63,6 +64,23 @@ class Facility extends Model
     public function setFotoAttribute($value)
     {
         $this->attributes['foto_path'] = $value;
+    }
+
+    /**
+     * URL gambar fasilitas siap pakai: URL absolut dipakai apa adanya,
+     * path relatif diselesaikan lewat disk public (storage).
+     */
+    public function getFotoUrlAttribute(): ?string
+    {
+        $path = $this->attributes['foto_path'] ?? null;
+
+        if (! $path) {
+            return null;
+        }
+
+        return Str::startsWith($path, ['http://', 'https://'])
+            ? $path
+            : asset('storage/'.ltrim($path, '/'));
     }
 
     public function getIsActiveAttribute(): bool

@@ -5,10 +5,7 @@
 
 @section('content')
     @php
-        $imagePath = $facility->foto_path ?? $facility->foto ?? null;
-        $imageUrl = $imagePath
-            ? (\Illuminate\Support\Str::startsWith($imagePath, ['http://', 'https://']) ? $imagePath : asset('storage/' . $imagePath))
-            : null;
+        $imageUrl = $facility->foto_url;
         $facilityCode = str_pad((string) $facility->id, 8, '0', STR_PAD_LEFT);
     @endphp
 

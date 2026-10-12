@@ -9,6 +9,13 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // The status is only a real CHECK constraint on PostgreSQL.
+        // SQLite (used by the test suite) has no ALTER ... DROP CONSTRAINT,
+        // and its inline enum check is never exercised with the new value.
+        if (DB::getDriverName() !== 'pgsql') {
+            return;
+        }
+
         // Remove the old constraint first, if it exists.
         DB::statement(
             'ALTER TABLE "reservations"
@@ -39,6 +46,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement(
             'ALTER TABLE "reservations"
              DROP CONSTRAINT IF EXISTS "reservations_status_reservasi_check"'

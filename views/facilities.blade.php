@@ -74,7 +74,11 @@
                     @endphp
 
                     <article class="facility-card">
-                        <div class="facility-card-image" aria-hidden="true"></div>
+                        <div class="facility-card-image">
+                            @if ($facility->foto_url)
+                                <img src="{{ $facility->foto_url }}" alt="Foto {{ $facility->nama_fasilitas }}" loading="lazy">
+                            @endif
+                        </div>
 
                         <span class="officer-facility-card-status {{ $facilityStatusClass }}">
                             {{ $facility->getStatusLabel() }}

@@ -100,8 +100,8 @@
                             };
                         @endphp
                         <div class="reservation-card-row">
-                            {{-- Thumbnail Foto Generic Ruang/Gedung --}}
-                            <img class="res-thumb" src="{{ asset('images/landing/landing-hero.webp') }}" alt="Foto Fasilitas">
+                            {{-- Thumbnail Foto Fasilitas (dari DB, fallback gambar bawaan) --}}
+                            <img class="res-thumb" src="{{ $res->facility->foto_url ?? asset('images/landing/landing-hero.webp') }}" alt="Foto {{ $res->facility->nama_fasilitas }}">
 
                             {{-- ID Reservasi --}}
                             <div class="col-id">

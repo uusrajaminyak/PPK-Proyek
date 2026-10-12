@@ -42,9 +42,9 @@ class OfficerFacilityStatusTest extends TestCase
         $response = $this->actingAs($this->petugas)->get(route('officer.facilities.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Status Operasional Fasilitas');
         $response->assertSee('Laboratorium Jaringan Komputer');
-        $response->assertSee('Aktif');
+        $response->assertSee('Gedung E Lt. 2');
+        $response->assertSee('officer-facility-card-status is-active');
     }
 
     public function test_officer_can_mark_facility_as_in_repair_directly(): void
